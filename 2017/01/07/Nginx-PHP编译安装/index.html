@@ -12,7 +12,7 @@
 
     <title>Nginx+PHP编译安装 - Antony 的博客 | Antony Blog</title>
 
-    <link rel="canonical" href="https://zantony.github.io/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">
+    <link rel="canonical" href="http://localhost:4000/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -130,10 +130,14 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
+        position: relative;
         background-image: url('/img/post-bg-js-module.jpg')
     }
+
+    
 </style>
 <header class="intro-header" >
+    <div class="header-mask"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -426,24 +430,26 @@ Q/A：如有问题请慷慨提出</p>
 </blockquote>
 
 
-                <hr>
+                <hr style="visibility: hidden;">
 
                 
                 <!-- 多说 Share start -->
-                </style>
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2017/01/07/Nginx-PHP编译安装"
                     data-title="Nginx+PHP编译安装"
-                    data-url="https://zantony.github.io/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/"
-                    data-images="https://zantony.github.io/img/post-bg-js-module.jpg"
+                    data-url="http://localhost:4000/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/"
+                    data-images="http://localhost:4000/img/post-bg-js-module.jpg"
                     data-content="编译安装Nginx&amp;PHP
 nginx编译安装
 下载路径：(建议使用Tengine)
 http://nginx.org/
 http://tengi... | Antony 的博客 | Antony Blog " >
                     <div class="ds-share-inline">
-                      <ul  class="ds-share-icons-16">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
                         <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
                         <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
@@ -461,12 +467,18 @@ http://tengi... | Antony 的博客 | Antony Blog " >
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" data-toggle="tooltip" data-placement="top" title="Linux用户、用户组及权限管理">&larr; Previous Post</a>
+                        <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" data-toggle="tooltip" data-placement="top" title="Linux用户、用户组及权限管理">
+                        Previous<br>
+                        <span>Linux用户、用户组及权限管理</span>
+                        </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2017/01/07/ansible%E8%84%9A%E6%9C%AC/" data-toggle="tooltip" data-placement="top" title="ansible脚本">Next Post &rarr;</a>
+                        <a href="/2017/01/07/ansible%E8%84%9A%E6%9C%AC/" data-toggle="tooltip" data-placement="top" title="ansible脚本">
+                        Next<br>
+                        <span>ansible脚本</span>
+                        </a>
                     </li>
                     
                 </ul>
@@ -478,7 +490,7 @@ http://tengi... | Antony 的博客 | Antony Blog " >
                     <div class="ds-thread"
                         data-thread-key="/2017/01/07/Nginx-PHP编译安装"
                         data-title="Nginx+PHP编译安装"
-                        data-url="https://zantony.github.io/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" >
+                        data-url="http://localhost:4000/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" >
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -487,6 +499,9 @@ http://tengi... | Antony 的博客 | Antony Blog " >
                 
 
             </div>
+
+    <!-- Side Catalog Container -->
+        
 
     <!-- Sidebar Container -->
             <div class="
@@ -585,6 +600,7 @@ http://tengi... | Antony 的博客 | Antony Blog " >
         </div>
     </div>
 </article>
+
 
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->

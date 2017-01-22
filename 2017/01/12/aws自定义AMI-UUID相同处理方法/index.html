@@ -12,7 +12,7 @@
 
     <title>aws自定义AMI-UUID相同处理方法 - Antony 的博客 | Antony Blog</title>
 
-    <link rel="canonical" href="https://zantony.github.io/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">
+    <link rel="canonical" href="http://localhost:4000/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -130,10 +130,14 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
+        position: relative;
         background-image: url('/img/aws-interface.jpg')
     }
+
+    
 </style>
 <header class="intro-header" >
+    <div class="header-mask"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -274,21 +278,23 @@ Q/A：如有问题请慷慨提出</p>
 
 
 
-                <hr>
+                <hr style="visibility: hidden;">
 
                 
                 <!-- 多说 Share start -->
-                </style>
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2017/01/12/aws自定义AMI-UUID相同处理方法"
                     data-title="aws自定义AMI-UUID相同处理方法"
-                    data-url="https://zantony.github.io/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/"
-                    data-images="https://zantony.github.io/img/aws-interface.jpg"
+                    data-url="http://localhost:4000/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/"
+                    data-images="http://localhost:4000/img/aws-interface.jpg"
                     data-content="
   Note: 在制作Centos 7 AMI并进行使用时，我们发现：如果将两个相同AMI挂载到一个操作系统的时候，会出现因为UUID相同，导致不能挂载... | Antony 的博客 | Antony Blog " >
                     <div class="ds-share-inline">
-                      <ul  class="ds-share-icons-16">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
                         <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
                         <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
@@ -306,12 +312,18 @@ Q/A：如有问题请慷慨提出</p>
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/01/12/aws-ec2-%E5%8F%8C%E7%BD%91%E5%8D%A1%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="aws-ec2-双网卡问题">&larr; Previous Post</a>
+                        <a href="/2017/01/12/aws-ec2-%E5%8F%8C%E7%BD%91%E5%8D%A1%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="aws-ec2-双网卡问题">
+                        Previous<br>
+                        <span>aws-ec2-双网卡问题</span>
+                        </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/" data-toggle="tooltip" data-placement="top" title="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp">Next Post &rarr;</a>
+                        <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/" data-toggle="tooltip" data-placement="top" title="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp">
+                        Next<br>
+                        <span>IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp</span>
+                        </a>
                     </li>
                     
                 </ul>
@@ -323,7 +335,7 @@ Q/A：如有问题请慷慨提出</p>
                     <div class="ds-thread"
                         data-thread-key="/2017/01/12/aws自定义AMI-UUID相同处理方法"
                         data-title="aws自定义AMI-UUID相同处理方法"
-                        data-url="https://zantony.github.io/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/" >
+                        data-url="http://localhost:4000/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/" >
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -332,6 +344,9 @@ Q/A：如有问题请慷慨提出</p>
                 
 
             </div>
+
+    <!-- Side Catalog Container -->
+        
 
     <!-- Sidebar Container -->
             <div class="
@@ -430,6 +445,7 @@ Q/A：如有问题请慷慨提出</p>
         </div>
     </div>
 </article>
+
 
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->

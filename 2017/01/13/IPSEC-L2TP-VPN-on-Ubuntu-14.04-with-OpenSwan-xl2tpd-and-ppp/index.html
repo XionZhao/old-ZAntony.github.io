@@ -12,7 +12,7 @@
 
     <title>IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp - Antony 的博客 | Antony Blog</title>
 
-    <link rel="canonical" href="https://zantony.github.io/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/">
+    <link rel="canonical" href="http://localhost:4000/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -130,10 +130,14 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
+        position: relative;
         background-image: url('/img/vpn.jpg')
     }
+
+    
 </style>
 <header class="intro-header" >
+    <div class="header-mask"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -588,24 +592,26 @@ Q/A：如有问题请慷慨提出</p>
 </blockquote>
 
 
-                <hr>
+                <hr style="visibility: hidden;">
 
                 
                 <!-- 多说 Share start -->
-                </style>
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp"
                     data-title="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp"
-                    data-url="https://zantony.github.io/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/"
-                    data-images="https://zantony.github.io/img/vpn.jpg"
+                    data-url="http://localhost:4000/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/"
+                    data-images="http://localhost:4000/img/vpn.jpg"
                     data-content="VPN原理
 
 http://www.cisco.com/support/zh/105/IPSECpart1.shtml#glossary
 
 http://... | Antony 的博客 | Antony Blog " >
                     <div class="ds-share-inline">
-                      <ul  class="ds-share-icons-16">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
                         <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
                         <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
@@ -623,12 +629,18 @@ http://... | Antony 的博客 | Antony Blog " >
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="aws自定义AMI-UUID相同处理方法">&larr; Previous Post</a>
+                        <a href="/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="aws自定义AMI-UUID相同处理方法">
+                        Previous<br>
+                        <span>aws自定义AMI-UUID相同处理方法</span>
+                        </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2017/01/19/CoreDump/" data-toggle="tooltip" data-placement="top" title="Linux系统异常-CoreDump详解">Next Post &rarr;</a>
+                        <a href="/2017/01/19/CoreDump/" data-toggle="tooltip" data-placement="top" title="Linux系统异常-CoreDump详解">
+                        Next<br>
+                        <span>Linux系统异常-CoreDump详解</span>
+                        </a>
                     </li>
                     
                 </ul>
@@ -640,7 +652,7 @@ http://... | Antony 的博客 | Antony Blog " >
                     <div class="ds-thread"
                         data-thread-key="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp"
                         data-title="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp"
-                        data-url="https://zantony.github.io/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/" >
+                        data-url="http://localhost:4000/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/" >
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -649,6 +661,9 @@ http://... | Antony 的博客 | Antony Blog " >
                 
 
             </div>
+
+    <!-- Side Catalog Container -->
+        
 
     <!-- Sidebar Container -->
             <div class="
@@ -747,6 +762,7 @@ http://... | Antony 的博客 | Antony Blog " >
         </div>
     </div>
 </article>
+
 
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->

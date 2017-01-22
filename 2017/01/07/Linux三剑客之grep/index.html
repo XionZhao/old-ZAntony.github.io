@@ -12,7 +12,7 @@
 
     <title>Linux三剑客之grep - Antony 的博客 | Antony Blog</title>
 
-    <link rel="canonical" href="https://zantony.github.io/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/">
+    <link rel="canonical" href="http://localhost:4000/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -130,10 +130,14 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
+        position: relative;
         background-image: url('/img/post-bg-js-module.jpg')
     }
+
+    
 </style>
 <header class="intro-header" >
+    <div class="header-mask"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -541,22 +545,24 @@ Q/A：如有问题请慷慨提出</p>
 </blockquote>
 
 
-                <hr>
+                <hr style="visibility: hidden;">
 
                 
                 <!-- 多说 Share start -->
-                </style>
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2017/01/07/Linux三剑客之grep"
                     data-title="Linux三剑客之grep"
-                    data-url="https://zantony.github.io/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/"
-                    data-images="https://zantony.github.io/img/post-bg-js-module.jpg"
+                    data-url="http://localhost:4000/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/"
+                    data-images="http://localhost:4000/img/post-bg-js-module.jpg"
                     data-content="一、Linux文本处理三剑客
 
   Linux上有三种常用的文本处理工具，分别为：grep（egrep、fgrep）、sed、awk。今天主要给大家介绍一... | Antony 的博客 | Antony Blog " >
                     <div class="ds-share-inline">
-                      <ul  class="ds-share-icons-16">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
                         <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
                         <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
@@ -574,12 +580,18 @@ Q/A：如有问题请慷慨提出</p>
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/01/07/FastDFS-unti-for-systemd/" data-toggle="tooltip" data-placement="top" title="FastDFS unti for systemd">&larr; Previous Post</a>
+                        <a href="/2017/01/07/FastDFS-unti-for-systemd/" data-toggle="tooltip" data-placement="top" title="FastDFS unti for systemd">
+                        Previous<br>
+                        <span>FastDFS unti for systemd</span>
+                        </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" data-toggle="tooltip" data-placement="top" title="Linux用户、用户组及权限管理">Next Post &rarr;</a>
+                        <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" data-toggle="tooltip" data-placement="top" title="Linux用户、用户组及权限管理">
+                        Next<br>
+                        <span>Linux用户、用户组及权限管理</span>
+                        </a>
                     </li>
                     
                 </ul>
@@ -591,7 +603,7 @@ Q/A：如有问题请慷慨提出</p>
                     <div class="ds-thread"
                         data-thread-key="/2017/01/07/Linux三剑客之grep"
                         data-title="Linux三剑客之grep"
-                        data-url="https://zantony.github.io/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/" >
+                        data-url="http://localhost:4000/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/" >
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -600,6 +612,9 @@ Q/A：如有问题请慷慨提出</p>
                 
 
             </div>
+
+    <!-- Side Catalog Container -->
+        
 
     <!-- Sidebar Container -->
             <div class="
@@ -698,6 +713,7 @@ Q/A：如有问题请慷慨提出</p>
         </div>
     </div>
 </article>
+
 
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->

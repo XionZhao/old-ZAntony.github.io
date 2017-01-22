@@ -12,7 +12,7 @@
 
     <title>制作并安装FastDFS的RPM程序包 - Antony 的博客 | Antony Blog</title>
 
-    <link rel="canonical" href="https://zantony.github.io/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/">
+    <link rel="canonical" href="http://localhost:4000/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -130,10 +130,14 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
+        position: relative;
         background-image: url('/img/post-bg-js-module.jpg')
     }
+
+    
 </style>
 <header class="intro-header" >
+    <div class="header-mask"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -287,22 +291,24 @@ Q/A：如有问题请慷慨提出</p>
 </blockquote>
 
 
-                <hr>
+                <hr style="visibility: hidden;">
 
                 
                 <!-- 多说 Share start -->
-                </style>
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2017/01/07/制作并安装FastDFS的RPM程序包"
                     data-title="制作并安装FastDFS的RPM程序包"
-                    data-url="https://zantony.github.io/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/"
-                    data-images="https://zantony.github.io/img/post-bg-js-module.jpg"
+                    data-url="http://localhost:4000/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/"
+                    data-images="http://localhost:4000/img/post-bg-js-module.jpg"
                     data-content="一、安装并制作rpm包libfastcommon
 注意:生成的rpm包全都在/root/rpmbuild/RPMS/下面，可以再其他主机直接使用
 #!/b... | Antony 的博客 | Antony Blog " >
                     <div class="ds-share-inline">
-                      <ul  class="ds-share-icons-16">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
                         <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
                         <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
@@ -320,12 +326,18 @@ Q/A：如有问题请慷慨提出</p>
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/" data-toggle="tooltip" data-placement="top" title="分布式文件系统-FastDFS">&larr; Previous Post</a>
+                        <a href="/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/" data-toggle="tooltip" data-placement="top" title="分布式文件系统-FastDFS">
+                        Previous<br>
+                        <span>分布式文件系统-FastDFS</span>
+                        </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2017/01/10/Ss-Client-Config/" data-toggle="tooltip" data-placement="top" title="Ss-Client-Config">Next Post &rarr;</a>
+                        <a href="/2017/01/10/Ss-Client-Config/" data-toggle="tooltip" data-placement="top" title="Ss-Client-Config">
+                        Next<br>
+                        <span>Ss-Client-Config</span>
+                        </a>
                     </li>
                     
                 </ul>
@@ -337,7 +349,7 @@ Q/A：如有问题请慷慨提出</p>
                     <div class="ds-thread"
                         data-thread-key="/2017/01/07/制作并安装FastDFS的RPM程序包"
                         data-title="制作并安装FastDFS的RPM程序包"
-                        data-url="https://zantony.github.io/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/" >
+                        data-url="http://localhost:4000/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/" >
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -346,6 +358,9 @@ Q/A：如有问题请慷慨提出</p>
                 
 
             </div>
+
+    <!-- Side Catalog Container -->
+        
 
     <!-- Sidebar Container -->
             <div class="
@@ -444,6 +459,7 @@ Q/A：如有问题请慷慨提出</p>
         </div>
     </div>
 </article>
+
 
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->

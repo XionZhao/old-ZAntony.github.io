@@ -12,7 +12,7 @@
 
     <title>分布式文件系统-FastDFS - Antony 的博客 | Antony Blog</title>
 
-    <link rel="canonical" href="https://zantony.github.io/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/">
+    <link rel="canonical" href="http://localhost:4000/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -130,10 +130,14 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
+        position: relative;
         background-image: url('/img/post-bg-js-module.jpg')
     }
+
+    
 </style>
 <header class="intro-header" >
+    <div class="header-mask"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -593,23 +597,25 @@ Q/A：如有问题请慷慨提出</p>
 </blockquote>
 
 
-                <hr>
+                <hr style="visibility: hidden;">
 
                 
                 <!-- 多说 Share start -->
-                </style>
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2017/01/07/分布式文件系统-FastDFS"
                     data-title="分布式文件系统-FastDFS"
-                    data-url="https://zantony.github.io/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/"
-                    data-images="https://zantony.github.io/img/post-bg-js-module.jpg"
+                    data-url="http://localhost:4000/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/"
+                    data-images="http://localhost:4000/img/post-bg-js-module.jpg"
                     data-content="一、FastDFS简介
 
   FastDFS是由国人余庆所开发，其项目地址：https://github.com/happyfish100
 FastDFS... | Antony 的博客 | Antony Blog " >
                     <div class="ds-share-inline">
-                      <ul  class="ds-share-icons-16">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
                         <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
                         <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
@@ -627,12 +633,18 @@ FastDFS... | Antony 的博客 | Antony Blog " >
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/" data-toggle="tooltip" data-placement="top" title="为什么你的Linux物理内存还有很多，却开始使用swap?">&larr; Previous Post</a>
+                        <a href="/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/" data-toggle="tooltip" data-placement="top" title="为什么你的Linux物理内存还有很多，却开始使用swap?">
+                        Previous<br>
+                        <span>为什么你的Linux物理内存还有很多，却开始使用swap?</span>
+                        </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/" data-toggle="tooltip" data-placement="top" title="制作并安装FastDFS的RPM程序包">Next Post &rarr;</a>
+                        <a href="/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/" data-toggle="tooltip" data-placement="top" title="制作并安装FastDFS的RPM程序包">
+                        Next<br>
+                        <span>制作并安装FastDFS的RPM程序包</span>
+                        </a>
                     </li>
                     
                 </ul>
@@ -644,7 +656,7 @@ FastDFS... | Antony 的博客 | Antony Blog " >
                     <div class="ds-thread"
                         data-thread-key="/2017/01/07/分布式文件系统-FastDFS"
                         data-title="分布式文件系统-FastDFS"
-                        data-url="https://zantony.github.io/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/" >
+                        data-url="http://localhost:4000/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/" >
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -653,6 +665,9 @@ FastDFS... | Antony 的博客 | Antony Blog " >
                 
 
             </div>
+
+    <!-- Side Catalog Container -->
+        
 
     <!-- Sidebar Container -->
             <div class="
@@ -751,6 +766,7 @@ FastDFS... | Antony 的博客 | Antony Blog " >
         </div>
     </div>
 </article>
+
 
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->

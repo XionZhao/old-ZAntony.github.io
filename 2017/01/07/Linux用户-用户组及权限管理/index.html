@@ -12,7 +12,7 @@
 
     <title>Linux用户、用户组及权限管理 - Antony 的博客 | Antony Blog</title>
 
-    <link rel="canonical" href="https://zantony.github.io/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+    <link rel="canonical" href="http://localhost:4000/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -130,10 +130,14 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
+        position: relative;
         background-image: url('/img/post-bg-js-module.jpg')
     }
+
+    
 </style>
 <header class="intro-header" >
+    <div class="header-mask"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -635,22 +639,24 @@ pwck [options] [passwd [ shadow ]]
 
 
 
-                <hr>
+                <hr style="visibility: hidden;">
 
                 
                 <!-- 多说 Share start -->
-                </style>
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2017/01/07/Linux用户、用户组及权限管理"
                     data-title="Linux用户、用户组及权限管理"
-                    data-url="https://zantony.github.io/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/"
-                    data-images="https://zantony.github.io/img/post-bg-js-module.jpg"
+                    data-url="http://localhost:4000/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/"
+                    data-images="http://localhost:4000/img/post-bg-js-module.jpg"
                     data-content="一、Linux用户及用户组的基本概念
 用户：用户是实现能够将有限的资源在多个使用者之间进行分配；、
 用户组：用户组是指多个用户的集合，方便对一类需要同样权... | Antony 的博客 | Antony Blog " >
                     <div class="ds-share-inline">
-                      <ul  class="ds-share-icons-16">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
                         <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
                         <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
@@ -668,12 +674,18 @@ pwck [options] [passwd [ shadow ]]
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/" data-toggle="tooltip" data-placement="top" title="Linux三剑客之grep">&larr; Previous Post</a>
+                        <a href="/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/" data-toggle="tooltip" data-placement="top" title="Linux三剑客之grep">
+                        Previous<br>
+                        <span>Linux三剑客之grep</span>
+                        </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" data-toggle="tooltip" data-placement="top" title="Nginx+PHP编译安装">Next Post &rarr;</a>
+                        <a href="/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" data-toggle="tooltip" data-placement="top" title="Nginx+PHP编译安装">
+                        Next<br>
+                        <span>Nginx+PHP编译安装</span>
+                        </a>
                     </li>
                     
                 </ul>
@@ -685,7 +697,7 @@ pwck [options] [passwd [ shadow ]]
                     <div class="ds-thread"
                         data-thread-key="/2017/01/07/Linux用户、用户组及权限管理"
                         data-title="Linux用户、用户组及权限管理"
-                        data-url="https://zantony.github.io/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" >
+                        data-url="http://localhost:4000/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" >
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -694,6 +706,9 @@ pwck [options] [passwd [ shadow ]]
                 
 
             </div>
+
+    <!-- Side Catalog Container -->
+        
 
     <!-- Sidebar Container -->
             <div class="
@@ -792,6 +807,7 @@ pwck [options] [passwd [ shadow ]]
         </div>
     </div>
 </article>
+
 
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->

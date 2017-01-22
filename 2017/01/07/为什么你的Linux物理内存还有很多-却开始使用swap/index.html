@@ -12,7 +12,7 @@
 
     <title>为什么你的Linux物理内存还有很多，却开始使用swap? - Antony 的博客 | Antony Blog</title>
 
-    <link rel="canonical" href="https://zantony.github.io/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/">
+    <link rel="canonical" href="http://localhost:4000/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -130,10 +130,14 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
+        position: relative;
         background-image: url('/img/post-bg-js-module.jpg')
     }
+
+    
 </style>
 <header class="intro-header" >
+    <div class="header-mask"></div>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -199,17 +203,16 @@
 <p>转载：http://lib.csdn.net/article/linux/28546</p>
 
 
-                <hr>
+                <hr style="visibility: hidden;">
 
                 
                 <!-- 多说 Share start -->
-                </style>
                 <div class="ds-share"
                     style="text-align: right"
                     data-thread-key="/2017/01/07/为什么你的Linux物理内存还有很多，却开始使用swap?"
                     data-title="为什么你的Linux物理内存还有很多，却开始使用swap?"
-                    data-url="https://zantony.github.io/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/"
-                    data-images="https://zantony.github.io/img/post-bg-js-module.jpg"
+                    data-url="http://localhost:4000/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/"
+                    data-images="http://localhost:4000/img/post-bg-js-module.jpg"
                     data-content="
   现在的机器上都是有多个CPU和多个内存块的。以前我们都是将内存块看成是一大块内存，所有CPU到这个共享内存的访问消息是一样的。
 
@@ -217,7 +220,10 @@
 
   这就是之前... | Antony 的博客 | Antony Blog " >
                     <div class="ds-share-inline">
-                      <ul  class="ds-share-icons-16">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
                         <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
                         <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
                         <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
@@ -235,12 +241,18 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" data-toggle="tooltip" data-placement="top" title="python-快速改造：基础知识">&larr; Previous Post</a>
+                        <a href="/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" data-toggle="tooltip" data-placement="top" title="python-快速改造：基础知识">
+                        Previous<br>
+                        <span>python-快速改造：基础知识</span>
+                        </a>
                     </li>
                     
                     
                     <li class="next">
-                        <a href="/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/" data-toggle="tooltip" data-placement="top" title="分布式文件系统-FastDFS">Next Post &rarr;</a>
+                        <a href="/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/" data-toggle="tooltip" data-placement="top" title="分布式文件系统-FastDFS">
+                        Next<br>
+                        <span>分布式文件系统-FastDFS</span>
+                        </a>
                     </li>
                     
                 </ul>
@@ -252,7 +264,7 @@
                     <div class="ds-thread"
                         data-thread-key="/2017/01/07/为什么你的Linux物理内存还有很多，却开始使用swap?"
                         data-title="为什么你的Linux物理内存还有很多，却开始使用swap?"
-                        data-url="https://zantony.github.io/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/" >
+                        data-url="http://localhost:4000/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/" >
                     </div>
                 </div>
                 <!-- 多说评论框 end -->
@@ -261,6 +273,9 @@
                 
 
             </div>
+
+    <!-- Side Catalog Container -->
+        
 
     <!-- Sidebar Container -->
             <div class="
@@ -359,6 +374,7 @@
         </div>
     </div>
 </article>
+
 
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
