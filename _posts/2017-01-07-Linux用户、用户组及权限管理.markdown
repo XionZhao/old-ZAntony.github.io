@@ -1,0 +1,486 @@
+---
+layout:     post
+title:      "Linux用户、用户组及权限管理"
+subtitle:   "Linux用户管理"
+date:       2017-01-07
+author:     "Antony"
+header-img: "img/post-bg-js-module.jpg"
+tags:
+    - linux user manager
+    - 用户管理
+---
+### 一、Linux用户及用户组的基本概念
+用户：用户是实现能够将有限的资源在多个使用者之间进行分配；、
+用户组：用户组是指多个用户的集合，方便对一类需要同样权限的用户授权
+Linux是多用户、多任务的操作系统。
+    多用户指：多人同时使用系统资源；多任务：同时运行多个进程
+### 二、用户及用户组类别
+#### 1、用户：名称解析库 /etc/passwd
+a、管理员
+root 用户标识（UID）为0
+b、普通用户及系统用户
+    普通用户的用户标识（既UID）：
+        CentOS 5,6: 500+
+        CentOS 7: 1000+
+    系统用户用户标识（既UID）：
+        CentOS 5,6: 1-499
+        CentOS 7: 1-999
+#### 2、用户组：名称解析库 /etc/group
+a、管理员组
+组标识为：0
+b、普通用户组及系统用户组
+    普通用户组标识：
+        CentOS 5,6: 500+
+        CentOS 7: 1000+
+    系统用户组标识：
+        CentOS 5,6: 1-499
+        CentOS 7: 1-999
+3、用户组类别：
+    以用户为核心分为：
+        用户的主组：基本组；
+        用户的附加组：额外组；
+    以容纳的用户来划分：
+        私有组：与用户名相同，且只有一个用户；
+        共有组：组内包含了多个用户；
+### 三、用户及用户组的认证机制
+Linux的用户密码认证方式在centos7中使用sha512
+认证信息库存储位置：
+    用户的认证信息库：/etc/shadow
+    组的认证信息库：/etc/gshadow
+密码：加密存放，使用单向加密机制
+算法：
+md5: message digest, 128bits
+sha1: secure hash algorithm, 160bits
+sha224
+sha256
+sha384
+sha512
+
+### 四、权限的生效机制
+进程的运行者：
+    是否与文件的属主相同，如果是，则以文件属主的身份来访问此文件；否则
+    是否属于文件的属组，如果是，则以文件属组的身份来访问此文件；否则
+    以文件的其它用户的身份来访问此文件；
+![enter image description here](http://zantony.top/uploads/quanxian.png)
+### 五、用户及用户组管理命令
+#### groupadd命令：添加组
+groupadd [options] group
+-g  GID：指明GID；
+```
+# groupadd -g 2000 testgrp
+# grep "testgrp" /etc/group
+testgrp:x:2000:
+    -r, --system：系统组；
+# groupadd -r testgrp1
+# grep "testgrp1" /etc/group
+testgrp1:x:985:
+```
+#### groupmod命令：修改组信息
+groupmod [选项] GROUP
+-g  GID 
+-n NEW_NAME：修改组名；
+```
+# grep "testgrp\>" /etc/group
+testgrp:x:2000:
+# groupmod -g 300 -n grptest testgrp
+# grep "grptest" /etc/group
+grptest:x:300:
+```
+#### groupdel命令：删除组
+groupdel [选项] GROUP
+```
+# grep "grptest" /etc/group
+grptest:x:300:
+# groupdel grptest
+# grep "grptest" /etc/group
+```
+#### useradd命令：添加用户
+>useradd  [选项]  登录名
+-c, --comment COMMENT：注释信息，一般为Full Name；
+-d, --home  /PATH/TO/HOME_DIR：家目录路径；目标路径不能事先存在，否则会有警告，不会复制skel相关的文件给用户；
+-g, --gid GROUP：用户的基本组组名或GID；
+-G, --groups GROUP1[,GROUP2,...[,GROUPN]]]：用户所属的附加组列表，彼此间用逗号隔开，中间没有空格；
+```
+# useradd -c "testuser" -d /home/testuser -g testgrp -G testgrp1 testuser
+# id testuser
+uid=5011(testuser) gid=5011(testgrp) groups=5011(testgrp),985(testgrp1）
+    -m, --create-home：强制创建家目录；
+            一般指当CREATE_HOME变量为设置时必须使用此参数 
+    -M：不创建用户主目录，即使系统在 /etc/login.defs 中的设置 (CREATE_HOME) 为 yes；   
+# useradd -M testuser2
+# ls /home/
+centos  gentoo   nologin    test1  test3
+fedora  mageedu  slackware  test2  testuser
+        -r, --system：创建一个系统账户
+    创建系统用的UID在0-999之内。且不创建家目录
+# useradd -r testuser3
+# id testuser3
+uid=990(testuser3) gid=984(testuser3) groups=984(testuser3)
+# ls /home/
+centos  gentoo   nologin    test1  test3
+fedora  mageedu  slackware  test2  testuser
+    -s, --shell SHELL：用户的登录 shell 名，默认为留空，让系统根据 /etc/default/useradd 中的 SHELL 变量选择默认的登录shell；
+    -u, --uid UID：用户 ID 的数字值。此值必须为唯一的，除非使用了 -o 选项。此值必须非负，默认使用大于等于UID_MIN，且大于任何其他用户 ID 最小值。
+```
+```
+# cat /etc/shells 
+/bin/sh
+/bin/bash
+/sbin/nologin
+/usr/bin/sh
+/usr/bin/bash
+/usr/sbin/nologin
+/bin/tcsh
+/bin/csh
+# useradd -s /bin/bash -u 3001 testuser4
+# grep "testuser4\>" /etc/passwd
+testuser4:x:3001:3001::/home/testuser4:/bin/bash
+注意：创建登录用户时，为其自定义的shell程序必须为可登录shell，且要位于/etc/shells文件中；
+        useradd -D：显示创建用户时的默认设置；
+useradd -D  选项：设置某默认选项；
+    -e, --expiredate  EXPIRE_DATE：用户账号的过期期限；过期后会被锁定；日期以 YYYY-MM-DD 格式指定
+    -f, --inactive INACTIVE：密码过期后，账户被彻底禁用之前的天数。0 表示立即禁用，-1 表示禁用这个功能。
+# useradd -D
+GROUP=100
+HOME=/home
+INACTIVE=-1
+EXPIRE=
+SHELL=/bin/bash
+SKEL=/etc/skel
+CREATE_MAIL_SPOOL=yes
+# useradd -e 2020-03-08 testuser5
+# useradd -f 3 testuser6
+    为用户提供默认配置的配置文件：
+/etc/login.defs, /etc/default/useradd
+影子口令文件：/etc/shadow
+/etc/shadow每个字段的意思：
+            登录名:密码:最近一次的修改时间:密码的最短使用期限:密码最长使用期限:提前警告的天数:非活动期限:账号的禁用日期:保留字段
+```
+#### usermod命令：修改账号信息
+>-c, --comment  COMMENT
+-d, --home  HOME_DIR：修改家目录为新的位置，但一般应该同时使用-m选项以保证原家目录中的文件会移动到新目录中；
+-g, --gid GROUP
+-G, --groups  GRO    UP1[,GROUP2,...[,GROUPN]]]：修改时会覆盖原有的附加组；一同使用-a选项，表示为用户添加新的附加组；
+-l, --login  NEW_LOGIN：修改当前用户的用户名；
+-s, --shell  SHELL
+-u, --uid  UID
+```
+# grep "mageedu" /etc/passwd
+mageedu:x:5015:5015:mageedu:/home/mageedu:/bin/bash
+# usermod -c "this is mageedu" -m -d /opt/mageedu -g 5000 -G 6000 -l mageedugood -u 3000 mageedu
+# grep "mageedu" /etc/passwd
+mageedugood:x:3000:5000:this is mageedu:/opt/mageedu:/bin/bash
+# id mageedugood
+uid=3000(mageedugood) gid=5000(mage) groups=5000(mage),6000(xueba)
+    -L, --lock：锁定用户的密码。这会在用户加密的密码之前放置一个“!”
+    -U, --unlock：解锁用户的密码。这将移除加密的密码之前的“!”
+# grep "mageedu" /etc/shadow
+mageedugood:$6$MKpxQ.kL$o6IBhP9uXHlccwXLUubV.Xp.k4KVJ5mTEtPtDeyoz4O38FRq1wuiyH1vyYlHEy9uqRt7a1Mzzf0bCnCKrtxHL/:16868:0:99999:7:::
+# usermod -L mageedugood
+# grep "mageedu" /etc/shadow   #此处可以看到锁定后在密码前面有一个!号
+mageedugood:!$6$MKpxQ.kL$o6IBhP9uXHlccwXLUubV.Xp.k4KVJ5mTEtPtDeyoz4O38FRq1wuiyH1vyYlHEy9uqRt7a1Mzzf0bCnCKrtxHL/:16868:0:99999:7:::
+# usermod -U mageedugood
+# grep "mageedu" /etc/shadow
+mageedugood:$6$MKpxQ.kL$o6IBhP9uXHlccwXLUubV.Xp.k4KVJ5mTEtPtDeyoz4O38FRq1wuiyH1vyYlHEy9uqRt7a1Mzzf0bCnCKrtxHL/:16868:0:99999:7:::
+```
+#### userdel命令：删除用户账号
+userdel [选项]  登录名
+-r, --remove：用户主目录中的文件将随用户主目录和用户邮箱一起删除
+```
+# userdel -r mageedugood
+# id mageedugood
+id: mageedugood: no such user
+# ls /home/  #加上-r选项后同时删除用户的家目录以及用户邮箱
+centos  gentoo   slackware  test2  testuser   testuser5
+fedora  nologin  test1      test3  testuser4  testuser6
+# userdel test1
+# ls /home/   #未加-r可以找到test1用户的家目录
+centos  gentoo   slackware  test2  testuser   testuser5
+fedora  nologin  test1      test3  testuser4  testuser6
+```
+```
+# id test1
+id: test1: no such user
+```
+#### passwd命令：密码管理命令
+(1) passwd：修改自己的密码；
+(2) passwd  username：修改其它用户的密码，仅root有此权限；
+密码复杂度：
+	    (1) 不能少于8个字符；
+	    (2) 不能使用与过去的密码太相似的密码；
+	    (3) 应该使用四类字符中的至少三类；
+```
+# passwd test2
+Changing password for user test2.
+New password: 
+BAD PASSWORD: The password is shorter than 8 characters
+Retype new password: 
+passwd: all authentication tokens updated successfully.
+选项：
+	    -l：锁定密码
+	    -u：解锁解密
+	    -d：清除密码
+# grep "test2" /etc/shadow
+test2:$6$9E3j7rHK$XBRQVO0SVqivKXi7gHTadSjAkjpZz72YsGa60xHK.uUQlnHhsD8w4ttT466ADR9AuXz8KrBWhxRfnGHeFGXiZ/:16868:0:99999:7:::
+# passwd -l test2
+Locking password for user test2.
+passwd: Success
+# grep "test2" /etc/shadow
+test2:!!$6$9E3j7rHK$XBRQVO0SVqivKXi7gHTadSjAkjpZz72YsGa60xHK.uUQlnHhsD8w4ttT466ADR9AuXz8KrBWhxRfnGHeFGXiZ/:16868:0:99999:7:::
+# passwd -u test2
+Unlocking password for user test2.
+passwd: Success
+# grep "test2" /etc/shadow
+test2:$6$9E3j7rHK$XBRQVO0SVqivKXi7gHTadSjAkjpZz72YsGa60xHK.uUQlnHhsD8w4ttT466ADR9AuXz8KrBWhxRfnGHeFGXiZ/:16868:0:99999:7:::
+# passwd -d test2
+Removing password for user test2.
+passwd: Success
+# grep "test2" /etc/shadow
+test2::16868:0:99999:7:::
+    与usermod不同的是，passwd在锁定时密码前面有两个!!号
+```
+#### 特殊用法：可以避免交互式
+--stdin：从标准输入接收密码；
+```
+echo "PASSWORD" | passwd  --stdin  USERNAME
+# echo "mageedu"|passwd --stdin test2
+Changing password for user test2.
+passwd: all authentication tokens updated successfully.
+```
+#### gpasswd命令：为组添加密码
+组密码文件：/etc/gshadow
+gpasswd [选项] group
+-a USERNAME：把用户添加至组中；
+-d USERNAME：从此组中移除此用户；
+```
+# gpasswd -a test3 xueba
+Adding user test3 to group xueba
+# grep "xueba" /etc/gshadow
+xueba:$6$bxtP5/lZt$umET9D6NeQrdWDGNG0LfpUQiJ5Poq8Xa0GoaDQqJFvqLVm3GWrCxOtDnCXbGjZngS4S7lumQE9hW18DgWPBrm.::test2,test3
+# gpasswd -d test2 xueba
+Removing user test2 from group xueba
+# grep "xueba" /etc/gshadow
+xueba:$6$bxtP5/lZt$umET9D6NeQrdWDGNG0LfpUQiJ5Poq8Xa0GoaDQqJFvqLVm3GWrCxOtDnCXbGjZngS4S7lumQE9hW18DgWPBrm.::test3
+```
+#### newgrp命令：登录到一个新组
+#### chage命令：修改用户账号的各种期限；
+```
+$ touch testfile
+$ ll testfile 
+-rw-rw-r-- 1 test2 test2 0 Mar  8 12:43 testfile
+$ newgrp xueba
+$ touch testfile2
+$ ll testfile2 
+-rw-r--r-- 1 test2 xueba 0 Mar  8 12:44 testfile2
+```
+### 五、文件系统权限简介
+#### 文件系统文件权限：
+> 三类用户：
+>属主：owner, u
+>属组：group, g
+>其它：other, o
+> 所有：All，a		
+>权限：
+>r: readable，可读
+>w: writable, 可写
+>x：excutable, 可执行 
+>权限管理：
+>文件：
+>r：可获取文件的数据；
+>w：可修改文件的数据；
+>x：可将此文件运行为进程；
+>目录：
+>r：可使用ls命令获取其下的所有文件列表；但不可以使用“ls -l”去获取详细信息，也不可以cd至此目录中；
+>w：可修改此目录下的文件列表， 即可以在此目录下创建或删除文件；
+>x：可以使用"ls -l“命令来获取其下的文件的详细属性信息，也可cd至此目录中；
+
+### 六、文件系统权限管理命令
+#### chmod命令：
+>作用：change file mode bits
+        使用方式：
+    chmod [OPTION]... MODE[,MODE]... FILE...
+        # 以ugoa的方式来进行授权
+    chmod [OPTION]... OCTAL-MODE FILE...
+        # 权限数字是数值模式：是从一到四的八进制数字（0-7），分别用4（读权限） 2（写权限）             1（可执行权限） 
+    chmod [OPTION]... --reference=RFILE FILE...
+        # 标识权限参照某文件修改
+##### (1) chmod [OPTION]... MODE[,MODE]... FILE...
+>MODE：
+    赋权表示法：直接操作一类用户的所有权限位rwx；
+	        u=
+	        g=
+	        o=
+	        a=
+	        两类用户权限相同：ug=, go=
+	        不同类的用户权限不同：u=,g=,o=
+```
+# ll
+total 4
+-rw-r--r-- 1 root root 595 Mar  8 15:57 fstab
+# chmod u=r,g=w,o=x fstab 
+# ll
+total 4
+-r---w---x 1 root root 595 Mar  8 15:57 fstab
+
+# ll
+total 4
+-r---w---x 1 root root 595 Mar  8 15:57 fstab
+# chmod a=rw fstab 
+# ll
+total 4
+-rw-rw-rw- 1 root root 595 Mar  8 15:57 fstab
+    授权表示法：操作一类用户一位或多位权限；
+	        u+, u-
+	        g+, g-
+	        o+, o-
+	        a+, a-
+	        两类用户权限收授机制相同：ug+, ug-, ...
+	        不同类的用户权限不同：u+,g+,o+
+# ll
+total 4
+-rw-rw-rw- 1 root root 595 Mar  8 15:57 fstab
+# chmod u+x,g-w,o-r fstab 
+# ll
+total 4
+-rwxr---w- 1 root root 595 Mar  8 15:57 fstab
+
+# ll
+total 4
+-rwxr-xr-x 1 root root 595 Mar  8 15:57 fstab
+# chmod ug-x,o+w fstab 
+# ll
+total 4
+-rw-r--rwx 1 root root 595 Mar  8 15:57 fstab
+
+# ll
+total 4
+-r--r--r-x 1 root root 595 Mar  8 15:57 fstab
+# chmod a+w fstab 
+# ll
+total 4
+-rw-rw-rwx 1 root root 595 Mar  8 15:57 fstab
+```
+##### (2) chmod [OPTION]... OCTAL-MODE FILE...
+>OCTAL-MODE：权限标识
+r：4
+w：2
+x：1
+```
+# chmod 755 fstab 
+# ll
+total 4
+-rwxr-xr-x 1 root root 595 Mar  8 15:57 fstab
+
+# chmod 600 fstab 
+# ll
+total 4
+-rw------- 1 root root 595 Mar  8 15:57 fstab
+
+# chmod 644 fstab 
+# ll
+total 4
+-rw-r--r-- 1 root root 595 Mar  8 15:57 fstab
+注意：使用数字标识权限时不可省略，例如：
+# ll
+total 4
+-rw-r--r-- 1 root root 595 Mar  8 15:57 fstab
+# chmod 60 fstab 
+# ll
+total 4
+----rw---- 1 root root 595 Mar  8 15:57 fstab
+这里本来要改文件的属主为6（rw），文件的属组没有权限，但是更改后就变成属组为6，而属主与其他用户没有权限    
+```
+##### (3) chmod [OPTION]... --reference=RFILE FILE...
+>常用选项：
+-R, --recursive：递归修改；
+```
+# ll mode/
+total 4
+-rw-r--r-- 1 root root 595 Mar  8 16:13 fstab
+# ll mode/ -d
+drwxr-xr-x 2 root root 18 Mar  8 16:13 mode/
+# chmod -R o+w mode/
+# ll mode/ -d
+drwxr-xrwx 2 root root 18 Mar  8 16:13 mode/
+# ll mode/
+total 4
+-rw-r--rw- 1 root root 595 Mar  8 16:13 fstab
+            --reference=RFILE：RFILE表示参考其权限模型；
+# ll
+total 4
+----rw---- 1 root root 595 Mar  8 15:57 fstab
+# ll /etc/fstab 
+-rw-r--r--. 1 root root 595 Mar 12  2016 /etc/fstab
+# chmod --reference=/etc/fstab /tmp/fstab 
+# ll
+total 4
+-rw-r--r-- 1 root root 595 Mar  8 15:57 fstab
+```
+
+###### chown命令：修改属主或属组
+>chown [OPTION]... [OWNER][:[GROUP]] FILE...
+chown [OPTION]... --reference=RFILE  FILE...
+此处也是参照文件修改，只是此处修改的是属主和属组（ 注意：此处不修改权限）
+```
+
+# ll -d mode/
+drwxr-xrwx 2 root root 18 Mar  8 16:13 mode/
+# chown mageedu.mageedu mode/
+# ll -d mode/
+drwxr-xrwx 2 mageedu mageedu 18 Mar  8 16:13 mode/
+
+# ll fstab 
+-rwxr-xr-x 1 root root 595 Mar  8 15:57 fstab
+# chown .mageedu fstab    #此处表示修改属组(属组与属主的分隔符可以用点或者冒号(.或:)
+# ll fstab 
+-rwxr-xr-x 1 root mageedu 595 Mar  8 15:57 fstab
+# chown mageedu. fstab    #此处表示修改属主
+# ll
+total 4
+-rwxr-xr-x 1 mageedu mageedu 595 Mar  8 15:57 fstab
+常用选项：
+	    -R, --recursive：递归修改；
+                # 与chmod使用方式相同，此处不在过多介绍
+chgrp命令：修改属组
+    chgrp [OPTION]... GROUP FILE...
+    chgrp [OPTION]... --reference=RFILE FILE...
+# ll fstab 
+-rwxr-xr-x 1 mageedu mageedu 595 Mar  8 15:57 fstab
+# chgrp xueba fstab 
+# ll fstab
+-rwxr-xr-x 1 mageedu xueba   595 Mar  8 15:57 fstab
+```
+### 六、下面介绍几个比较实用的用户与用户组相关的Linux命令
+#### chsh命令：修改用户的登录shell
+```
+    chsh [option] [username]
+    -s：指定shell
+    -l：查看可用shell列表
+```
+#### chfn命令：修改用户的详细信息
+```
+    chfn [option] [username]
+    -f,--full-name 名字
+    -o,--office 办公地址
+    -p,--office-phone 办公电话
+```
+#### finger命令：用户信息查找程序
+```
+    finger [-lmsp] [user ...] [user@host ...]
+    -s：显示用户的列出该用户的帐号名称，真实姓名，登入终端机，闲置时间，登入时间以及地址和电话；
+```
+#### pwck：用来验证/etc/passwd和/etc/shadow文件的内容格式完整性
+```
+    pwck [options] [passwd [ shadow ]]
+    -s：以用户id排序文件 /etc/passwd /etc/shadow
+    -r：只读方式运行命令
+```
+#### grpck：用来验证/etc/group /etc/gshadow件的内容格式完整性
+#### grpck [options] [group [ shadow ]]
+```
+    -s：以组id排序文件 /etc/group /etc/gshadow
+    -r：只读方式运行命令
+```
+>作者：Antony WX&QQ：1257465991
+Q/A：如有问题请慷慨提出
+

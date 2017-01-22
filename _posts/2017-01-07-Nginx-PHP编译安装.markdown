@@ -1,0 +1,267 @@
+---
+layout:     post
+title:      "Nginx+PHP编译安装"
+subtitle:   "NGINX AND PHP"
+date:       2017-01-07
+author:     "Antony"
+header-img: "img/post-bg-js-module.jpg"
+tags:
+    - Nginx
+    - PHP
+---
+### 编译安装Nginx&PHP
+#### **nginx编译安装**
+**下载路径**：(建议使用`Tengine`)
+http://nginx.org/
+http://tengine.taobao.org/
+
+
+**启动命令** /usr/local/nginx/sbin/nginx
+**重载nginx** /usr/local/nginx/sbin/nginx -s reload
+##### 一、安装环境
+```
+sudo yum groupinstall "Development Tools" -y
+sudo yum install jemalloc-devel openssl-devel pcre-devel -y
+
+nginx编译参数(红色部分可能不支持,可去掉)
+# sudo ./configure --prefix=/usr/local/nginx --user=webapps --group=webapps --with-http_stub_status_module --with-http_ssl_module --with-http_gzip_static_module --with-pcre --with-jemalloc
+# sudo make
+# sudo make install
+# cd /usr/local/nginx
+# sudo mv logs /export/
+# sudo ln -s /export/logs logs
+# cd /usr/local/nginx/conf
+# sudo mkdir vhosts
+```
+#### 二、修改conf文件
+**1. 修改主nginx.conf**
+1-1. 开启log_format
+1-2. 在http上下文结尾增加 include vhosts/*;
+1-3. 需要注意nginx配置文件是按顺序读取
+1-5.修改nginx worker用户为webapps
+1-6.修改/etc/security/limits.conf
+```
+# vim /usr/local/nginx/conf/nginx.conf
+user  webapps;
+worker_processes  2;
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+#pid        logs/nginx.pid;
+worker_rlimit_nofile 655350;
+events {
+    use epoll;
+    worker_connections  1024;
+}
+# load modules compiled as Dynamic Shared Object (DSO)
+#
+#dso {
+#    load ngx_http_fastcgi_module.so;
+#    load ngx_http_rewrite_module.so;
+#}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+    server {
+        listen       80;
+        server_name  localhost;
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+include vhosts/*;
+}
+```
+**2. 修改自定义配置文件**
+##### **修改配置文件`/usr/local/nginx/conf/vhosts/host.conf`**
+
+```
+server {
+        listen       80;
+        server_name  www.fraudect.com;
+        #charset koi8-r;
+	access_log  logs/www.fraudect.com.access.log;
+        error_log       logs/www.fraudect.com.error.log;
+	location / {
+            root        /export/webapps/www.fraudect.com;
+	    index	index.php;
+	}
+
+	location ~ .*\.(html|htm|gif|jpg|jpeg|bmp|png|ico|txt|js|css)$ { 
+            	root        /export/webapps/www.fraudect.com;
+    		expires      3d; 
+    	} 
+	location ~ \.php$ {
+                fastcgi_pass     127.0.0.1:9000;
+                fastcgi_index    index.php;
+		fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+                include          fastcgi_params;
+                fastcgi_connect_timeout    300;
+                fastcgi_send_timeout       300;
+                fastcgi_read_timeout       300;
+		fastcgi_buffers 8 256k;                                               
+      		fastcgi_buffer_size 256k;                                             
+      		fastcgi_busy_buffers_size 256k; 
+		fastcgi_intercept_errors on;
+        }
+}
+
+```
+#### **若跳转`php`用此部分**
+
+```
+	location ~ \.php$ {
+                fastcgi_pass     127.0.0.1:9000;
+                fastcgi_index    index.php;
+				fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+                include          fastcgi_params;
+                fastcgi_connect_timeout    300;
+                fastcgi_send_timeout       300;
+                fastcgi_read_timeout       300;
+				fastcgi_buffers 8 256k;                                               
+	      		fastcgi_buffer_size 256k;                                             
+	      		fastcgi_busy_buffers_size 256k; 
+				fastcgi_intercept_errors on;
+        }
+
+```
+
+#### **若跳转`java`走此部分**
+
+```
+location / {
+	proxy_pass http://10.100.10.20:8080;
+
+#	proxy_pass http://axis.prd.pzoom.com;
+
+	proxy_max_temp_file_size 0;
+	proxy_set_header   Host             $host;        
+	proxy_set_header   X-Real-IP        $remote_addr;
+    proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+    proxy_buffers 256 4k;
+    proxy_connect_timeout 600;
+    proxy_read_timeout 600;
+    proxy_cache_valid 200 302 10m;
+    proxy_cache_valid 301 1h;
+    proxy_cache_valid any 1m;
+	proxy_intercept_errors on;
+
+}
+```
+
+ 
+#### **`upstream.conf` 文件**
+```
+upstream fcgi {
+#upstream的负载均衡，weight是权重，可以根据机器配置定义权重。weigth参数表示权值，权值越高被分配到的几率越大。
+server 192.168.80.121:80 weight=3;
+server 192.168.80.122:80 weight=2;
+server 192.168.80.123:80 weight=3;
+}
+```
+
+#### **`/usr/local/nginx/conf/fastcgi_params` 文件**
+
+```
+fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
+fastcgi_param  SERVER_SOFTWARE    nginx;
+fastcgi_param  QUERY_STRING       $query_string;
+fastcgi_param  REQUEST_METHOD     $request_method;
+fastcgi_param  CONTENT_TYPE       $content_type;
+fastcgi_param  CONTENT_LENGTH     $content_length;
+fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+fastcgi_param  REQUEST_URI        $request_uri;
+fastcgi_param  DOCUMENT_URI       $document_uri;
+fastcgi_param  DOCUMENT_ROOT      $document_root;
+fastcgi_param  SERVER_PROTOCOL    $server_protocol;
+fastcgi_param  REMOTE_ADDR        $remote_addr;
+fastcgi_param  REMOTE_PORT        $remote_port;
+fastcgi_param  SERVER_ADDR        $server_addr;
+fastcgi_param  SERVER_PORT        $server_port;
+fastcgi_param  SERVER_NAME        $server_name;
+```
+
+**补充内容**
+
+```
+####### 这个是一个thinkphp框架的伪静态规则，请忽略
+if (!-e $request_filename) {
+rewrite  ^(.*)$  /index.php last;
+break;
+```
+###**php构建部分**
+`centos  6.X`  `php-fpm方式`
+
+#### **一、依赖关系安装**
+```
+# sudo yum install libmcrypt-devel ncurses-devel recode-devel aspell-devel curl-devel readline-devel openldap-devel enchant-devel pcre-devel net-snmp-devel libicu-devel libtool-ltdl-devel libjpeg-devel libpng-devel libxml2-devel bzip2-devel freetype-devel gcc-c++
+# sudo cp -p /usr/lib64/libldap* /usr/lib
+# sudo yum install mysql-devel
+# sudo ln -s /usr/lib64/mysql /usr/lib/mysql
+```
+**php编译参数(如果make报ld之类的错误，尝试移除ldap和lntl编译模块)**
+**下载链接地址**：http://docs.php.net/distributions/php-5.6.24.tar.bz2
+```
+# sudo tar xf php-5.6.24.tar.bz2
+# sudo ./configure --prefix=/usr/local/php  --with-config-file-path=/usr/local/php/etc --with-config-file-scan-dir=/usr/local/php/etc/php.d --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-openssl --enable-mbstring --with-freetype-dir --with-jpeg-dir --with-png-dir  --with-gd --with-libxml-dir --with-zlib --with-mcrypt --with-bz2 --enable-sysvshm --enable-sysvsem --enable-soap --with-recode --with-snmp --with-readline  --enable-intl --enable-dba --enable-bcmath --with-enchant --with-pspell --enable-xml --enable-sockets  --enable-exif --enable-inline-optimization --enable-fpm
+```
+#### apache专用
+
+`--with-apxs2=/usr/sbin/apxs `
+
+#### ubuntu 
+```
+apt-get -y install  libpspell-dev build-essential libcurl3-openssl-dev libbz2-dev libenchant-dev libxml2-dev libjpeg-dev libpng-dev libfreetype6-dev libicu-dev libmcrypt-dev libncurses5-dev  librecode-dev libaspell-dev libreadline-dev
+```
+##### 若apache添加参数   --with-apxs2=/usr/sbin/apxs  apxs是apache的httpd-devel安装后生成的，yum安装后路径一般是/usr/sbin/apxs，如果是编译安装，一般位于apache的bin目录下
+
+#### **php-fpm启动脚本**
+**`php源码包根目录`**
+```
+# sudo cp sapi/fpm/init.d.php-fpm /etc/rc.d/init.d/php-fpm
+# sudo chkconfig --add php-fpm
+# sudo chkconfig php-fpm on
+# sudo chmod u+x /etc/rc.d/init.d/php-fpm
+# sudo cp php.ini-production /usr/local/php/etc/php.ini
+
+# sudo cd /usr/local/php/var
+# sudo rm -rf log
+# sudo ln -s /export/logs log
+```
+
+#### **修改启动脚本**
+
+脚本前几行注释结束后的首行部位加入`[ -f /etc/rc.d/init.d/functions ] && . /etc/rc.d/init.d/functions`
+
+在start函数的首行加入daemon
+```
+case $1 in 
+    start)
+    	$php_fpm_BIN --daemonize $php_opts
+```
+***修改php.ini 这一步骤需要根据开发来决定开启额外模块或者参数**
+
+#### **修改`php-fpm.ini`    ==>相当于apache的配置文件**
+```
+#vi /usr/local/php/etc/php-fpm.conf
+[global]
+log_level = notice
+daemonize = yes
+events.mechanism = epoll
+rlimit_files = 10240
+emergency_restart_threshold = 60
+emergency_restart_interval = 60s
+[fcgi]
+user = webapps
+group = webapps
+listen = 0.0.0.0:9000
+pm = static
+pm.max_children = 200
+pm.max_requests = 1024
+```
+>作者：Antony WX&QQ：1257465991
+Q/A：如有问题请慷慨提出

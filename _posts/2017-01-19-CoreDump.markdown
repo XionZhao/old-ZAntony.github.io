@@ -1,0 +1,132 @@
+---
+layout:     post
+title:      "Linux系统异常-CoreDump详解"
+subtitle:   "core dump"
+date:       2017-01-19
+author:     "Antony"
+header-img: "img/coredump.jpg"
+tags:
+    - coredump
+    - linux system
+
+---
+
+### CoreDump
+
+http://linux.die.net/man/5/core 
+
+#### 什么是core dump
+
+core dump又叫核心转储, 当程序运行过程中发生异常, 程序异常退出时, 由操作系 统把程序当前的内存状况存储在一个core文件中, 叫core dump。core dump在应用 crash掉之后对问题的诊断是很有帮助的。而在默认安装的时候core dump是关闭状 态的。
+
+
+
+#### 如何查看系统是否打开了core dump
+
+>Note：使用ulimit -c查看core dump是否打开。如果结果为0，则表示此功能处于关闭 状态，不会生成core文件 
+
+```
+
+$ ulimit -c
+
+```
+
+#### 如何打开core dump
+
+- **方法一**:命令行方式
+
+```
+
+$ ulimit -c 1024  # 避免一下生成几G的大文件
+
+$ ulimit -c unlimited  #无限制
+
+```
+
+- **方法二**:配置profile文件:  将`ulimit -S -c 0 > /dev/null 2>&1`改成`ulimit -S -c unlimited > /dev/null 2>&1` 
+
+```
+
+$ vim /etc/profile
+
+ulimit -S -c unlimited > /dev/null 2>&1
+
+```
+
+- **方法三**:修改/etc/security/limits.conf文件：添加`* soft core 0`，这个方法可以 针对指定用户或用户组打开core dump，`user soft core 0或@group soft core 0`。不 过要使用这个方法一定要将方法二提到的那行注释掉，不可同时存在
+
+```
+
+$ vim /etc/security/limits.conf
+
+* soft core 0
+
+```
+
+#### 如何查看core文件的保存路径和文件名格式 
+
+默认情况下，在打开core后，如果应用发生crash，那么会在应用所在位置，产生 一个core.【应用pid】的文件，文件名的可读性不高，管理也不方便。
+
+
+
+#### 查看正在使用的core文件路径和格式
+
+`more /proc/sys/kernel/core_pattern` 后面自动添加pid的配置是在`more /proc/sys/kernel/core_uses_pid`里面配置的， 如果为1就是自动添加
+
+#### 如何修改core文件的保存路径和文件名格式
+
+修改/etc/sysctl.conf文件
+
+```
+
+$ vi /etc/sysctl.conf
+
+$ kernel.core_pattern = /tmp/corefile/core.%e.%t
+
+$ sysctl -p
+
+#添加需要保存的路径,需要注意的是该路径必须应用 有写的权限，不然core文件是不会生成的。关 于core_users_pid默认在sysctl文件里面已经存在，不需要更改，pid还是很重要的信息。
+
+```
+
+#### 附上core文件支持的格式列表:
+
+- **%p – insert pid into filename 【pid】**
+
+- **%u – insert current uid into filename 【uid】**
+
+- **%g – insert current gid into filename 【gid】**
+
+- **%s – insert signal that caused the coredump into the filename 【core信号】**
+
+- **%t – insert UNIX time that the coredump occurred into filename 【core文件生成时的 unix时间】**
+
+- **%h – insert hostname where the coredump happened into filename 【主机名】**
+
+- **%e – insert coredumping executable name into filename 【应用的名字】**
+
+
+
+#### 如何使用测试程序生成的core
+
+```
+
+[c-sharp] view plaincopy
+
+#include <iostream>using namespace std;int main() { *(char *)1=1; return 0;}
+
+```
+
+#### Online core 设置:
+
+```
+
+$ vim /etc/sysctl.conf
+
+kernel.core_uses_pid = 1
+
+kernel.core_pattern = core.%e.%p.%t
+
+$ sysctl -p
+
+```

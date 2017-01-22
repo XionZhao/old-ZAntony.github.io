@@ -1,0 +1,312 @@
+---
+layout:     post
+title:      "python-快速改造：基础知识"
+subtitle:   "python基础知识及了解"
+date:       2017-01-07
+author:     "Antony"
+header-img: "img/post-bg-js-module.jpg"
+tags:
+    - python
+    - python基础
+---
+## 一、python安装之pyenv
+### windows下安装Python
+（1）打开web浏览器，访问Python官方站点http://www.python.org
+
+（2）点击Download，或者在首页点击下载
+
+（3）下载所需版本，目前最新版本为3.5.2
+
+（4）下载完成后双击并执行安装
+### CentOS下安装Python和pyenv
+>pyenv：pyenv是一款python版本管理器，由于不同程序员可能使用不同的python进行开发，但还需在同一台机器又互不影响。pyenv主要的作用就是可以设置不同的目录使用不同的版本，且可以很简单的安装python。
+
+#### 1、安装依赖包
+```
+yum groupinstall "Development Tools" "Server Plataform Development" -y
+```
+#### 2、安装pyenv
+（1）通过git克隆pyenv程序
+
+```
+$ git clone https://github.com/yyuu/pyenv.git ~/.pyenv
+```
+
+（2）设置pyenv的环境变量
+
+```
+$ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile
+$ echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
+```
+
+（3）添加`pyenv init`到环境变量中
+
+```
+$ echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
+```
+
+（4）重读你的shell
+
+```
+$ exec $SHELL
+$ source ~/.bash_profile
+```
+#### 3、pyenv的使用及安装python
+列出所有可用的版本
+
+```
+pyenv install -l
+```
+
+安装指定版本
+
+```
+$ pyenv install 3.5.2
+Downloading Python-3.5.2.tar.xz...
+-> https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tar.xz
+```
+
+切换本地python版本
+
+```
+$ pyenv local 2.7.12
+```
+
+切换全局python版本
+
+```
+pyenv global 3.5.2
+```
+
+#### 4、卸载pyenv
+CentOS 卸载
+
+```
+rm -rf `pyenv root`
+```
+
+Mac OS X
+
+```
+brew uninstall pyenv
+```
+## 二、交互式解释器
+当启动python的时候，会出现如下提示：
+
+```
+$ python
+Python 3.5.2 (default, Aug 17 2016, 18:31:29) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-17)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+```
+可以再次和python进行交互式的输入，比如
+```
+>>> print('Hello World')
+当按下回车后，会得到下面的输出
+Hello World
+```
+当然很多计算机语言，习惯以分号结尾，但是python不同，一行就是一行，不管内容多少。
+上面所描述的就是交互式解释器，可以通过键入一些字符来获取输出从而实现自己的目的。
+## 三、算法是什么
+>在开始变成前，首先先解释一下什么是计算机程序设计。简单来说，就是告诉计算机去做什么。计算机可以做很多事情，但是不会自己去做，程序员就像给小孩喂饭一样告诉它具体的细节，并且使用计算机能够理解的语言----算法。“算法”不过是“步骤”或者“食谱”的另外一种文绉绉的说法---对于如何做某一件事的一份详细描述。比如：
+>凉皮做法：
+>（1）将凉皮切成细条
+>（2）将凉皮放入容器中
+>（3）放入麻将、醋、蒜汁、辣椒等调料
+>（4）搅拌大约1分钟左右
+>其实上面的步骤就是算法，他告诉醋程序如何去做，做多久，以及做什么，还有对什么做。
+## 四、数字和表达式
+### 数字运算
+交互式python解释器可以当做非常强大的计算器使用
+```
+>>> 3666665444566 + 1123134546
+3667788579112
+>>> 588822456 * 33334678
+19628206969929168
+```
+当然还有一些特殊的,下面的两个例子分别在不同的版本下
+```
+Python 2.7.5 (default, Jun 24 2015, 00:41:19) 
+[GCC 4.8.3 20140911 (Red Hat 4.8.3-9)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 1/2
+0
+
+Python 3.5.2 (default, Aug 17 2016, 18:31:29) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-17)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 1/2
+0.5
+```
+#### 整除
+```
+>>> 20 / 3
+6.666666666666667
+>>> 20 // 3
+6
+```
+#### 取余
+```
+>>> 122 % 3
+2
+>>> 2.75 % 0.5
+0.25
+```
+#### 幂
+```
+>>> (-3) ** 2
+9
+>>> (-3) ** 3
+-27
+>>> 3 ** 3
+27
+```
+### 长整数
+长整数的显示方式在python3.0之后有所不同，3.0之前后面会有一个L
+```
+Python 2.7.5 (default, Jun 24 2015, 00:41:19) 
+[GCC 4.8.3 20140911 (Red Hat 4.8.3-9)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 30000000000000000000000000000
+30000000000000000000000000000L
+
+Python 3.5.2 (default, Aug 17 2016, 18:31:29) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-17)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+>>> 243000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+243000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+```
+## 五、变量
+变量(variable)是另外一个需要熟知的概念。变量基本上就是代表(或者引用)某值得名字
+```
+>>> x = 3
+>>> x
+3
+>>> x * 2
+6
+```
+注意：变量名可以包括字母、数字和下划线。变量不能以数字开头。
+## 六、获取用户输入
+在编写程序的时候，我们可能并不知道某些变量的值。可能通过用户的输入，但是解释器是知道他的值的，所以我们可能会需要去获取用户的输入，获取用户的输入使用input()函数(在3.0以后raw_input函数被input函数替代)
+```
+>>> input('Please input your name? ')
+Please input your name? Antony
+'Antony'
+```
+我们也可以将获取的值存入到一个变量
+```
+>>> name = input('Please input your name? ')
+Please input your name? superman
+>>> name
+'superman'
+```
+计算
+```
+>>> x = input('Please input a number x: ')
+Please input a number x: 34
+>>> y = input('Please input a number y: ')
+Please input a number y: 56
+>>> x
+'34'
+>>> y
+'56'
+>>> int(x) * int(y)
+1904
+```
+## 七、函数
+>函数类似小程序，可以用来实现特定的功能。python有很多函数，print()就是一个函数。定义函数会在后续介绍，目前先介绍如何使用python的内置函数。
+### pow()
+pow表示幂，既做计算乘方
+```
+>>> 2 ** 3
+8
+>>> pow(2,3)
+8
+>>> pow(3,2)
+9
+```
+### abs()
+abs表示绝对值
+```
+>>> abs(-10)
+10
+```
+### round()
+round函数会把浮点数四舍五入
+```
+>>> 1 / 2
+0.5
+>>> round(1 / 2)
+0
+>>> round(5 / 2)
+2
+```
+### floor()
+floor为向下取整，比如某个人的年龄是32.9岁，既32岁零九个月，这个时候不能说他已经三三岁，这个时候使用floor函数
+```
+>>> import math
+>>> math.floor(32.9)
+32
+```
+floor函数在python3.0之后取值不再为小数，直接取得证书，下面为3.0之前的输出
+```
+>>> import math
+>>> math.floor(32.9)
+32.0
+```
+### int()
+int表示取整数
+```
+>>> int(256.125)
+256
+```
+### input()
+input表示获取用户输入，在上面有过介绍，话不多说，上例子
+```
+>>> input('Do you want me? ')
+Do you want me? No!!!
+'No!!!'
+```
+### exit()
+用来退出python的交互式解释器
+```
+$ python
+Python 3.5.2 (default, Aug 17 2016, 18:31:29) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-17)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> exit()
+$ 
+```
+## 八、模块
+模块是为了扩展python的功能，需要使用特殊的命令import来导入模块。前面内容提到的floor函数就在名为math模块中。
+```
+>>> import math
+>>> math.floor(333.20)
+333
+```
+有的时候可能只需要使用某个模块中的一个函数，而且不希望每次都写上模块的名字，可以使用另外一种形式。
+```
+>>> from math import sqrt
+>>> sqrt(9)
+3.0
+```
+## 九、保存于执行脚本
+>为了将命令永久存储，以便以后使用，可以写到文件中。
+>文件的开头需要注明，因为在unix中有个标准的实现方法：在脚本首行前加上`#！`。再其后面添加用于解释脚本的程序的绝对路径。
+
+例如：
+```
+$ cat first.py 
+#!/usr/bin/env python3.5
+name = input('Please input your name: ')
+print('Hello, ' + name)
+
+$ chmod +x first.py 
+$ ./first.py 
+Please input your name: Antony
+Hello, Antony
+```
+## 小结
+算法：算法是对如何完成一项任务的详尽描述。实际上，在编写程序的时候，就要使用计算机能够理解的语言（如Python）来描述算法。这类对机器友好的描述叫做程序，程序主要包含表达式和语句。

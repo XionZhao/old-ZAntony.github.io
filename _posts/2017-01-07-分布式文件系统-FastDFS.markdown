@@ -1,0 +1,431 @@
+---
+layout:     post
+title:      "分布式文件系统-FastDFS"
+subtitle:   "分布式文件系统-FastDFS"
+date:       2017-01-07
+author:     "Antony"
+header-img: "img/post-bg-js-module.jpg"
+tags:
+    - FastDFS
+---
+
+### 一、FastDFS简介
+>`FastDFS`是由国人余庆所开发，其项目地址：https://github.com/happyfish100
+>`FastDFS`是一个轻量级的开源分布式文件系统，主要解决了大容量的文件存储和高并发访问的问题，文件存取时实现了负载均衡。
+>支持存储服务器在线扩容,支持相同的文件只保存一份,节约磁盘。
+>`FastDFS`只能通过Client API访问，不支持POSIX访问方式。
+>FastDFS适合中大型网站使用，用来存储资源文件(如：图片、文档、视频等)
+
+### 二、FastDFS组成部分及其它名词
+#### 1、tracker server
+跟踪服务器：用来调度来自客户端的请求。且在内存中记录所有存储组和存储服务器的信息状态。
+#### 2、storage server
+存储服务器：用来存储文件(data)和文件属性(metadata)
+#### 3、client
+客户端：业务请求发起方，通过专用接口基于TCP协议与`tracker`以及`storage server`进行交互
+#### `group`
+组，也可称为卷：同组内上的文件是完全相同的
+#### `文件标识`
+包括两部分：组名和文件名(包含路径)
+#### `meta data`
+文件相关属性：键值对(Key Value Pair)方式
+#### `fid`
+文件标识符：
+例如：
+`group1/M00/00/00/CgEOxVegXB2AdYafAAAB0b8tBbQ9155303`
+`group_name`：存储组的组名；上传完成后，需要客户端自行保存
+`M##`：服务器配置的虚拟路径，与磁盘选项store_path#对应
+两级以两位16进制数字命名的目录
+`文件名`：与原文件名并不相同；由storage server根据特定信息生成。文件名包含：源存储服务器的IP地址、文件创建时间戳、文件大小、随机数和文件扩展名等
+### 三、FastDFS同步机制
+>1、同一组内的storage server之间是对等的，文件上传、删除等操作可以在任意一台storage server上进行；
+>2、文件同步只在同组内的storage server之间进行，采用push方式，即源服务器同步给目标服务器；
+>3、源头数据才需要同步，备份数据不需要再次同步，否则就构成环路了；
+上述第二条规则有个例外，就是新增加一台storage server时，由已有的一台storage server将已有的所有数据（包括源头数据和备份数据）同步给该新增服务器。
+
+### 四、FastDFS与集中存储方式对比
+![enter image description here](http://obbogqhb1.bkt.clouddn.com/fastdfs2.png)
+### 五、FastDFS和mogileFS对比
+![enter image description here](http://obbogqhb1.bkt.clouddn.com/fastdfs1.png)
+
+### 六、FastDFS安装配置
+#### 1、安装开发环境
+```
+# yum groupinstall "Development Tools" "Server platform Development"
+```
+#### 2、安装libfastcommon
+```
+# git clone https://github.com/happyfish100/libfastcommon.git
+# cd libfastcommon/
+# ./make.sh 
+# ./make.sh install
+```
+#### 3、安装fastdfs
+```
+# cd /root/
+# git clone https://github.com/happyfish100/fastdfs.git
+# cd fastdfs/
+# ./make.sh 
+# ./make.sh install
+```
+#### tracker 配置
+配置文件修改：根据需求修改
+```
+# cd /etc/fdfs
+# cp tracker.conf.sample tracker.conf
+# vim /etc/fdfs/tracker.conf
+  base_path=/data/fdfs/tracker # 存储日志及tracker的状态信息
+```
+
+启动服务（Centos6）：
+```
+# mkdir -pv /data/fdfs/tracker
+# service fdfs_trackerd start
+```
+启动服务（Centos7）方式一：
+```
+# mkdir -pv /data/fdfs/tracker
+# /etc/init.d/fdfs_trackerd start
+```
+启动服务（Centos7）方式二：
+添加systemd的units文件
+```
+# cat > /usr/lib/systemd/system/fdfs_trackerd << EOF
+# Systemd unit file for default tomcat
+# 
+
+[Unit]
+Description=FastDFS tracker script
+After=syslog.target network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf
+
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+通过systemd启动
+```
+systemctl start fdfs_trackerd.service
+# ss -tnl|grep 22122
+LISTEN     0      128          *:22122                    *:*  
+```
+#### storage 配置
+根据需求修改
+```
+# cd /etc/fdfs
+# cp storage.conf.sample storage.conf
+# vim /etc/fdfs/storage.conf
+  group_name=group1  #指定组名
+  base_path=/data/fdfs/storage # 用于存储数据
+  store_path_count=2 # 设置设备数量
+  store_path0=/data/fdfs/storage/m0 #指定存储路径0
+  store_path1=/data/fdfs/storage/m1 #指定存储路径1
+  # 注意：同一组内存储路径不能冲突，例如：下一个节点的存储路径就是m2,m3....等
+  tracker_server=10.1.14.197:22122 #指定tracker
+```
+启动服务（Centos6）：
+```
+# mkdir -pv /data/fdfs/storage/{m0,m1} # 创建数据目录
+# service fdfs_storaged start
+```
+启动服务（Centos7）方式一：
+```
+# mkdir -pv /data/fdfs/storage/{m0,m1} # 创建数据目录
+# /etc/init.d/fdfs_storaged start
+```
+启动服务（Centos7）方式二：
+添加systemd的units文件
+```
+# mkdir -pv /data/fdfs/storage/{m0,m1} # 创建数据目录
+
+# cat > /usr/lib/systemd/system/fdfs_trackerd << EOF
+# Systemd unit file for default fastdfs storage
+# 
+
+[Unit]
+Description=FastDFS storage script
+After=syslog.target network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/fdfs_storaged /etc/fdfs/storage.conf
+
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+通过systemd启动
+```
+systemctl start fdfs_storaged.service
+# ss -tnl|grep 23000
+LISTEN     0      128          *:23000                    *:*   
+```
+#### client配置
+修改客户端配置文件
+```
+base_path=/data/fdfs/client
+tracker_server=10.1.14.197:22122
+```
+### 七、测试FastDFS
+#### 1、上传文件
+fdfs_upload_file <config_file> <local_filename> [storage_ip:port] [store_path_index]
+```
+# fdfs_upload_file /etc/fdfs/client.conf /etc/issue
+group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930
+```
+#### 2、查看文件
+fdfs_file_info <config_file> <file_id>
+```
+# fdfs_file_info /etc/fdfs/client.conf group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930
+
+source storage id: 0
+source ip address: 10.1.14.198
+file create timestamp: 2016-07-18 20:04:59
+file size: 23
+file crc32: 2097312431 (0x7D0272AF)
+```
+#### 3、下载文件
+fdfs_download_file <config_file> <file_id> [local_filename] [<download_offset> <download_bytes>]
+```
+# fdfs_download_file /etc/fdfs/client.conf group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930 /tmp/issue
+```
+#### 4、查看存储节点状态
+```
+# fdfs_monitor /etc/fdfs/client.conf
+[2016-08-03 11:58:20] DEBUG - base_path=/data/fdfs/client, connect_timeout=30, network_timeout=60, tracker_server_count=1, anti_steal_token=0, anti_steal_secret_key length=0, use_connection_pool=0, g_connection_pool_max_idle_time=3600s, use_storage_id=0, storage server id count: 0
+
+server_count=1, server_index=0
+
+tracker server is 10.1.14.197:22122
+
+group count: 1
+
+Group 1:
+group name = mage1
+disk total space = 18898 MB
+disk free space = 17222 MB
+trunk free space = 0 MB
+storage server count = 2
+active server count = 2
+storage server port = 23000
+storage HTTP port = 8888
+store path count = 1
+subdir count per path = 256
+current write server index = 1
+current trunk file id = 0
+
+	Storage 1:
+		id = 10.1.14.198
+		ip_addr = 10.1.14.198  ACTIVE
+		http domain = 
+		version = 5.08
+		join time = 2016-08-03 20:40:46
+		up time = 2016-08-03 11:58:16
+		total storage = 18898 MB
+		free storage = 17222 MB
+		upload priority = 10
+		store_path_count = 1
+		subdir_count_per_path = 256
+		storage_port = 23000
+		storage_http_port = 8888
+		current_write_path = 0
+		source storage id = 
+		if_trunk_server = 0
+		connection.alloc_count = 256
+		connection.current_count = 0
+		connection.max_count = 0
+		total_upload_count = 1
+		success_upload_count = 1
+		total_append_count = 0
+		success_append_count = 0
+		total_modify_count = 0
+		success_modify_count = 0
+		total_truncate_count = 0
+		success_truncate_count = 0
+		total_set_meta_count = 0
+		success_set_meta_count = 0
+		total_delete_count = 0
+		success_delete_count = 0
+		total_download_count = 0
+		success_download_count = 0
+		total_get_meta_count = 0
+		success_get_meta_count = 0
+		total_create_link_count = 0
+		success_create_link_count = 0
+		total_delete_link_count = 0
+		success_delete_link_count = 0
+		total_upload_bytes = 23
+		success_upload_bytes = 23
+		total_append_bytes = 0
+		success_append_bytes = 0
+		total_modify_bytes = 0
+		success_modify_bytes = 0
+		stotal_download_bytes = 0
+		success_download_bytes = 0
+		total_sync_in_bytes = 0
+		success_sync_in_bytes = 0
+		total_sync_out_bytes = 0
+		success_sync_out_bytes = 0
+		total_file_open_count = 1
+		success_file_open_count = 1
+		total_file_read_count = 0
+		success_file_read_count = 0
+		total_file_write_count = 1
+		success_file_write_count = 1
+		last_heart_beat_time = 2016-08-03 11:58:15
+		last_source_update = 2016-08-03 20:43:55
+		last_sync_update = 1970-01-01 08:00:00
+		last_synced_timestamp = 1970-01-01 08:00:00 
+	Storage 2:
+		id = 10.1.14.199
+		ip_addr = 10.1.14.199  ACTIVE
+		http domain = 
+		version = 5.08
+		join time = 2016-08-03 20:42:13
+		up time = 2016-08-03 11:58:08
+		total storage = 18898 MB
+		free storage = 17222 MB
+		upload priority = 10
+		store_path_count = 1
+		subdir_count_per_path = 256
+		storage_port = 23000
+		storage_http_port = 8888
+		current_write_path = 0
+		source storage id = 10.1.14.198
+		if_trunk_server = 0
+		connection.alloc_count = 256
+		connection.current_count = 0
+		connection.max_count = 0
+		total_upload_count = 0
+		success_upload_count = 0
+		total_append_count = 0
+		success_append_count = 0
+		total_modify_count = 0
+		success_modify_count = 0
+		total_truncate_count = 0
+		success_truncate_count = 0
+		total_set_meta_count = 0
+		success_set_meta_count = 0
+		total_delete_count = 0
+		success_delete_count = 0
+		total_download_count = 0
+		success_download_count = 0
+		total_get_meta_count = 0
+		success_get_meta_count = 0
+		total_create_link_count = 0
+		success_create_link_count = 0
+		total_delete_link_count = 0
+		success_delete_link_count = 0
+		total_upload_bytes = 0
+		success_upload_bytes = 0
+		total_append_bytes = 0
+		success_append_bytes = 0
+		total_modify_bytes = 0
+		success_modify_bytes = 0
+		stotal_download_bytes = 0
+		success_download_bytes = 0
+		total_sync_in_bytes = 23
+		success_sync_in_bytes = 23
+		total_sync_out_bytes = 0
+		success_sync_out_bytes = 0
+		total_file_open_count = 1
+		success_file_open_count = 1
+		total_file_read_count = 0
+		success_file_read_count = 0
+		total_file_write_count = 1
+		success_file_write_count = 1
+		last_heart_beat_time = 2016-08-03 11:58:07
+		last_source_update = 1970-01-01 08:00:00
+		last_sync_update = 2016-08-03 20:43:57
+		last_synced_timestamp = 2016-08-03 20:43:55 (0s delay)
+
+```
+### 八、配置nginx为storage server提供http访问接口
+#### 1、下载fastdfs-nginx-module
+```
+# git clone https://github.com/happyfish100/fastdfs-nginx-module.git
+```
+#### 2、下载nginx源码，并编译支持fastdfs
+```
+# 安装依赖程序
+# yum install openssl-devel pcre-devel -y &>/dev/null
+
+# wget http://nginx.org/download/nginx-1.10.1.tar.gz &>/dev/null
+
+# tar xf /root/nginx-1.10.1.tar.gz
+
+# cd /root/nginx-1.10.1
+# useradd -r nginx &>/dev/null
+
+# ./configure --prefix=/usr/local/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx/nginx.pid --lock-path=/var/lock/nginx.lock --user=nginx --group=nginx --with-http_ssl_module --with-http_stub_status_module --with-pcre --add-module=../fastdfs-nginx-module/src
+# make
+# make install
+```
+#### 3、复制配置文件
+```
+# cp /root/fastdfs-nginx-module/src/mod_fastdfs.conf  /etc/fdfs/
+# cp /root/fastdfs-5.0.8/conf/{http.conf,mime.types}  /etc/fdfs/
+```
+注意：`fastdfs-5.0.8`为`fastdfs`源码目录，如为更改，应叫`fastdfs`
+#### 4、配置fastdfs-nginx-module配置文件
+```
+# vim /etc/fdfs/mod_fastdfs.conf
+base_path=/data/fdfs/storage #存储节点的目录位置
+tracker_server=10.1.14.197:22122 #制定tracker-server
+storage_server_port=23000
+group_name=mage1  #制定组名
+url_have_group_name = true  #访问路径中是否包括组名
+store_path_count=1 #配置路径个数
+store_path0=/data/fdfs/storage/m0  #指定要查看的路径
+
+[group1]
+group_name=mage1
+storage_server_port=23000
+store_path_count=1
+store_path0=/data/fdfs/storage/m0
+```
+#### 5、配置nginx
+```
+# vim /etc/nginx/nginx.conf
+location ~ /mage[0-9]+/M00/ {
+	root /data/fdfs/storage/m0/data/;
+	ngx_fastdfs_module;
+}		
+# cat >> /etc/profile.d/nginx.sh << EOF
+export PATH=$PATH:/usr/local/nginx/sbin
+EOF
+
+# source /etc/profile.d/nginx.sh
+
+```
+#### 6、为存储文件路径穿件链接至M00
+```
+# ln -sv /data/fdfs/storage/m0/data  /data/fdfs/storage/m0/data/M00 
+```
+#### 7、启动nginx和重启storage并上传文件测试
+```
+启动nginx
+# nginx -t
+# nginx
+# /etc/init.d/fdfs_storaged restart
+# ss -tnl|grep -E "(80|23000)"
+LISTEN     0      128          *:80                       *:*                  
+LISTEN     0      128          *:23000                    *:*  
+
+```
+**上传文件**
+```
+# fdfs_upload_file /etc/fdfs/client.conf /usr/share/wallpapers/CentOS7/contents/images/2560x1600.jpg
+mage1/M00/00/00/CgEOx1ehc2eATt6RAA6q2wjnW8s035.jpg
+```
+**查看测试**
+![enter image description here](http://obbogqhb1.bkt.clouddn.com/fastdfs3.png)
+
+
+>作者：Antony WX&QQ：1257465991
+Q/A：如有问题请慷慨提出
