@@ -20,7 +20,7 @@ module.exports = function(grunt) {
             },
             minified: {
                 options: {
-                    paths: ["css"],
+                    paths: ["/css"],
                     cleancss: true
                 },
                 files: {
