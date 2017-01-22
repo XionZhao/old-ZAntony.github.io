@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="渴望伯克利，梦想free的小青年">
+    <meta name="keywords"  content="">
+    <meta name="theme-color" content="#000000">
+    
+    <title>Tags - Antony 的博客 | Antony Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/tags/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Antony Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/tag-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading" id="tag-heading">
+                    <h1>Tags</h1>
+                    <span class="subheading">keep hungry keep foolish</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <!-- 标签云 -->
+			<div id='tag_cloud' class="tags">
+				
+				<a href="#FastDFS" title="FastDFS" rel="3">FastDFS</a>
+				
+				<a href="#分布式存储" title="分布式存储" rel="2">分布式存储</a>
+				
+				<a href="#grep" title="grep" rel="1">grep</a>
+				
+				<a href="#正则" title="正则" rel="1">正则</a>
+				
+				<a href="#linux user manager" title="linux user manager" rel="1">linux user manager</a>
+				
+				<a href="#用户管理" title="用户管理" rel="1">用户管理</a>
+				
+				<a href="#Nginx" title="Nginx" rel="1">Nginx</a>
+				
+				<a href="#PHP" title="PHP" rel="1">PHP</a>
+				
+				<a href="#ansible" title="ansible" rel="2">ansible</a>
+				
+				<a href="#自动化工具" title="自动化工具" rel="2">自动化工具</a>
+				
+				<a href="#git" title="git" rel="1">git</a>
+				
+				<a href="#python" title="python" rel="1">python</a>
+				
+				<a href="#python基础" title="python基础" rel="1">python基础</a>
+				
+				<a href="#system" title="system" rel="1">system</a>
+				
+				<a href="#swap" title="swap" rel="1">swap</a>
+				
+				<a href="#FastDFS rpm" title="FastDFS rpm" rel="1">FastDFS rpm</a>
+				
+				<a href="#aws" title="aws" rel="2">aws</a>
+				
+				<a href="#vpn" title="vpn" rel="1">vpn</a>
+				
+				<a href="#l2tp/ipsec" title="l2tp/ipsec" rel="1">l2tp/ipsec</a>
+				
+				<a href="#l2tp" title="l2tp" rel="1">l2tp</a>
+				
+				<a href="#ipsec" title="ipsec" rel="1">ipsec</a>
+				
+				<a href="#coredump" title="coredump" rel="1">coredump</a>
+				
+				<a href="#linux system" title="linux system" rel="1">linux system</a>
+				
+			</div>
+
+            <!--<blockquote class="tag-comments">
+                标签命名规范：
+                    <li>行业观察、职位、公司优先使用中文</li>
+                    <li>外国产品、术语优先使用英文</li>
+            </blockquote>-->
+
+            <!-- 标签列表 -->
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="FastDFS">
+                    <span class="tag-text">FastDFS</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-10">2017-01-10</time>
+				  <a href="/2017/01/10/Ss-Client-Config/" title="Ss-Client-Config">Ss-Client-Config</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/10/Ss-Client-Config/">
+				        <h2 class="post-title">
+                            Ss-Client-Config
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Ss-Client-Config
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-10</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/" title="分布式文件系统-FastDFS">分布式文件系统-FastDFS</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/">
+				        <h2 class="post-title">
+                            分布式文件系统-FastDFS
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            分布式文件系统-FastDFS
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/FastDFS-unti-for-systemd/" title="FastDFS unti for systemd">FastDFS unti for systemd</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/FastDFS-unti-for-systemd/">
+				        <h2 class="post-title">
+                            FastDFS unti for systemd
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            FastDFS分布式存储
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="分布式存储">
+                    <span class="tag-text">分布式存储</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-10">2017-01-10</time>
+				  <a href="/2017/01/10/Ss-Client-Config/" title="Ss-Client-Config">Ss-Client-Config</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/10/Ss-Client-Config/">
+				        <h2 class="post-title">
+                            Ss-Client-Config
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Ss-Client-Config
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-10</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/FastDFS-unti-for-systemd/" title="FastDFS unti for systemd">FastDFS unti for systemd</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/FastDFS-unti-for-systemd/">
+				        <h2 class="post-title">
+                            FastDFS unti for systemd
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            FastDFS分布式存储
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="grep">
+                    <span class="tag-text">grep</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/" title="Linux三剑客之grep">Linux三剑客之grep</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/">
+				        <h2 class="post-title">
+                            Linux三剑客之grep
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Grep 常见用法及基础介绍
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="正则">
+                    <span class="tag-text">正则</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/" title="Linux三剑客之grep">Linux三剑客之grep</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/">
+				        <h2 class="post-title">
+                            Linux三剑客之grep
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Grep 常见用法及基础介绍
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="linux user manager">
+                    <span class="tag-text">linux user manager</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" title="Linux用户、用户组及权限管理">Linux用户、用户组及权限管理</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+				        <h2 class="post-title">
+                            Linux用户、用户组及权限管理
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Linux用户管理
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="用户管理">
+                    <span class="tag-text">用户管理</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" title="Linux用户、用户组及权限管理">Linux用户、用户组及权限管理</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+				        <h2 class="post-title">
+                            Linux用户、用户组及权限管理
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Linux用户管理
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="Nginx">
+                    <span class="tag-text">Nginx</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" title="Nginx+PHP编译安装">Nginx+PHP编译安装</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">
+				        <h2 class="post-title">
+                            Nginx+PHP编译安装
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            NGINX AND PHP
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="PHP">
+                    <span class="tag-text">PHP</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" title="Nginx+PHP编译安装">Nginx+PHP编译安装</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">
+				        <h2 class="post-title">
+                            Nginx+PHP编译安装
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            NGINX AND PHP
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="ansible">
+                    <span class="tag-text">ansible</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/" title="ansible脚本">ansible脚本</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">
+				        <h2 class="post-title">
+                            ansible脚本
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Ansible Script
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/ansible%E8%84%9A%E6%9C%AC/" title="ansible脚本">ansible脚本</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/ansible%E8%84%9A%E6%9C%AC/">
+				        <h2 class="post-title">
+                            ansible脚本
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Ansible Script
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="自动化工具">
+                    <span class="tag-text">自动化工具</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/" title="ansible脚本">ansible脚本</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">
+				        <h2 class="post-title">
+                            ansible脚本
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Ansible Script
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/ansible%E8%84%9A%E6%9C%AC/" title="ansible脚本">ansible脚本</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/ansible%E8%84%9A%E6%9C%AC/">
+				        <h2 class="post-title">
+                            ansible脚本
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Ansible Script
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="git">
+                    <span class="tag-text">git</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/git/" title="Git基础">Git基础</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/git/">
+				        <h2 class="post-title">
+                            Git基础
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Git基础配置
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="python">
+                    <span class="tag-text">python</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="python-快速改造：基础知识">python-快速改造：基础知识</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+				        <h2 class="post-title">
+                            python-快速改造：基础知识
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            python基础知识及了解
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="python基础">
+                    <span class="tag-text">python基础</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="python-快速改造：基础知识">python-快速改造：基础知识</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+				        <h2 class="post-title">
+                            python-快速改造：基础知识
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            python基础知识及了解
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="system">
+                    <span class="tag-text">system</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/" title="为什么你的Linux物理内存还有很多，却开始使用swap?">为什么你的Linux物理内存还有很多，却开始使用swap?</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/">
+				        <h2 class="post-title">
+                            为什么你的Linux物理内存还有很多，却开始使用swap?
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            linux物理内存分析
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="swap">
+                    <span class="tag-text">swap</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/" title="为什么你的Linux物理内存还有很多，却开始使用swap?">为什么你的Linux物理内存还有很多，却开始使用swap?</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/">
+				        <h2 class="post-title">
+                            为什么你的Linux物理内存还有很多，却开始使用swap?
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            linux物理内存分析
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="FastDFS rpm">
+                    <span class="tag-text">FastDFS rpm</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-07">2017-01-07</time>
+				  <a href="/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/" title="制作并安装FastDFS的RPM程序包">制作并安装FastDFS的RPM程序包</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/">
+				        <h2 class="post-title">
+                            制作并安装FastDFS的RPM程序包
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            FastDFS rpm
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-07</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="aws">
+                    <span class="tag-text">aws</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-12">2017-01-12</time>
+				  <a href="/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/" title="aws自定义AMI-UUID相同处理方法">aws自定义AMI-UUID相同处理方法</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">
+				        <h2 class="post-title">
+                            aws自定义AMI-UUID相同处理方法
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            实例都是从同一个AMI 上创建
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-12</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-12">2017-01-12</time>
+				  <a href="/2017/01/12/aws-ec2-%E5%8F%8C%E7%BD%91%E5%8D%A1%E9%97%AE%E9%A2%98/" title="aws-ec2-双网卡问题">aws-ec2-双网卡问题</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/12/aws-ec2-%E5%8F%8C%E7%BD%91%E5%8D%A1%E9%97%AE%E9%A2%98/">
+				        <h2 class="post-title">
+                            aws-ec2-双网卡问题
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Aws ec2
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-12</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="vpn">
+                    <span class="tag-text">vpn</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-13">2017-01-13</time>
+				  <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/" title="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp">IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/">
+				        <h2 class="post-title">
+                            IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            L2TP/IPSEC VPN
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-13</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="l2tp/ipsec">
+                    <span class="tag-text">l2tp/ipsec</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-13">2017-01-13</time>
+				  <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/" title="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp">IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/">
+				        <h2 class="post-title">
+                            IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            L2TP/IPSEC VPN
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-13</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="l2tp">
+                    <span class="tag-text">l2tp</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-13">2017-01-13</time>
+				  <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/" title="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp">IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/">
+				        <h2 class="post-title">
+                            IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            L2TP/IPSEC VPN
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-13</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="ipsec">
+                    <span class="tag-text">ipsec</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-13">2017-01-13</time>
+				  <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/" title="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp">IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/">
+				        <h2 class="post-title">
+                            IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            L2TP/IPSEC VPN
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-13</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="coredump">
+                    <span class="tag-text">coredump</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-19">2017-01-19</time>
+				  <a href="/2017/01/19/CoreDump/" title="Linux系统异常-CoreDump详解">Linux系统异常-CoreDump详解</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/19/CoreDump/">
+				        <h2 class="post-title">
+                            Linux系统异常-CoreDump详解
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            core dump
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-19</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="linux system">
+                    <span class="tag-text">linux system</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2017-01-19">2017-01-19</time>
+				  <a href="/2017/01/19/CoreDump/" title="Linux系统异常-CoreDump详解">Linux系统异常-CoreDump详解</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2017/01/19/CoreDump/">
+				        <h2 class="post-title">
+                            Linux系统异常-CoreDump详解
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            core dump
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2017-01-19</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+
+		</div>
+	</div>
+</div>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/zhao-liang-86-49">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/5040142622">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/100011136432568">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/ZAntony">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Antony Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

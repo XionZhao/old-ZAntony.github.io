@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="渴望伯克利，梦想free的小青年">
+    <meta name="keywords"  content="">
+    <meta name="theme-color" content="#000000">
+    
+    <title>Nginx+PHP编译安装 - Antony 的博客 | Antony Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Antony Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-js-module.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-js-module.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#Nginx" title="Nginx">Nginx</a>
+                        
+                        <a class="tag" href="/tags/#PHP" title="PHP">PHP</a>
+                        
+                    </div>
+                    <h1>Nginx+PHP编译安装</h1>
+                    
+                    
+                    <h2 class="subheading">NGINX AND PHP</h2>
+                    
+                    <span class="meta">Posted by Antony on January 7, 2017</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h3 id="编译安装nginxphp">编译安装Nginx&amp;PHP</h3>
+<h4 id="nginx编译安装"><strong>nginx编译安装</strong></h4>
+<p><strong>下载路径</strong>：(建议使用<code class="highlighter-rouge">Tengine</code>)
+http://nginx.org/
+http://tengine.taobao.org/</p>
+
+<p><strong>启动命令</strong> /usr/local/nginx/sbin/nginx
+<strong>重载nginx</strong> /usr/local/nginx/sbin/nginx -s reload</p>
+<h5 id="一安装环境">一、安装环境</h5>
+<div class="highlighter-rouge"><pre class="highlight"><code>sudo yum groupinstall "Development Tools" -y
+sudo yum install jemalloc-devel openssl-devel pcre-devel -y
+
+nginx编译参数(红色部分可能不支持,可去掉)
+# sudo ./configure --prefix=/usr/local/nginx --user=webapps --group=webapps --with-http_stub_status_module --with-http_ssl_module --with-http_gzip_static_module --with-pcre --with-jemalloc
+# sudo make
+# sudo make install
+# cd /usr/local/nginx
+# sudo mv logs /export/
+# sudo ln -s /export/logs logs
+# cd /usr/local/nginx/conf
+# sudo mkdir vhosts
+</code></pre>
+</div>
+<h4 id="二修改conf文件">二、修改conf文件</h4>
+<p><strong>1. 修改主nginx.conf</strong>
+1-1. 开启log_format
+1-2. 在http上下文结尾增加 include vhosts/*;
+1-3. 需要注意nginx配置文件是按顺序读取
+1-5.修改nginx worker用户为webapps
+1-6.修改/etc/security/limits.conf</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># vim /usr/local/nginx/conf/nginx.conf
+user  webapps;
+worker_processes  2;
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+#pid        logs/nginx.pid;
+worker_rlimit_nofile 655350;
+events {
+    use epoll;
+    worker_connections  1024;
+}
+# load modules compiled as Dynamic Shared Object (DSO)
+#
+#dso {
+#    load ngx_http_fastcgi_module.so;
+#    load ngx_http_rewrite_module.so;
+#}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+    server {
+        listen       80;
+        server_name  localhost;
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+include vhosts/*;
+}
+</code></pre>
+</div>
+<p><strong>2. 修改自定义配置文件</strong></p>
+<h5 id="修改配置文件usrlocalnginxconfvhostshostconf"><strong>修改配置文件<code class="highlighter-rouge">/usr/local/nginx/conf/vhosts/host.conf</code></strong></h5>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>server {
+        listen       80;
+        server_name  www.fraudect.com;
+        #charset koi8-r;
+	access_log  logs/www.fraudect.com.access.log;
+        error_log       logs/www.fraudect.com.error.log;
+	location / {
+            root        /export/webapps/www.fraudect.com;
+	    index	index.php;
+	}
+
+	location ~ .*\.(html|htm|gif|jpg|jpeg|bmp|png|ico|txt|js|css)$ { 
+            	root        /export/webapps/www.fraudect.com;
+    		expires      3d; 
+    	} 
+	location ~ \.php$ {
+                fastcgi_pass     127.0.0.1:9000;
+                fastcgi_index    index.php;
+		fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+                include          fastcgi_params;
+                fastcgi_connect_timeout    300;
+                fastcgi_send_timeout       300;
+                fastcgi_read_timeout       300;
+		fastcgi_buffers 8 256k;                                               
+      		fastcgi_buffer_size 256k;                                             
+      		fastcgi_busy_buffers_size 256k; 
+		fastcgi_intercept_errors on;
+        }
+}
+
+</code></pre>
+</div>
+<h4 id="若跳转php用此部分"><strong>若跳转<code class="highlighter-rouge">php</code>用此部分</strong></h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>	location ~ \.php$ {
+                fastcgi_pass     127.0.0.1:9000;
+                fastcgi_index    index.php;
+				fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+                include          fastcgi_params;
+                fastcgi_connect_timeout    300;
+                fastcgi_send_timeout       300;
+                fastcgi_read_timeout       300;
+				fastcgi_buffers 8 256k;                                               
+	      		fastcgi_buffer_size 256k;                                             
+	      		fastcgi_busy_buffers_size 256k; 
+				fastcgi_intercept_errors on;
+        }
+
+</code></pre>
+</div>
+
+<h4 id="若跳转java走此部分"><strong>若跳转<code class="highlighter-rouge">java</code>走此部分</strong></h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>location / {
+	proxy_pass http://10.100.10.20:8080;
+
+#	proxy_pass http://axis.prd.pzoom.com;
+
+	proxy_max_temp_file_size 0;
+	proxy_set_header   Host             $host;        
+	proxy_set_header   X-Real-IP        $remote_addr;
+    proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+    proxy_buffers 256 4k;
+    proxy_connect_timeout 600;
+    proxy_read_timeout 600;
+    proxy_cache_valid 200 302 10m;
+    proxy_cache_valid 301 1h;
+    proxy_cache_valid any 1m;
+	proxy_intercept_errors on;
+
+}
+</code></pre>
+</div>
+
+<h4 id="upstreamconf-文件"><strong><code class="highlighter-rouge">upstream.conf</code> 文件</strong></h4>
+<div class="highlighter-rouge"><pre class="highlight"><code>upstream fcgi {
+#upstream的负载均衡，weight是权重，可以根据机器配置定义权重。weigth参数表示权值，权值越高被分配到的几率越大。
+server 192.168.80.121:80 weight=3;
+server 192.168.80.122:80 weight=2;
+server 192.168.80.123:80 weight=3;
+}
+</code></pre>
+</div>
+
+<h4 id="usrlocalnginxconffastcgi_params-文件"><strong><code class="highlighter-rouge">/usr/local/nginx/conf/fastcgi_params</code> 文件</strong></h4>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
+fastcgi_param  SERVER_SOFTWARE    nginx;
+fastcgi_param  QUERY_STRING       $query_string;
+fastcgi_param  REQUEST_METHOD     $request_method;
+fastcgi_param  CONTENT_TYPE       $content_type;
+fastcgi_param  CONTENT_LENGTH     $content_length;
+fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+fastcgi_param  REQUEST_URI        $request_uri;
+fastcgi_param  DOCUMENT_URI       $document_uri;
+fastcgi_param  DOCUMENT_ROOT      $document_root;
+fastcgi_param  SERVER_PROTOCOL    $server_protocol;
+fastcgi_param  REMOTE_ADDR        $remote_addr;
+fastcgi_param  REMOTE_PORT        $remote_port;
+fastcgi_param  SERVER_ADDR        $server_addr;
+fastcgi_param  SERVER_PORT        $server_port;
+fastcgi_param  SERVER_NAME        $server_name;
+</code></pre>
+</div>
+
+<p><strong>补充内容</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>####### 这个是一个thinkphp框架的伪静态规则，请忽略
+if (!-e $request_filename) {
+rewrite  ^(.*)$  /index.php last;
+break;
+</code></pre>
+</div>
+<p>###<strong>php构建部分</strong>
+<code class="highlighter-rouge">centos  6.X</code>  <code class="highlighter-rouge">php-fpm方式</code></p>
+
+<h4 id="一依赖关系安装"><strong>一、依赖关系安装</strong></h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># sudo yum install libmcrypt-devel ncurses-devel recode-devel aspell-devel curl-devel readline-devel openldap-devel enchant-devel pcre-devel net-snmp-devel libicu-devel libtool-ltdl-devel libjpeg-devel libpng-devel libxml2-devel bzip2-devel freetype-devel gcc-c++
+# sudo cp -p /usr/lib64/libldap* /usr/lib
+# sudo yum install mysql-devel
+# sudo ln -s /usr/lib64/mysql /usr/lib/mysql
+</code></pre>
+</div>
+<p><strong>php编译参数(如果make报ld之类的错误，尝试移除ldap和lntl编译模块)</strong>
+<strong>下载链接地址</strong>：http://docs.php.net/distributions/php-5.6.24.tar.bz2</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># sudo tar xf php-5.6.24.tar.bz2
+# sudo ./configure --prefix=/usr/local/php  --with-config-file-path=/usr/local/php/etc --with-config-file-scan-dir=/usr/local/php/etc/php.d --with-curl --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-openssl --enable-mbstring --with-freetype-dir --with-jpeg-dir --with-png-dir  --with-gd --with-libxml-dir --with-zlib --with-mcrypt --with-bz2 --enable-sysvshm --enable-sysvsem --enable-soap --with-recode --with-snmp --with-readline  --enable-intl --enable-dba --enable-bcmath --with-enchant --with-pspell --enable-xml --enable-sockets  --enable-exif --enable-inline-optimization --enable-fpm
+</code></pre>
+</div>
+<h4 id="apache专用">apache专用</h4>
+
+<p><code class="highlighter-rouge">--with-apxs2=/usr/sbin/apxs </code></p>
+
+<h4 id="ubuntu">ubuntu</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code>apt-get -y install  libpspell-dev build-essential libcurl3-openssl-dev libbz2-dev libenchant-dev libxml2-dev libjpeg-dev libpng-dev libfreetype6-dev libicu-dev libmcrypt-dev libncurses5-dev  librecode-dev libaspell-dev libreadline-dev
+</code></pre>
+</div>
+<h5 id="若apache添加参数---with-apxs2usrsbinapxs--apxs是apache的httpd-devel安装后生成的yum安装后路径一般是usrsbinapxs如果是编译安装一般位于apache的bin目录下">若apache添加参数   –with-apxs2=/usr/sbin/apxs  apxs是apache的httpd-devel安装后生成的，yum安装后路径一般是/usr/sbin/apxs，如果是编译安装，一般位于apache的bin目录下</h5>
+
+<h4 id="php-fpm启动脚本"><strong>php-fpm启动脚本</strong></h4>
+<p><strong><code class="highlighter-rouge">php源码包根目录</code></strong></p>
+<div class="highlighter-rouge"><pre class="highlight"><code># sudo cp sapi/fpm/init.d.php-fpm /etc/rc.d/init.d/php-fpm
+# sudo chkconfig --add php-fpm
+# sudo chkconfig php-fpm on
+# sudo chmod u+x /etc/rc.d/init.d/php-fpm
+# sudo cp php.ini-production /usr/local/php/etc/php.ini
+
+# sudo cd /usr/local/php/var
+# sudo rm -rf log
+# sudo ln -s /export/logs log
+</code></pre>
+</div>
+
+<h4 id="修改启动脚本"><strong>修改启动脚本</strong></h4>
+
+<p>脚本前几行注释结束后的首行部位加入<code class="highlighter-rouge">[ -f /etc/rc.d/init.d/functions ] &amp;&amp; . /etc/rc.d/init.d/functions</code></p>
+
+<p>在start函数的首行加入daemon</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>case $1 in 
+    start)
+    	$php_fpm_BIN --daemonize $php_opts
+</code></pre>
+</div>
+<p><strong>*修改php.ini 这一步骤需要根据开发来决定开启额外模块或者参数</strong></p>
+
+<h4 id="修改php-fpmini----相当于apache的配置文件"><strong>修改<code class="highlighter-rouge">php-fpm.ini</code>    ==&gt;相当于apache的配置文件</strong></h4>
+<div class="highlighter-rouge"><pre class="highlight"><code>#vi /usr/local/php/etc/php-fpm.conf
+[global]
+log_level = notice
+daemonize = yes
+events.mechanism = epoll
+rlimit_files = 10240
+emergency_restart_threshold = 60
+emergency_restart_interval = 60s
+[fcgi]
+user = webapps
+group = webapps
+listen = 0.0.0.0:9000
+pm = static
+pm.max_children = 200
+pm.max_requests = 1024
+</code></pre>
+</div>
+<blockquote>
+  <p>作者：Antony WX&amp;QQ：1257465991
+Q/A：如有问题请慷慨提出</p>
+</blockquote>
+
+
+                <hr style="visibility: hidden;">
+
+                
+                <!-- 多说 Share start -->
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2017/01/07/Nginx-PHP编译安装"
+                    data-title="Nginx+PHP编译安装"
+                    data-url="http://localhost:4000/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/"
+                    data-images="http://localhost:4000/img/post-bg-js-module.jpg"
+                    data-content="编译安装Nginx&amp;PHP
+nginx编译安装
+下载路径：(建议使用Tengine)
+http://nginx.org/
+http://tengi... | Antony 的博客 | Antony Blog " >
+                    <div class="ds-share-inline">
+                      <style> 
+                        .ds-share-icons-16 {display:none;} 
+                      </style>
+                      <ul class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" data-toggle="tooltip" data-placement="top" title="Linux用户、用户组及权限管理">
+                        Previous<br>
+                        <span>Linux用户、用户组及权限管理</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2017/01/07/ansible%E8%84%9A%E6%9C%AC/" data-toggle="tooltip" data-placement="top" title="ansible脚本">
+                        Next<br>
+                        <span>ansible脚本</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2017/01/07/Nginx-PHP编译安装"
+                        data-title="Nginx+PHP编译安装"
+                        data-url="http://localhost:4000/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#FastDFS" title="FastDFS" rel="3">
+                                    FastDFS
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#分布式存储" title="分布式存储" rel="2">
+                                    分布式存储
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#ansible" title="ansible" rel="2">
+                                    ansible
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#自动化工具" title="自动化工具" rel="2">
+                                    自动化工具
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#aws" title="aws" rel="2">
+                                    aws
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://xinzong.blog.51cto.com/">Old-Blog</a></li>
+                    
+                        <li><a href="http://bighug.top/">神盾局高级按摩师</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'zantony';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/zhao-liang-86-49">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/5040142622">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/100011136432568">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/ZAntony">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Antony Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
