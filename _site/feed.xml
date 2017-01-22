@@ -3,11 +3,37 @@
   <channel>
     <title>Antony Blog</title>
     <description>渴望伯克利，梦想free的小青年</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 22 Jan 2017 16:41:32 +0800</pubDate>
-    <lastBuildDate>Sun, 22 Jan 2017 16:41:32 +0800</lastBuildDate>
+    <link>https://zantony.github.io/</link>
+    <atom:link href="https://zantony.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 22 Jan 2017 18:20:09 +0800</pubDate>
+    <lastBuildDate>Sun, 22 Jan 2017 18:20:09 +0800</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
+    
+      <item>
+        <title>添加一个用户sudo权限的使用密钥登录的用户</title>
+        <description>&lt;h4 id=&quot;1为用户名&quot;&gt;$1为用户名&lt;/h4&gt;
+&lt;h4 id=&quot;2为用户公钥&quot;&gt;$2为用户公钥&lt;/h4&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#添加证书账户，并且将对应用户加入sudo&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# $1 为用户名 $2 为用户公钥&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; -z &lt;span class=&quot;nv&quot;&gt;$3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; useradd &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; useradd -u &lt;span class=&quot;nv&quot;&gt;$3&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
+mkdir /home/&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;/.ssh
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &amp;gt;/home/&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;/.ssh/authorized_keys
+chown -R &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;.&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; /home/&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;/.ssh/
+chmod 600 /home/&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;/.ssh/authorized_keys
+chmod 700 /home/&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;/.ssh/
+sed -i &lt;span class=&quot;s1&quot;&gt;'/^root.*/a\'&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;' ALL=(ALL) NOPASSWD:ALL'&lt;/span&gt; /etc/sudoers
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sat, 21 Jan 2017 00:00:00 +0800</pubDate>
+        <link>https://zantony.github.io/2017/01/21/Useradd-sh/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/21/Useradd-sh/</guid>
+        
+        <category>shell</category>
+        
+        
+      </item>
     
       <item>
         <title>Linux系统异常-CoreDump详解</title>
@@ -144,8 +170,8 @@ $ sysctl -p
 &lt;/div&gt;
 </description>
         <pubDate>Thu, 19 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/19/CoreDump/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/19/CoreDump/</guid>
+        <link>https://zantony.github.io/2017/01/19/CoreDump/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/19/CoreDump/</guid>
         
         <category>coredump</category>
         
@@ -572,8 +598,8 @@ Q/A：如有问题请慷慨提出&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         <pubDate>Fri, 13 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/</guid>
+        <link>https://zantony.github.io/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/</guid>
         
         <category>vpn</category>
         
@@ -696,8 +722,8 @@ Q/A：如有问题请慷慨提出&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 12 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/</guid>
+        <link>https://zantony.github.io/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/</guid>
         
         <category>aws</category>
         
@@ -813,8 +839,8 @@ Q/A：如有问题请慷慨提出&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         <pubDate>Thu, 12 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/12/aws-ec2-%E5%8F%8C%E7%BD%91%E5%8D%A1%E9%97%AE%E9%A2%98/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/12/aws-ec2-%E5%8F%8C%E7%BD%91%E5%8D%A1%E9%97%AE%E9%A2%98/</guid>
+        <link>https://zantony.github.io/2017/01/12/aws-ec2-%E5%8F%8C%E7%BD%91%E5%8D%A1%E9%97%AE%E9%A2%98/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/12/aws-ec2-%E5%8F%8C%E7%BD%91%E5%8D%A1%E9%97%AE%E9%A2%98/</guid>
         
         <category>aws</category>
         
@@ -883,8 +909,8 @@ $ sudo sslocal -c /etc/shadowsock-client.json -d start
 
 </description>
         <pubDate>Tue, 10 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/10/Ss-Client-Config/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/10/Ss-Client-Config/</guid>
+        <link>https://zantony.github.io/2017/01/10/Ss-Client-Config/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/10/Ss-Client-Config/</guid>
         
         <category>FastDFS</category>
         
@@ -1016,8 +1042,8 @@ Q/A：如有问题请慷慨提出&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         <pubDate>Sat, 07 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/</guid>
+        <link>https://zantony.github.io/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/</guid>
         
         <category>FastDFS rpm</category>
         
@@ -1453,8 +1479,8 @@ Q/A：如有问题请慷慨提出&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         <pubDate>Sat, 07 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/</guid>
+        <link>https://zantony.github.io/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/</guid>
         
         <category>FastDFS</category>
         
@@ -1494,8 +1520,8 @@ Q/A：如有问题请慷慨提出&lt;/p&gt;
 &lt;p&gt;转载：http://lib.csdn.net/article/linux/28546&lt;/p&gt;
 </description>
         <pubDate>Sat, 07 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/</guid>
+        <link>https://zantony.github.io/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/</guid>
         
         <category>system</category>
         
@@ -1829,423 +1855,12 @@ Hello, Antony
 &lt;p&gt;算法：算法是对如何完成一项任务的详尽描述。实际上，在编写程序的时候，就要使用计算机能够理解的语言（如Python）来描述算法。这类对机器友好的描述叫做程序，程序主要包含表达式和语句。&lt;/p&gt;
 </description>
         <pubDate>Sat, 07 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
+        <link>https://zantony.github.io/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+        <guid isPermaLink="true">https://zantony.github.io/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
         
         <category>python</category>
         
         <category>python基础</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>Git基础</title>
-        <description>&lt;h3 id=&quot;一git-install&quot;&gt;一、git install&lt;/h3&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-Ubuntu
-
-sudo apt-get install git
-
-Centos
-
-yum install git  
-
-Mac
-
-brew install git
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;二git-initialization-configure&quot;&gt;二、git initialization configure&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-git config --global user.name &quot;Your Name&quot;
-
-git config --global user.email &quot;email@example.com&quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h6 id=&quot;注意git-config命令的--global参数用了这个参数表示你这台机器上所有的git仓库都会使用这个配置当然也可以对某个仓库指定不同的用户名和email地址&quot;&gt;注意&lt;code class=&quot;highlighter-rouge&quot;&gt;git config&lt;/code&gt;命令的&lt;code class=&quot;highlighter-rouge&quot;&gt;--global&lt;/code&gt;参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址&lt;/h6&gt;
-
-&lt;h3 id=&quot;三git-create-repository&quot;&gt;三、git create repository&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;git版本库，也叫仓库，英文为&lt;code class=&quot;highlighter-rouge&quot;&gt;repository&lt;/code&gt;，可以理解为一个目录，目录里的文件都可以被git管理起来，每个文件的修改、删除Git都能跟踪，以便任何时候都能够追踪历史，或者将来在某个时刻可以还原。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id=&quot;1创建一个目录&quot;&gt;1、创建一个目录&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ mkdir gitrepo
-
-$ cd gitrepo
-
-$ pwd
-
-/Users/antony/gitrepo
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;注意：目录不要包含中文&lt;/code&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;2通过-git-init-命令把这个目录变成git可以管理的仓库&quot;&gt;2、通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;git init&lt;/code&gt; 命令把这个目录变成Git可以管理的仓库&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git init
-
-Initialized empty Git repository in /Users/antony/gitrepo/.git/
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;瞬间Git就把仓库建好了，而且告诉你是一个空的仓库（empty Git repository），细心的读者可以发现当前目录下多了一个&lt;code class=&quot;highlighter-rouge&quot;&gt;.git&lt;/code&gt;的目录，这个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。&lt;/p&gt;
-
-&lt;h3 id=&quot;四提交一个文件到仓库&quot;&gt;四、提交一个文件到仓库&lt;/h3&gt;
-
-&lt;h5 id=&quot;1创建一个文件&quot;&gt;1、创建一个文件&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ vim readme.txt
-
-This is a test file
-
-Git is a opensource app
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;此文件一定要放在刚才创建的仓库下，即&lt;code class=&quot;highlighter-rouge&quot;&gt;gitrepo&lt;/code&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;2用命令git-add将文件添加到仓库&quot;&gt;2、用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;git add&lt;/code&gt;将文件添加到仓库&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git add readme.txt
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;3用命令git-commit告诉git把文件提交到git仓库&quot;&gt;3、用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;git commit&lt;/code&gt;告诉Git，把文件提交到git仓库&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git commit -m &quot;up a readme file&quot;
-
-[master (root-commit) ba4d5a3] up a readme file
-
- 1 file changed, 2 insertions(+)
-
- create mode 100644 readme.txt
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-m&lt;/code&gt; 添加描述，一般用来告诉此次提交的说明&lt;/p&gt;
-
-&lt;p&gt;为什么添加文件需要&lt;code class=&quot;highlighter-rouge&quot;&gt;add&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;commit&lt;/code&gt;两步呢？ 因为&lt;code class=&quot;highlighter-rouge&quot;&gt;commit&lt;/code&gt;一次可以提交多个文件，所以你可以多次&lt;code class=&quot;highlighter-rouge&quot;&gt;add&lt;/code&gt;不同文件,比如&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git add file1
-
-$ git add file2 file3
-
-$ git commit -m &quot;file2 file3&quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;五git-statusdiff状态对比&quot;&gt;五、Git Status、diff（状态、对比）&lt;/h3&gt;
-
-&lt;h5 id=&quot;1status&quot;&gt;1、Status&lt;/h5&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;修改文件&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ vim readme.txt #在最后一行新添加一行
-
-New line
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;查看状态&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git status
-
-On branch master
-
-Changes not staged for commit:
-
-  (use &quot;git add &amp;lt;file&amp;gt;...&quot; to update what will be committed)
-
-  (use &quot;git checkout -- &amp;lt;file&amp;gt;...&quot; to discard changes in working directory)
-
-
-
-	modified:   readme.txt
-
-
-
-no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;git status&lt;/code&gt; 时刻查看文件的状态，通过返回信息告诉我们文件被修改了&lt;/p&gt;
-
-&lt;h5 id=&quot;2diff查看具体修改内容&quot;&gt;2、diff（查看具体修改内容）&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git diff readme.txt
-
-diff --git a/readme.txt b/readme.txt
-
-index 194380c..e8e4b8b 100644
-
---- a/readme.txt
-
-+++ b/readme.txt
-
-@@ -1,2 +1,3 @@
-
- This is a test file
-
- Git is a opensource app
-
-+New line
-
-(END)
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;3查看add及commit后的状态&quot;&gt;3、查看add及commit后的状态&lt;/h5&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;git add后的状态&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git add readme.txt
-
-$ git status
-
-On branch master
-
-Changes to be committed:
-
-  (use &quot;git reset HEAD &amp;lt;file&amp;gt;...&quot; to unstage)
-
-
-
-	modified:   readme.txt
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;git commit后的状态&lt;/code&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git commit -m &quot;add new line&quot;
-
-[master a782d05] add new line
-
- 1 file changed, 1 insertion(+)
-
-$ git status
-
-
-On branch master
-
-nothing to commit, working tree clean
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;六版本回退&quot;&gt;六、版本回退&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;先修改一次文件&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ vim readme.txt
-
-New line 2
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;提交文件&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git add readme.txt
-
-$ git commit -m &quot;New line 2&quot;
-
-[master def33d7] New line 2
-
- 1 file changed, 1 insertion(+)
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;1版本提交历史记录git-log&quot;&gt;1、版本提交历史记录&lt;code class=&quot;highlighter-rouge&quot;&gt;git log&lt;/code&gt;&lt;/h5&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git log
-
-commit def33d73a1ded1b673f2b994bddedce9f8409a33
-
-Author: ZAntony &amp;lt;zantony.top@gmail.com&amp;gt;
-
-Date:   Sun Dec 11 22:36:53 2016 +0800
-
-
-
-    New line 2
-
-
-
-commit a782d05f438ca21a2d2336e97256bf9d7e35c058
-
-Author: ZAntony &amp;lt;zantony.top@gmail.com&amp;gt;
-
-Date:   Sun Dec 11 22:19:43 2016 +0800
-
-
-
-    add new line
-
-
-
-commit ba4d5a316c0e915e768d0a793999ff9f5f41447b
-
-Author: ZAntony &amp;lt;zantony.top@gmail.com&amp;gt;
-
-Date:   Sun Dec 11 22:00:13 2016 +0800
-
-
-
-    up a readme file
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;git 最近显示的是&lt;code class=&quot;highlighter-rouge&quot;&gt;New line 2&lt;/code&gt;,上一次是&lt;code class=&quot;highlighter-rouge&quot;&gt;add new line&lt;/code&gt;,第一次是&lt;code class=&quot;highlighter-rouge&quot;&gt;up a readme file&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;--pretty=oneline&lt;/code&gt;参数控制输出内容的数量&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git log --pretty=oneline
-
-def33d73a1ded1b673f2b994bddedce9f8409a33 New line 2
-
-a782d05f438ca21a2d2336e97256bf9d7e35c058 add new line
-
-ba4d5a316c0e915e768d0a793999ff9f5f41447b up a readme file
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;前面的一串数字是16进制的commit id&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h5 id=&quot;2git-reset-版本回退&quot;&gt;2、git reset 版本回退&lt;/h5&gt;
-
-&lt;p&gt;首先，Git必须知道当前版本是哪个版本，在Git中，用HEAD表示当前版本，也就是最新的提交def33d……..9a33（注意我的提交ID和你的肯定不一样），上一个版本就是&lt;code class=&quot;highlighter-rouge&quot;&gt;HEAD^&lt;/code&gt;，上上一个版本就是&lt;code class=&quot;highlighter-rouge&quot;&gt;HEAD^^&lt;/code&gt;，当然往上100个版本写100个^比较容易数不过来，所以写成&lt;code class=&quot;highlighter-rouge&quot;&gt;HEAD~100&lt;/code&gt;。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git reset --hard HEAD^
-
-HEAD is now at a782d05 add new line
-
-This is a test file
-
-Git is a opensource app
-
-New line
-
-# 此时版本已经回退
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h5 id=&quot;3当返回到上一个版本后突然想返回到为返回前的版本即new-line-2&quot;&gt;3、当返回到上一个版本后，突然想返回到为返回前的版本，即&lt;code class=&quot;highlighter-rouge&quot;&gt;New line 2&lt;/code&gt;&lt;/h5&gt;
-
-&lt;p&gt;查看日志，发现并未找到回退前的版本的commit id&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git log
-
-
-commit a782d05f438ca21a2d2336e97256bf9d7e35c058
-
-Author: ZAntony &amp;lt;zantony.top@gmail.com&amp;gt;
-
-Date:   Sun Dec 11 22:19:43 2016 +0800
-
-
-
-    add new line
-
-
-
-commit ba4d5a316c0e915e768d0a793999ff9f5f41447b
-
-Author: ZAntony &amp;lt;zantony.top@gmail.com&amp;gt;
-
-Date:   Sun Dec 11 22:00:13 2016 +0800
-
-
-
-    up a readme file
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h6 id=&quot;当通过git-reset---hard-head恢复到add-new-line时在想恢复到之前的new-line-2就必须找到他的commit-id可以通过查看之前的命令历史来查找也可以通过git-reflog来查看commit-id&quot;&gt;当通过&lt;code class=&quot;highlighter-rouge&quot;&gt;git reset --hard HEAD^&lt;/code&gt;恢复到&lt;code class=&quot;highlighter-rouge&quot;&gt;add new line&lt;/code&gt;时，在想恢复到之前的&lt;code class=&quot;highlighter-rouge&quot;&gt;New line 2&lt;/code&gt;,就必须找到他的&lt;code class=&quot;highlighter-rouge&quot;&gt;commit id&lt;/code&gt;，可以通过查看之前的命令历史来查找，也可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;git reflog&lt;/code&gt;来查看commit id&lt;/h6&gt;
-
-&lt;p&gt;&lt;strong&gt;git reflog&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git reflog # 通过命令来查看commit id，id是不完整的，但是可以使用，只要保证id唯一性。
-
-a782d05 HEAD@{0}: reset: moving to HEAD^
-
-def33d7 HEAD@{1}: commit: New line 2
-
-a782d05 HEAD@{2}: commit: add new line
-
-ba4d5a3 HEAD@{3}: commit (initial): up a readme file
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;恢复版本&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-$ git reset --hard def33d7
-
-HEAD is now at def33d7 New line 2
-
-$ cat readme.txt
-
-This is a test file
-
-Git is a opensource app
-
-New line
-
-New line 2
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-</description>
-        <pubDate>Sat, 07 Jan 2017 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2017/01/07/git/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/01/07/git/</guid>
-        
-        <category>git</category>
         
         
       </item>

@@ -10,7 +10,7 @@
     <meta name="keywords"  content="">
     <meta name="theme-color" content="#000000">
     
-    <title>About - Antony 的博客 | Antony Blog</title>
+    <title>添加一个用户sudo权限的使用密钥登录的用户 - Antony 的博客 | Antony Blog</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -19,7 +19,7 @@
     <link rel="shortcut icon" href="/img/favicon.ico">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://zantony.github.io/about/">
+    <link rel="canonical" href="https://zantony.github.io/2017/01/21/Useradd-sh/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -153,118 +153,245 @@
 </script>
 
 
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/about-bg.jpg')">
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/useradd.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/useradd.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>About</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">Hey, this is Antony</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#shell" title="shell">shell</a>
+                        
+                    </div>
+                    <h1>添加一个用户sudo权限的使用密钥登录的用户</h1>
+                    
+                    
+                    <h2 class="subheading">ALL Permission Sudo User </h2>
+                    
+                    <span class="meta">Posted by Antony on January 21, 2017</span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-	<div class="row">
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h4 id="1为用户名">$1为用户名</h4>
+<h4 id="2为用户公钥">$2为用户公钥</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="c">#添加证书账户，并且将对应用户加入sudo</span>
+<span class="c"># $1 为用户名 $2 为用户公钥</span>
+<span class="o">[[</span> -z <span class="nv">$3</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> useradd <span class="nv">$1</span> <span class="o">||</span> useradd -u <span class="nv">$3</span> <span class="nv">$1</span>
+mkdir /home/<span class="nv">$1</span>/.ssh
+<span class="nb">echo</span> <span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> &gt;/home/<span class="nv">$1</span>/.ssh/authorized_keys
+chown -R <span class="nv">$1</span>.<span class="nv">$1</span> /home/<span class="nv">$1</span>/.ssh/
+chmod 600 /home/<span class="nv">$1</span>/.ssh/authorized_keys
+chmod 700 /home/<span class="nv">$1</span>/.ssh/
+sed -i <span class="s1">'/^root.*/a\'</span><span class="nv">$1</span><span class="s1">' ALL=(ALL) NOPASSWD:ALL'</span> /etc/sudoers
+</code></pre>
+</div>
+
+
+                <hr style="visibility: hidden;">
+
+                
+                <!-- 多说 Share start -->
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2017/01/21/Useradd-sh"
+                    data-title="添加一个用户sudo权限的使用密钥登录的用户"
+                    data-url="https://zantony.github.io/2017/01/21/Useradd-sh/"
+                    data-images="https://zantony.github.io/img/useradd.jpg"
+                    data-content="$1为用户名
+$2为用户公钥
+#!/bin/bash
+#添加证书账户，并且将对应用户加入sudo
+# $1 为用户名 $2 为用户公钥
+[[ -z $3 ... | Antony 的博客 | Antony Blog " >
+                    <div class="ds-share-inline">
+                      <style> 
+                        .ds-share-icons-16 {display:none;} 
+                      </style>
+                      <ul class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2017/01/19/CoreDump/" data-toggle="tooltip" data-placement="top" title="Linux系统异常-CoreDump详解">
+                        Previous<br>
+                        <span>Linux系统异常-CoreDump详解</span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2017/01/21/Useradd-sh"
+                        data-title="添加一个用户sudo权限的使用密钥登录的用户"
+                        data-url="https://zantony.github.io/2017/01/21/Useradd-sh/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
         
 
-<!-- USE SIDEBAR -->
-    <!-- PostList Container -->
-    		<div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                postlist-container
-            ">
-    			<!-- Language Selector -->
-<select onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
-    <option value="0" selected> 中文 Chinese </option>
-    <option value="1"> 英语 English </option>
-</select>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-<!-- Chinese Version -->
-<div class="zh post-container">
-    <blockquote>
-        站在巨人肩膀上还有另外一个风险,就是可能会摔死!
-    </blockquote>
-    <p>
-    关于我
-    </p>
-    <p>
-    邮箱：Gmail:zantony.top@gmail.com 163:go80800@163.com
-    </p>
-    行业：业务运维工程师
-    <p>
-    技能：精通八大菜系，精通各种姿势使用挖掘机，曾就职于新东方高级卫生管理工程师、蓝翔高级土堆清理师。
-    </p>
-    梦想：在吃的道路上，越走越远！
-    <p>
-    有点仓促，后续会继续补充
-    </p>
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#FastDFS" title="FastDFS" rel="3">
+                                    FastDFS
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#分布式存储" title="分布式存储" rel="2">
+                                    分布式存储
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#ansible" title="ansible" rel="2">
+                                    ansible
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#自动化工具" title="自动化工具" rel="2">
+                                    自动化工具
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#aws" title="aws" rel="2">
+                                    aws
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
 
-</div>
-
-<!-- English Version -->
-<div class="en post-container">
-    <blockquote>
-        DevOps 
-    </blockquote>
-
-    <p>
-    Notrhing
-    </p>
-
-
-    <p style="text-align:right;">
-    -- Steve Jobs
-    </p>
-
-</div>
-
-<!-- Handle Language Change -->
-<script type="text/javascript">
-    var $zh = document.querySelector(".zh");
-    var $en = document.querySelector(".en");
-    function onLanChange(index){
-        if(index == 0){
-            $zh.style.display = "block";
-            $en.style.display = "none";
-        }else{
-            $en.style.display = "block";
-            $zh.style.display = "none";
-        }
-    }
-    onLanChange(0);
-</script>
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://xinzong.blog.51cto.com/">Old-Blog</a></li>
+                    
+                        <li><a href="http://bighug.top/">神盾局高级按摩师</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
 
 
-
-
-<!-- 多说评论框 start -->
-<div class="comment">
-    <div class="ds-thread"
-    
-        data-thread-key="zantony/about"
-    
-
-    data-title="About"
-    data-url="https://zantony.github.io/about/"></div>
-</div>
-<!-- 多说评论框 end -->
-
-<!-- Duoshuo hacking -->
-<input id="dsUser" type="hidden" value="zantony"  />
 
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
-    // dynamic User hacking by Hux
-    var _user = document.getElementById('dsUser').value;
+    // dynamic User by Hux
+    var _user = 'zantony';
+
     // duoshuo comment query.
     var duoshuoQuery = {short_name: _user };
     (function() {
@@ -282,168 +409,7 @@
 
 
 
-    		</div>
-    <!-- Sidebar Container -->
-            <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
-                <!-- Featured Tags -->
-                
-                <section>
-                    <hr class="hidden-sm hidden-xs">
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                        
-                            
-                                <a href="/tags/#FastDFS" title="FastDFS" rel="3">
-                                    FastDFS
-                                </a>
-                            
-                        
-                            
-                                <a href="/tags/#分布式存储" title="分布式存储" rel="2">
-                                    分布式存储
-                                </a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                                <a href="/tags/#ansible" title="ansible" rel="2">
-                                    ansible
-                                </a>
-                            
-                        
-                            
-                                <a href="/tags/#自动化工具" title="自动化工具" rel="2">
-                                    自动化工具
-                                </a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                                <a href="/tags/#aws" title="aws" rel="2">
-                                    aws
-                                </a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                    </div>
-                </section>
-                
 
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
-                    <div class="short-about">
-                        
-                            <img src="/img/zhaoxin1.jpg" />
-                        
-                        
-                            <p>敲敲键盘，赚点小钱，出去消遣!</p>
-                        
-                        <!-- SNS Link -->
-                        <ul class="list-inline">
-                            
-                            
-                            
-                            <li>
-                                <a target="_blank" href="https://www.zhihu.com/people/zhao-liang-86-49">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                            <li>
-                                <a target="_blank" href="http://weibo.com/u/5040142622">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                            <li>
-                                <a target="_blank" href="https://www.facebook.com/100011136432568">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                            <li>
-                                <a target="_blank" href="https://github.com/ZAntony">
-                                    <span class="fa-stack fa-lg">
-                                        <i class="fa fa-circle fa-stack-2x"></i>
-                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                    </span>
-                                </a>
-                            </li>
-                            
-                            
-                        </ul>
-                    </div>
-                </section>
-                <!-- Friends Blog -->
-                
-                <hr>
-                <h5>FRIENDS</h5>
-                <ul class="list-inline">
-                    
-                        <li><a href="http://xinzong.blog.51cto.com/">Old-Blog</a></li>
-                    
-                        <li><a href="http://bighug.top/">神盾局高级按摩师</a></li>
-                    
-                </ul>
-                
-    		</div>
-        
-	</div>
-</div>
 
 
     <!-- Footer -->
