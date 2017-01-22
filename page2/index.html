@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="渴望伯克利，梦想free的小青年">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Antony 的博客 | Antony Blog</title>
+
+    <link rel="canonical" href="http://zantony.top/page2/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Antony Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Antony Blog</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">If I have been able to see further, it was only because I stood on the shoulders of giants.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+	<div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+    		<div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+    			
+<div class="post-preview">
+    <a href="/2017/01/07/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">
+        <h2 class="post-title">
+            ansible脚本
+        </h2>
+        
+        <h3 class="post-subtitle">
+            Ansible Script
+        </h3>
+        
+        <div class="post-content-preview">
+            
+  这是一个可以自动在多台server批量安装及拷贝配置文件启动服务器的ansible脚本，本人学疏才浅，目前还有很多待完善，希望各位多多指教。
+
+
+#!/bin/bash
+# Author: Altamob 
+# Directory tree
+# 	/opt/			
+# 	├── ansible.sh	# like this,nginx.conf is varia $FILE
+# 	└─...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/ansible%E8%84%9A%E6%9C%AC/">
+        <h2 class="post-title">
+            ansible脚本
+        </h2>
+        
+        <h3 class="post-subtitle">
+            Ansible Script
+        </h3>
+        
+        <div class="post-content-preview">
+            
+  这是一个可以自动在多台server批量安装及拷贝配置文件启动服务器的ansible脚本，本人学疏才浅，目前还有很多待完善，希望各位多多指教。
+
+
+#!/bin/bash
+# Author: Altamob 
+# Directory tree
+# 	/opt/			
+# 	├── ansible.sh	# like this,nginx.conf is varia $FILE
+# 	└─...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/Nginx-PHP%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">
+        <h2 class="post-title">
+            Nginx+PHP编译安装
+        </h2>
+        
+        <h3 class="post-subtitle">
+            NGINX AND PHP
+        </h3>
+        
+        <div class="post-content-preview">
+            编译安装Nginx&amp;PHP
+nginx编译安装
+下载路径：(建议使用Tengine)
+http://nginx.org/
+http://tengine.taobao.org/
+
+启动命令 /usr/local/nginx/sbin/nginx
+重载nginx /usr/local/nginx/sbin/nginx -s reload
+一、安装环境
+sudo yum groupinst...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+        <h2 class="post-title">
+            Linux用户、用户组及权限管理
+        </h2>
+        
+        <h3 class="post-subtitle">
+            Linux用户管理
+        </h3>
+        
+        <div class="post-content-preview">
+            一、Linux用户及用户组的基本概念
+用户：用户是实现能够将有限的资源在多个使用者之间进行分配；、
+用户组：用户组是指多个用户的集合，方便对一类需要同样权限的用户授权
+Linux是多用户、多任务的操作系统。
+    多用户指：多人同时使用系统资源；多任务：同时运行多个进程
+二、用户及用户组类别
+1、用户：名称解析库 /etc/passwd
+a、管理员
+root 用户标识（UID）为0
+b、普...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/">
+        <h2 class="post-title">
+            Linux三剑客之grep
+        </h2>
+        
+        <h3 class="post-subtitle">
+            Grep 常见用法及基础介绍
+        </h3>
+        
+        <div class="post-content-preview">
+            一、Linux文本处理三剑客
+
+  Linux上有三种常用的文本处理工具，分别为：grep（egrep、fgrep）、sed、awk。今天主要给大家介绍一下三剑客中的第一剑：grep伐木累。
+  二、grep是什么？
+  grep 全称（Globally search a Regular Expression and Print）是一个文本搜索工具，基于“pattern”（这里指的是过滤模式...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/FastDFS-unti-for-systemd/">
+        <h2 class="post-title">
+            FastDFS unti for systemd
+        </h2>
+        
+        <h3 class="post-subtitle">
+            FastDFS分布式存储
+        </h3>
+        
+        <div class="post-content-preview">
+            FastDFS tracker的unit脚本
+# Systemd unit file for default fastdfs_tracker
+# 
+
+[Unit]
+Description=FastDFS tracker script
+After=syslog.target network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/fdf...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    <li class="previous">
+        <a href="/">&larr; Newer Posts</a>
+    </li>
+    
+    
+</ul>
+
+
+    		</div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                                <a href="/tags/#FastDFS" title="FastDFS" rel="3">
+                                    FastDFS
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#分布式存储" title="分布式存储" rel="2">
+                                    分布式存储
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#ansible" title="ansible" rel="2">
+                                    ansible
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#自动化工具" title="自动化工具" rel="2">
+                                    自动化工具
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#aws" title="aws" rel="2">
+                                    aws
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+                        
+                            <img src="/img/zhaoxin1.jpg" />
+                        
+                        
+                            <p>敲敲键盘，赚点小钱，出去消遣!</p>
+                        
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://www.zhihu.com/people/zhao-liang-86-49">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a target="_blank" href="http://weibo.com/u/5040142622">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://github.com/ZAntony">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </section>
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://xinzong.blog.51cto.com/">51cto</a></li>
+                    
+                </ul>
+                
+    		</div>
+        
+	</div>
+</div>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/zhao-liang-86-49">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/5040142622">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/ZAntony">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Antony Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
