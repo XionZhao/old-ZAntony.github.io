@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="渴望伯克利，梦想free的小青年">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>分布式文件系统-FastDFS - Antony 的博客 | Antony Blog</title>
+
+    <link rel="canonical" href="http://localhost:4000/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Antony Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-js-module.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-js-module.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#FastDFS" title="FastDFS">FastDFS</a>
+                        
+                    </div>
+                    <h1>分布式文件系统-FastDFS</h1>
+                    
+                    
+                    <h2 class="subheading">分布式文件系统-FastDFS</h2>
+                    
+                    <span class="meta">Posted by Antony on January 7, 2017</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h3 id="一fastdfs简介">一、FastDFS简介</h3>
+<blockquote>
+  <p><code class="highlighter-rouge">FastDFS</code>是由国人余庆所开发，其项目地址：https://github.com/happyfish100
+<code class="highlighter-rouge">FastDFS</code>是一个轻量级的开源分布式文件系统，主要解决了大容量的文件存储和高并发访问的问题，文件存取时实现了负载均衡。
+支持存储服务器在线扩容,支持相同的文件只保存一份,节约磁盘。
+<code class="highlighter-rouge">FastDFS</code>只能通过Client API访问，不支持POSIX访问方式。
+FastDFS适合中大型网站使用，用来存储资源文件(如：图片、文档、视频等)</p>
+</blockquote>
+
+<h3 id="二fastdfs组成部分及其它名词">二、FastDFS组成部分及其它名词</h3>
+<h4 id="1tracker-server">1、tracker server</h4>
+<p>跟踪服务器：用来调度来自客户端的请求。且在内存中记录所有存储组和存储服务器的信息状态。</p>
+<h4 id="2storage-server">2、storage server</h4>
+<p>存储服务器：用来存储文件(data)和文件属性(metadata)</p>
+<h4 id="3client">3、client</h4>
+<p>客户端：业务请求发起方，通过专用接口基于TCP协议与<code class="highlighter-rouge">tracker</code>以及<code class="highlighter-rouge">storage server</code>进行交互</p>
+<h4 id="group"><code class="highlighter-rouge">group</code></h4>
+<p>组，也可称为卷：同组内上的文件是完全相同的</p>
+<h4 id="文件标识"><code class="highlighter-rouge">文件标识</code></h4>
+<p>包括两部分：组名和文件名(包含路径)</p>
+<h4 id="meta-data"><code class="highlighter-rouge">meta data</code></h4>
+<p>文件相关属性：键值对(Key Value Pair)方式</p>
+<h4 id="fid"><code class="highlighter-rouge">fid</code></h4>
+<p>文件标识符：
+例如：
+<code class="highlighter-rouge">group1/M00/00/00/CgEOxVegXB2AdYafAAAB0b8tBbQ9155303</code>
+<code class="highlighter-rouge">group_name</code>：存储组的组名；上传完成后，需要客户端自行保存
+<code class="highlighter-rouge">M##</code>：服务器配置的虚拟路径，与磁盘选项store_path#对应
+两级以两位16进制数字命名的目录
+<code class="highlighter-rouge">文件名</code>：与原文件名并不相同；由storage server根据特定信息生成。文件名包含：源存储服务器的IP地址、文件创建时间戳、文件大小、随机数和文件扩展名等</p>
+<h3 id="三fastdfs同步机制">三、FastDFS同步机制</h3>
+<blockquote>
+  <p>1、同一组内的storage server之间是对等的，文件上传、删除等操作可以在任意一台storage server上进行；
+2、文件同步只在同组内的storage server之间进行，采用push方式，即源服务器同步给目标服务器；
+3、源头数据才需要同步，备份数据不需要再次同步，否则就构成环路了；
+上述第二条规则有个例外，就是新增加一台storage server时，由已有的一台storage server将已有的所有数据（包括源头数据和备份数据）同步给该新增服务器。</p>
+</blockquote>
+
+<h3 id="四fastdfs与集中存储方式对比">四、FastDFS与集中存储方式对比</h3>
+<p><img src="http://obbogqhb1.bkt.clouddn.com/fastdfs2.png" alt="enter image description here" /></p>
+<h3 id="五fastdfs和mogilefs对比">五、FastDFS和mogileFS对比</h3>
+<p><img src="http://obbogqhb1.bkt.clouddn.com/fastdfs1.png" alt="enter image description here" /></p>
+
+<h3 id="六fastdfs安装配置">六、FastDFS安装配置</h3>
+<h4 id="1安装开发环境">1、安装开发环境</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># yum groupinstall "Development Tools" "Server platform Development"
+</code></pre>
+</div>
+<h4 id="2安装libfastcommon">2、安装libfastcommon</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># git clone https://github.com/happyfish100/libfastcommon.git
+# cd libfastcommon/
+# ./make.sh 
+# ./make.sh install
+</code></pre>
+</div>
+<h4 id="3安装fastdfs">3、安装fastdfs</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># cd /root/
+# git clone https://github.com/happyfish100/fastdfs.git
+# cd fastdfs/
+# ./make.sh 
+# ./make.sh install
+</code></pre>
+</div>
+<h4 id="tracker-配置">tracker 配置</h4>
+<p>配置文件修改：根据需求修改</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># cd /etc/fdfs
+# cp tracker.conf.sample tracker.conf
+# vim /etc/fdfs/tracker.conf
+  base_path=/data/fdfs/tracker # 存储日志及tracker的状态信息
+</code></pre>
+</div>
+
+<p>启动服务（Centos6）：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># mkdir -pv /data/fdfs/tracker
+# service fdfs_trackerd start
+</code></pre>
+</div>
+<p>启动服务（Centos7）方式一：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># mkdir -pv /data/fdfs/tracker
+# /etc/init.d/fdfs_trackerd start
+</code></pre>
+</div>
+<p>启动服务（Centos7）方式二：
+添加systemd的units文件</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># cat &gt; /usr/lib/systemd/system/fdfs_trackerd &lt;&lt; EOF
+# Systemd unit file for default tomcat
+# 
+
+[Unit]
+Description=FastDFS tracker script
+After=syslog.target network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf
+
+
+[Install]
+WantedBy=multi-user.target
+EOF
+</code></pre>
+</div>
+<p>通过systemd启动</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>systemctl start fdfs_trackerd.service
+# ss -tnl|grep 22122
+LISTEN     0      128          *:22122                    *:*  
+</code></pre>
+</div>
+<h4 id="storage-配置">storage 配置</h4>
+<p>根据需求修改</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># cd /etc/fdfs
+# cp storage.conf.sample storage.conf
+# vim /etc/fdfs/storage.conf
+  group_name=group1  #指定组名
+  base_path=/data/fdfs/storage # 用于存储数据
+  store_path_count=2 # 设置设备数量
+  store_path0=/data/fdfs/storage/m0 #指定存储路径0
+  store_path1=/data/fdfs/storage/m1 #指定存储路径1
+  # 注意：同一组内存储路径不能冲突，例如：下一个节点的存储路径就是m2,m3....等
+  tracker_server=10.1.14.197:22122 #指定tracker
+</code></pre>
+</div>
+<p>启动服务（Centos6）：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># mkdir -pv /data/fdfs/storage/{m0,m1} # 创建数据目录
+# service fdfs_storaged start
+</code></pre>
+</div>
+<p>启动服务（Centos7）方式一：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># mkdir -pv /data/fdfs/storage/{m0,m1} # 创建数据目录
+# /etc/init.d/fdfs_storaged start
+</code></pre>
+</div>
+<p>启动服务（Centos7）方式二：
+添加systemd的units文件</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># mkdir -pv /data/fdfs/storage/{m0,m1} # 创建数据目录
+
+# cat &gt; /usr/lib/systemd/system/fdfs_trackerd &lt;&lt; EOF
+# Systemd unit file for default fastdfs storage
+# 
+
+[Unit]
+Description=FastDFS storage script
+After=syslog.target network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/fdfs_storaged /etc/fdfs/storage.conf
+
+
+[Install]
+WantedBy=multi-user.target
+EOF
+</code></pre>
+</div>
+<p>通过systemd启动</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>systemctl start fdfs_storaged.service
+# ss -tnl|grep 23000
+LISTEN     0      128          *:23000                    *:*   
+</code></pre>
+</div>
+<h4 id="client配置">client配置</h4>
+<p>修改客户端配置文件</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>base_path=/data/fdfs/client
+tracker_server=10.1.14.197:22122
+</code></pre>
+</div>
+<h3 id="七测试fastdfs">七、测试FastDFS</h3>
+<h4 id="1上传文件">1、上传文件</h4>
+<p>fdfs_upload_file <config_file> <local_filename> [storage_ip:port] [store_path_index]</local_filename></config_file></p>
+<div class="highlighter-rouge"><pre class="highlight"><code># fdfs_upload_file /etc/fdfs/client.conf /etc/issue
+group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930
+</code></pre>
+</div>
+<h4 id="2查看文件">2、查看文件</h4>
+<p>fdfs_file_info <config_file> <file_id></file_id></config_file></p>
+<div class="highlighter-rouge"><pre class="highlight"><code># fdfs_file_info /etc/fdfs/client.conf group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930
+
+source storage id: 0
+source ip address: 10.1.14.198
+file create timestamp: 2016-07-18 20:04:59
+file size: 23
+file crc32: 2097312431 (0x7D0272AF)
+</code></pre>
+</div>
+<h4 id="3下载文件">3、下载文件</h4>
+<p>fdfs_download_file <config_file> <file_id> [local_filename] [<download_offset> <download_bytes>]</download_bytes></download_offset></file_id></config_file></p>
+<div class="highlighter-rouge"><pre class="highlight"><code># fdfs_download_file /etc/fdfs/client.conf group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930 /tmp/issue
+</code></pre>
+</div>
+<h4 id="4查看存储节点状态">4、查看存储节点状态</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># fdfs_monitor /etc/fdfs/client.conf
+[2016-08-03 11:58:20] DEBUG - base_path=/data/fdfs/client, connect_timeout=30, network_timeout=60, tracker_server_count=1, anti_steal_token=0, anti_steal_secret_key length=0, use_connection_pool=0, g_connection_pool_max_idle_time=3600s, use_storage_id=0, storage server id count: 0
+
+server_count=1, server_index=0
+
+tracker server is 10.1.14.197:22122
+
+group count: 1
+
+Group 1:
+group name = mage1
+disk total space = 18898 MB
+disk free space = 17222 MB
+trunk free space = 0 MB
+storage server count = 2
+active server count = 2
+storage server port = 23000
+storage HTTP port = 8888
+store path count = 1
+subdir count per path = 256
+current write server index = 1
+current trunk file id = 0
+
+	Storage 1:
+		id = 10.1.14.198
+		ip_addr = 10.1.14.198  ACTIVE
+		http domain = 
+		version = 5.08
+		join time = 2016-08-03 20:40:46
+		up time = 2016-08-03 11:58:16
+		total storage = 18898 MB
+		free storage = 17222 MB
+		upload priority = 10
+		store_path_count = 1
+		subdir_count_per_path = 256
+		storage_port = 23000
+		storage_http_port = 8888
+		current_write_path = 0
+		source storage id = 
+		if_trunk_server = 0
+		connection.alloc_count = 256
+		connection.current_count = 0
+		connection.max_count = 0
+		total_upload_count = 1
+		success_upload_count = 1
+		total_append_count = 0
+		success_append_count = 0
+		total_modify_count = 0
+		success_modify_count = 0
+		total_truncate_count = 0
+		success_truncate_count = 0
+		total_set_meta_count = 0
+		success_set_meta_count = 0
+		total_delete_count = 0
+		success_delete_count = 0
+		total_download_count = 0
+		success_download_count = 0
+		total_get_meta_count = 0
+		success_get_meta_count = 0
+		total_create_link_count = 0
+		success_create_link_count = 0
+		total_delete_link_count = 0
+		success_delete_link_count = 0
+		total_upload_bytes = 23
+		success_upload_bytes = 23
+		total_append_bytes = 0
+		success_append_bytes = 0
+		total_modify_bytes = 0
+		success_modify_bytes = 0
+		stotal_download_bytes = 0
+		success_download_bytes = 0
+		total_sync_in_bytes = 0
+		success_sync_in_bytes = 0
+		total_sync_out_bytes = 0
+		success_sync_out_bytes = 0
+		total_file_open_count = 1
+		success_file_open_count = 1
+		total_file_read_count = 0
+		success_file_read_count = 0
+		total_file_write_count = 1
+		success_file_write_count = 1
+		last_heart_beat_time = 2016-08-03 11:58:15
+		last_source_update = 2016-08-03 20:43:55
+		last_sync_update = 1970-01-01 08:00:00
+		last_synced_timestamp = 1970-01-01 08:00:00 
+	Storage 2:
+		id = 10.1.14.199
+		ip_addr = 10.1.14.199  ACTIVE
+		http domain = 
+		version = 5.08
+		join time = 2016-08-03 20:42:13
+		up time = 2016-08-03 11:58:08
+		total storage = 18898 MB
+		free storage = 17222 MB
+		upload priority = 10
+		store_path_count = 1
+		subdir_count_per_path = 256
+		storage_port = 23000
+		storage_http_port = 8888
+		current_write_path = 0
+		source storage id = 10.1.14.198
+		if_trunk_server = 0
+		connection.alloc_count = 256
+		connection.current_count = 0
+		connection.max_count = 0
+		total_upload_count = 0
+		success_upload_count = 0
+		total_append_count = 0
+		success_append_count = 0
+		total_modify_count = 0
+		success_modify_count = 0
+		total_truncate_count = 0
+		success_truncate_count = 0
+		total_set_meta_count = 0
+		success_set_meta_count = 0
+		total_delete_count = 0
+		success_delete_count = 0
+		total_download_count = 0
+		success_download_count = 0
+		total_get_meta_count = 0
+		success_get_meta_count = 0
+		total_create_link_count = 0
+		success_create_link_count = 0
+		total_delete_link_count = 0
+		success_delete_link_count = 0
+		total_upload_bytes = 0
+		success_upload_bytes = 0
+		total_append_bytes = 0
+		success_append_bytes = 0
+		total_modify_bytes = 0
+		success_modify_bytes = 0
+		stotal_download_bytes = 0
+		success_download_bytes = 0
+		total_sync_in_bytes = 23
+		success_sync_in_bytes = 23
+		total_sync_out_bytes = 0
+		success_sync_out_bytes = 0
+		total_file_open_count = 1
+		success_file_open_count = 1
+		total_file_read_count = 0
+		success_file_read_count = 0
+		total_file_write_count = 1
+		success_file_write_count = 1
+		last_heart_beat_time = 2016-08-03 11:58:07
+		last_source_update = 1970-01-01 08:00:00
+		last_sync_update = 2016-08-03 20:43:57
+		last_synced_timestamp = 2016-08-03 20:43:55 (0s delay)
+
+</code></pre>
+</div>
+<h3 id="八配置nginx为storage-server提供http访问接口">八、配置nginx为storage server提供http访问接口</h3>
+<h4 id="1下载fastdfs-nginx-module">1、下载fastdfs-nginx-module</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># git clone https://github.com/happyfish100/fastdfs-nginx-module.git
+</code></pre>
+</div>
+<h4 id="2下载nginx源码并编译支持fastdfs">2、下载nginx源码，并编译支持fastdfs</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># 安装依赖程序
+# yum install openssl-devel pcre-devel -y &amp;&gt;/dev/null
+
+# wget http://nginx.org/download/nginx-1.10.1.tar.gz &amp;&gt;/dev/null
+
+# tar xf /root/nginx-1.10.1.tar.gz
+
+# cd /root/nginx-1.10.1
+# useradd -r nginx &amp;&gt;/dev/null
+
+# ./configure --prefix=/usr/local/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx/nginx.pid --lock-path=/var/lock/nginx.lock --user=nginx --group=nginx --with-http_ssl_module --with-http_stub_status_module --with-pcre --add-module=../fastdfs-nginx-module/src
+# make
+# make install
+</code></pre>
+</div>
+<h4 id="3复制配置文件">3、复制配置文件</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># cp /root/fastdfs-nginx-module/src/mod_fastdfs.conf  /etc/fdfs/
+# cp /root/fastdfs-5.0.8/conf/{http.conf,mime.types}  /etc/fdfs/
+</code></pre>
+</div>
+<p>注意：<code class="highlighter-rouge">fastdfs-5.0.8</code>为<code class="highlighter-rouge">fastdfs</code>源码目录，如为更改，应叫<code class="highlighter-rouge">fastdfs</code></p>
+<h4 id="4配置fastdfs-nginx-module配置文件">4、配置fastdfs-nginx-module配置文件</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># vim /etc/fdfs/mod_fastdfs.conf
+base_path=/data/fdfs/storage #存储节点的目录位置
+tracker_server=10.1.14.197:22122 #制定tracker-server
+storage_server_port=23000
+group_name=mage1  #制定组名
+url_have_group_name = true  #访问路径中是否包括组名
+store_path_count=1 #配置路径个数
+store_path0=/data/fdfs/storage/m0  #指定要查看的路径
+
+[group1]
+group_name=mage1
+storage_server_port=23000
+store_path_count=1
+store_path0=/data/fdfs/storage/m0
+</code></pre>
+</div>
+<h4 id="5配置nginx">5、配置nginx</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># vim /etc/nginx/nginx.conf
+location ~ /mage[0-9]+/M00/ {
+	root /data/fdfs/storage/m0/data/;
+	ngx_fastdfs_module;
+}		
+# cat &gt;&gt; /etc/profile.d/nginx.sh &lt;&lt; EOF
+export PATH=$PATH:/usr/local/nginx/sbin
+EOF
+
+# source /etc/profile.d/nginx.sh
+
+</code></pre>
+</div>
+<h4 id="6为存储文件路径穿件链接至m00">6、为存储文件路径穿件链接至M00</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># ln -sv /data/fdfs/storage/m0/data  /data/fdfs/storage/m0/data/M00 
+</code></pre>
+</div>
+<h4 id="7启动nginx和重启storage并上传文件测试">7、启动nginx和重启storage并上传文件测试</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code>启动nginx
+# nginx -t
+# nginx
+# /etc/init.d/fdfs_storaged restart
+# ss -tnl|grep -E "(80|23000)"
+LISTEN     0      128          *:80                       *:*                  
+LISTEN     0      128          *:23000                    *:*  
+
+</code></pre>
+</div>
+<p><strong>上传文件</strong></p>
+<div class="highlighter-rouge"><pre class="highlight"><code># fdfs_upload_file /etc/fdfs/client.conf /usr/share/wallpapers/CentOS7/contents/images/2560x1600.jpg
+mage1/M00/00/00/CgEOx1ehc2eATt6RAA6q2wjnW8s035.jpg
+</code></pre>
+</div>
+<p><strong>查看测试</strong>
+<img src="http://obbogqhb1.bkt.clouddn.com/fastdfs3.png" alt="enter image description here" /></p>
+
+<blockquote>
+  <p>作者：Antony WX&amp;QQ：1257465991
+Q/A：如有问题请慷慨提出</p>
+</blockquote>
+
+
+                <hr style="visibility: hidden;">
+
+                
+                <!-- 多说 Share start -->
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2017/01/07/分布式文件系统-FastDFS"
+                    data-title="分布式文件系统-FastDFS"
+                    data-url="http://localhost:4000/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/"
+                    data-images="http://localhost:4000/img/post-bg-js-module.jpg"
+                    data-content="一、FastDFS简介
+
+  FastDFS是由国人余庆所开发，其项目地址：https://github.com/happyfish100
+FastDFS... | Antony 的博客 | Antony Blog " >
+                    <div class="ds-share-inline">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/" data-toggle="tooltip" data-placement="top" title="为什么你的Linux物理内存还有很多，却开始使用swap?">
+                        Previous<br>
+                        <span>为什么你的Linux物理内存还有很多，却开始使用swap?</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/" data-toggle="tooltip" data-placement="top" title="制作并安装FastDFS的RPM程序包">
+                        Next<br>
+                        <span>制作并安装FastDFS的RPM程序包</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2017/01/07/分布式文件系统-FastDFS"
+                        data-title="分布式文件系统-FastDFS"
+                        data-url="http://localhost:4000/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#FastDFS" title="FastDFS" rel="3">
+                                    FastDFS
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#分布式存储" title="分布式存储" rel="2">
+                                    分布式存储
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#ansible" title="ansible" rel="2">
+                                    ansible
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#自动化工具" title="自动化工具" rel="2">
+                                    自动化工具
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#aws" title="aws" rel="2">
+                                    aws
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://xinzong.blog.51cto.com/">51cto</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'zantony';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/zhao-liang-86-49">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/5040142622">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/ZAntony">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Antony Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="渴望伯克利，梦想free的小青年">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Antony 的博客 | Antony Blog</title>
+
+    <link rel="canonical" href="http://localhost:4000/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Antony Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Antony Blog</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">If I have been able to see further, it was only because I stood on the shoulders of giants.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+	<div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- PostList Container -->
+    		<div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                postlist-container
+            ">
+    			
+<div class="post-preview">
+    <a href="/2017/01/19/CoreDump/">
+        <h2 class="post-title">
+            Linux系统异常-CoreDump详解
+        </h2>
+        
+        <h3 class="post-subtitle">
+            core dump
+        </h3>
+        
+        <div class="post-content-preview">
+            CoreDump
+
+http://linux.die.net/man/5/core
+
+什么是core dump
+
+core dump又叫核心转储, 当程序运行过程中发生异常, 程序异常退出时, 由操作系 统把程序当前的内存状况存储在一个core文件中, 叫core dump。core dump在应用 crash掉之后对问题的诊断是很有帮助的。而在默认安装的时候core dump是关闭状 态的...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 19, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/13/IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/">
+        <h2 class="post-title">
+            IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp
+        </h2>
+        
+        <h3 class="post-subtitle">
+            L2TP/IPSEC VPN
+        </h3>
+        
+        <div class="post-content-preview">
+            VPN原理
+
+http://www.cisco.com/support/zh/105/IPSECpart1.shtml#glossary
+
+http://www.china-ccie.com/doc/vpn/vpn.html
+
+Install ppp openswan and xl2tpd
+
+
+$ sudo apt-get install openswan xl2tpd ppp lsof
+
+...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 13, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/12/aws%E8%87%AA%E5%AE%9A%E4%B9%89AMI-UUID%E7%9B%B8%E5%90%8C%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/">
+        <h2 class="post-title">
+            aws自定义AMI-UUID相同处理方法
+        </h2>
+        
+        <h3 class="post-subtitle">
+            实例都是从同一个AMI 上创建
+        </h3>
+        
+        <div class="post-content-preview">
+            
+  Note: 在制作Centos 7 AMI并进行使用时，我们发现：如果将两个相同AMI挂载到一个操作系统的时候，会出现因为UUID相同，导致不能挂载的问题(至于为什么将两个相同的AMI挂载到一个操作系统：当误删除用户的密钥文件或者不能登录系统时，我们不得不将其挂载到其他操作系统)
+
+
+问题重现
+
+
+$ sudo fdisk -l
+
+Disk /dev/xvda: 53.7 GB, 53...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 12, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/12/aws-ec2-%E5%8F%8C%E7%BD%91%E5%8D%A1%E9%97%AE%E9%A2%98/">
+        <h2 class="post-title">
+            aws-ec2-双网卡问题
+        </h2>
+        
+        <h3 class="post-subtitle">
+            Aws ec2
+        </h3>
+        
+        <div class="post-content-preview">
+            问题描述
+
+在已存在的EC2上新添加网卡后发现，凡是和eth0在同一个网段的只能通过eth0访问，不能通过eth1。同样的，在eth1网段的只能通过eth1访问，不能通过eth0访问。 如果既不在eth0也不再eth0 默认走eth0(在没有修改路由表的前提下，默认路由是eth0)
+
+问题分析
+
+之所以出现您列出的网络访问现象，是因为目前的实例当中有两块网卡，而发生故障的时候，路由的走向是从...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 12, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/10/Ss-Client-Config/">
+        <h2 class="post-title">
+            Ss-Client-Config
+        </h2>
+        
+        <h3 class="post-subtitle">
+            Ss-Client-Config
+        </h3>
+        
+        <div class="post-content-preview">
+            Mac local configure
+
+
+$ sudo pip install shadowsocks
+
+$ sudo vim /etc/shadowsock-cient.json
+
+{
+
+    "server":"SERVER_IP",
+
+    "server_port":PORT,
+
+    "password":"PASSWORD",
+
+    "timeout":600,
+
+ ...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 10, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/%E5%88%B6%E4%BD%9C%E5%B9%B6%E5%AE%89%E8%A3%85FastDFS%E7%9A%84RPM%E7%A8%8B%E5%BA%8F%E5%8C%85/">
+        <h2 class="post-title">
+            制作并安装FastDFS的RPM程序包
+        </h2>
+        
+        <h3 class="post-subtitle">
+            FastDFS rpm
+        </h3>
+        
+        <div class="post-content-preview">
+            一、安装并制作rpm包libfastcommon
+注意:生成的rpm包全都在/root/rpmbuild/RPMS/下面，可以再其他主机直接使用
+#!/bin/bash
+# Author: Antony
+# rpm build for fastdfs
+# Mail: zhaoxin@altamob.com,go80800@163.com
+# Desc: build libfastcommmo...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-FastDFS/">
+        <h2 class="post-title">
+            分布式文件系统-FastDFS
+        </h2>
+        
+        <h3 class="post-subtitle">
+            分布式文件系统-FastDFS
+        </h3>
+        
+        <div class="post-content-preview">
+            一、FastDFS简介
+
+  FastDFS是由国人余庆所开发，其项目地址：https://github.com/happyfish100
+FastDFS是一个轻量级的开源分布式文件系统，主要解决了大容量的文件存储和高并发访问的问题，文件存取时实现了负载均衡。
+支持存储服务器在线扩容,支持相同的文件只保存一份,节约磁盘。
+FastDFS只能通过Client API访问，不支持POSIX访问方...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E7%9A%84Linux%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E8%BF%98%E6%9C%89%E5%BE%88%E5%A4%9A-%E5%8D%B4%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8swap/">
+        <h2 class="post-title">
+            为什么你的Linux物理内存还有很多，却开始使用swap?
+        </h2>
+        
+        <h3 class="post-subtitle">
+            linux物理内存分析
+        </h3>
+        
+        <div class="post-content-preview">
+            
+  现在的机器上都是有多个CPU和多个内存块的。以前我们都是将内存块看成是一大块内存，所有CPU到这个共享内存的访问消息是一样的。
+
+
+
+  这就是之前普遍使用的SMP模型。但是随着处理器的增加，共享内存可能会导致内存访问冲突越来越厉害，且如果内存访问达到瓶颈的时候，性能就不能随之增加。NUMA（Non-Uniform Memory Access）就是这样的环境下引入的一个模型。比如一台机...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/python-%E5%BF%AB%E9%80%9F%E6%94%B9%E9%80%A0-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+        <h2 class="post-title">
+            python-快速改造：基础知识
+        </h2>
+        
+        <h3 class="post-subtitle">
+            python基础知识及了解
+        </h3>
+        
+        <div class="post-content-preview">
+            一、python安装之pyenv
+windows下安装Python
+（1）打开web浏览器，访问Python官方站点http://www.python.org
+
+（2）点击Download，或者在首页点击下载
+
+（3）下载所需版本，目前最新版本为3.5.2
+
+（4）下载完成后双击并执行安装
+CentOS下安装Python和pyenv
+
+  pyenv：pyenv是一款python版本管理器，...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2017/01/07/git/">
+        <h2 class="post-title">
+            Git基础
+        </h2>
+        
+        <h3 class="post-subtitle">
+            Git基础配置
+        </h3>
+        
+        <div class="post-content-preview">
+            一、git install
+
+Ubuntu
+
+sudo apt-get install git
+
+Centos
+
+yum install git  
+
+Mac
+
+brew install git
+
+
+
+
+二、git initialization configure
+
+
+git config --global user.name "Your Name"
+
+git config --global...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Antony on January 7, 2017
+    </p>
+</div>
+<hr>
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    
+    <li class="next">
+        <a href="/page2">Older Posts &rarr;</a>
+    </li>
+    
+</ul>
+
+
+    		</div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                                <a href="/tags/#FastDFS" title="FastDFS" rel="3">
+                                    FastDFS
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#分布式存储" title="分布式存储" rel="2">
+                                    分布式存储
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#ansible" title="ansible" rel="2">
+                                    ansible
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#自动化工具" title="自动化工具" rel="2">
+                                    自动化工具
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#aws" title="aws" rel="2">
+                                    aws
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+                        
+                            <img src="/img/zhaoxin1.jpg" />
+                        
+                        
+                            <p>敲敲键盘，赚点小钱，出去消遣!</p>
+                        
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://www.zhihu.com/people/zhao-liang-86-49">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a target="_blank" href="http://weibo.com/u/5040142622">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://github.com/ZAntony">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                        </ul>
+                    </div>
+                </section>
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://xinzong.blog.51cto.com/">51cto</a></li>
+                    
+                </ul>
+                
+    		</div>
+        
+	</div>
+</div>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/zhao-liang-86-49">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/5040142622">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/ZAntony">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Antony Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="渴望伯克利，梦想free的小青年">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Linux三剑客之grep - Antony 的博客 | Antony Blog</title>
+
+    <link rel="canonical" href="http://localhost:4000/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Antony Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-js-module.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-js-module.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#grep" title="grep">grep</a>
+                        
+                        <a class="tag" href="/tags/#正则" title="正则">正则</a>
+                        
+                    </div>
+                    <h1>Linux三剑客之grep</h1>
+                    
+                    
+                    <h2 class="subheading">Grep 常见用法及基础介绍</h2>
+                    
+                    <span class="meta">Posted by Antony on January 7, 2017</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<h3 id="一linux文本处理三剑客">一、Linux文本处理三剑客</h3>
+<blockquote>
+  <p>Linux上有三种常用的文本处理工具，分别为：grep（egrep、fgrep）、sed、awk。今天主要给大家介绍一下三剑客中的第一剑：grep伐木累。</p>
+  <h3 id="二grep是什么">二、grep是什么？</h3>
+  <p><code class="highlighter-rouge">grep</code> 全称（Globally search a Regular Expression and Print）是一个文本搜索工具，基于“pattern”（这里指的是过滤模式，多指正则表达式）对给定的文本进行搜索。</p>
+</blockquote>
+
+<blockquote>
+  <p>grep家族：
+		1.grep：支持使用基本正则表达式；
+        2.egrep：支持使用扩展正则表达式；
+		3.fgrep：不支持使用正则表达式；
+       # 虽然正则表达式有强大的引擎，但是在单独过滤字符上面 fgrep要起到很大作用，这个作用在日志文件小的时候可能体现不出来，但是当文件达到几亿行就能体现出fgrep的搜索效率。（对大型web网站一天的日志量到几亿行是很轻松的，甚至更多）</p>
+</blockquote>
+
+<h3 id="三grep与egrep的主要参数">三、grep与egrep的主要参数</h3>
+<p>在介绍正则表达式前，先介绍一下grep的常用参数，这里所有涉及正则表达式meta字符都会在后续中展开！
+常用选项：
+–color=auto：对匹配到的文本着色后高亮显示；（默认centos7对grep、egrep、fgrep已经设置参数，此处不做过多例子）</p>
+<h4 id="alias">alias</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code>alias cp='cp -i'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias l.='ls -d .* --color=auto'
+alias ll='ls -l --color=auto'
+alias ls='ls --color=auto'
+alias mv='mv -i'
+alias rm='rm -i'
+alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+</code></pre>
+</div>
+<h4 id="-i忽略字符大小写">-i：忽略字符大小写；</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># cat test
+Hello World
+How are you?
+Mageedu is very good!
+# grep "^H" test
+Hello World
+How are you?
+# grep "^h" test
+# grep -i "^h" test
+Hello World
+How are you?
+</code></pre>
+</div>
+<h4 id="-o仅显示匹配-到的文本自身">-o：仅显示匹配 到的文本自身；</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep "good" test
+Mageedu is very good!
+[root@localhost ~]# grep -o "good" test
+good
+-v，反向匹配；
+# cat test
+Hello World
+How are you?
+Mageedu is very good!
+[root@localhost ~]# grep  "M.*[[:punct:]]$" test
+Mageedu is very good!
+[root@localhost ~]# grep -v "M.*[[:punct:]]$" test
+Hello World
+How are you?
+</code></pre>
+</div>
+<h4 id="-q-静默模式不输出任何信息省得把输出放到devnull节省系统资源">-q, 静默模式，不输出任何信息；（省得把输出放到/dev/null，节省系统资源）</h4>
+<p>此处只是为了得到一个返回状态</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep -q "good" test
+# echo $?
+0
+# grep -q "goodddddddd" test
+# echo $?
+1
+</code></pre>
+</div>
+<h4 id="-p-支持使用pcre正则表达式per语言">-P, 支持使用pcre正则表达式（per语言）；</h4>
+<h4 id="-e-pattern可以同时匹配多个模式">-e PATTERN可以同时匹配多个模式</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># cat test
+Hello World
+How are you?
+Mageedu is very good!
+[root@localhost ~]# grep -e "good" -e "you" test
+How are you?
+Mageedu is very good!
+</code></pre>
+</div>
+<h4 id="-f-filefile为每行包含了一个pattern的文本文件即grep-script读取文件中的每一行pattern来对指定file进行过滤">-f FILEFILE为每行包含了一个pattern的文本文件，即grep script；（读取文件中的每一行pattern来对指定FILE进行过滤）</h4>
+<p>-f与-e类似，都是匹配多个模式，只是-f选项读取的是文本文件中的模式，逐行匹配。</p>
+<h4 id="-a-num-显示匹配出的后行">-A NUM 显示匹配出的后#行</h4>
+<h4 id="-b-num-显示匹配出的前行">-B NUM 显示匹配出的前#行</h4>
+<h4 id="-c-num显示匹配出的前后行">-C NUM显示匹配出的前后#行</h4>
+<div class="highlighter-rouge"><pre class="highlight"><code># cat test
+Hello World
+How are you?
+Mageedu is very good!
+# grep -A 1 "you" test
+How are you?
+Mageedu is very good!
+# grep -B 1 "you" test
+Hello World
+How are you?
+# grep -C 1 "you" test
+Hello World
+How are you?
+Mageedu is very good!
+</code></pre>
+</div>
+<h4 id="其他参数">其他参数</h4>
+<p>下面参数针对grep命令而言：
+-E：支持扩展的正则表达式相当与egrep；
+-F, –fixed-strings：支持使用固定字符串，不支持正则表达式，相当于fgrep；</p>
+
+<h3 id="四grep使用及正则表达式">四、grep使用及正则表达式</h3>
+<h4 id="1正则表达式的组成">1.正则表达式的组成</h4>
+<p>a、一般字符：没有特殊意义的字符
+b、特殊字符（meta字符）：元字符，有在正则表达式中有特殊意义</p>
+<h4 id="2下面讲下正则表达式中常见的meta字符元字符">2.下面讲下正则表达式中常见的meta字符(元字符)</h4>
+<h5 id="a基本正则表达式meta字符">a、基本正则表达式meta字符</h5>
+<h5 id="1字符匹配">（1）字符匹配</h5>
+<h6 id="匹配任意单个字符">”.”:匹配任意单个字符；</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep r..t /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+operator:x:11:0:operator:/root:/sbin/nologin
+ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+</code></pre>
+</div>
+<h6 id="-匹配方位内的任意单个数字">[ ]:匹配方位内的任意单个数字；</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code># fdisk -l |grep "[sh]d[a-z]\&gt;"
+Disk /dev/sda: 128.8 GB, 128849018880 bytes, 251658240 sectors
+</code></pre>
+</div>
+<h6 id="匹配范围外的任意单个数字托字符指取反之意下面会讲到">[^]匹配范围外的任意单个数字：托字符指取反之意,下面会讲到</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code># cat test
+Hello World
+how are you?
+Mageedu is very good!
+</code></pre>
+</div>
+<h6 id="upper所有大写字母">[[:upper:]]：所有大写字母</h6>
+<pre><code class="language-`"># grep "^[^[:upper:]]" test
+how are you?
+</code></pre>
+<h6 id="其他表示数字的元字符">其他表示数字的元字符</h6>
+<p>[[:upper:]]：所有大写字母；
+[[:lower:]]：所有小写字母；
+[[:digit:]]：所有的数字；
+[[:alpha:]]：所有字母；
+[[:alnum:]]：所有字母和数字；
+[[:space:]]：空白字符；
+[[:punct:]]：标点符号；</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># cat test
+Hello World
+how are you?
+Mageedu is very good!
+# grep "[[:upper:]][[:lower:]].*[[:space:]]" test
+Hello World
+Mageedu is very good!
+</code></pre>
+</div>
+<h6 id="2匹配次数">（2）匹配次数</h6>
+<p>主要用于限制字符要出现的次数，一般放在出现的次数的字符后面。</p>
+<h6 id="匹配前面的字符任意次01或多次"><code class="highlighter-rouge">*</code>：匹配前面的字符任意次（0,1或多次）；</h6>
+<p>此处*表示前面的字符可以出现也可以不出现，所以将文件中所有的行都匹配出来了</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep "a*" test1
+ab
+aaaabcd
+bcd
+cd
+axxxxxxxd
+</code></pre>
+</div>
+<h6 id="任意长度的任意字符为匹配单个字符为任意次"><code class="highlighter-rouge">.*</code>：任意长度的任意字符（.为匹配单个字符，*为任意次）</h6>
+<p>此处.表示匹配任意单个字符，所以在过滤时，文件中的a必须出现至少一次</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep "a.*" test1
+ab
+aaaabcd
+axxxxxxxd
+cccabbbd
+</code></pre>
+</div>
+<h6 id="匹配前面的字符至少1次"><code class="highlighter-rouge">\+</code>：匹配前面的字符至少1次；</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep "a\+" test1
+ab
+aaaabcd
+axxxxxxxd
+cccabbbd
+</code></pre>
+</div>
+<h6 id="匹配前面的0次或1次即前面的字符可有可无">\?：匹配前面的0次或1次，即前面的字符可有可无；</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep "a\?" test1
+ab
+aaaabcd
+bcd
+cd
+axxxxxxxd
+cccabbbd
+</code></pre>
+</div>
+<h6 id="m固定匹配前面的字符出现m次m为非负数">{\m}：固定匹配前面的字符出现m次，m为非负数；</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep "a\{2\}" test1
+aaaabcd
+aaxxxxxxxd
+cccaabbbd
+</code></pre>
+</div>
+<h6 id="mn至少出现m次至多出现n次">{m,n}:至少出现m次，至多出现n次；</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep "a\{1,3\}" test1
+ab
+aaaabcd
+aaxxxxxxxd
+cccaabbbd
+    \{0,n\}:至多n次；
+    \{m,\}：至少m次；
+</code></pre>
+</div>
+<h5 id="3位置锚定">（3）位置锚定</h5>
+<p>限制使用模式搜索文本，限制模式所匹配到的文本只能出现于目标文本的哪个位置；</p>
+
+<p><code class="highlighter-rouge">^</code>：行首锚定；用于模式的最左侧，^PATTERN
+<code class="highlighter-rouge">$</code>：行尾锚定；用于模式的最右侧，PATTERN$</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># ps -ef|grep "^root.*bash$"
+root       1143   1141  0 09:20 pts/0    00:00:00 -bash
+^PATTERN$：要让PATTERN完全匹配一整行；
+# grep "^hello" /tmp/fstab
+hello
+hello world
+# grep "^hello$" /tmp/fstab
+hello
+</code></pre>
+</div>
+<h6 id="空行">^$：空行；</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code>常用语在文档中过滤多余的空行，-v指取反之意
+# cat test
+Hello World
+
+how are you?
+
+Mageedu is very good!
+
+# grep -v "^$" test
+Hello World
+how are you?
+Mageedu is very good!
+</code></pre>
+</div>
+<h6 id="space用来在匹配不到的时候使用">^[[:space:]]*$：用来在^$匹配不到的时候使用；</h6>
+<p>此处指有的时候空行中包含空白字符，比如空格、制表符等，用^$就过滤不出来了，此处可以使用此命令过滤</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep -v "^$" test
+Hello World
+  
+      
+how are you?
+       
+       
+Mageedu is very good!
+# grep -v "^[[:space:]]*$" test
+Hello World
+how are you?
+Mageedu is very good!
+</code></pre>
+</div>
+<h6 id="或b词首锚定用于单词模式的左侧格式为pattern-bpattern">&lt;或\b：词首锚定，用于单词模式的左侧，格式为&lt;PATTERN, \bPATTERN</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code># fdisk -l|grep "/dev/[sh]d[a-z]"
+Disk /dev/sda: 128.8 GB, 128849018880 bytes, 251658240 sectors
+/dev/sda1   *        2048     1026047      512000   83  Linux
+/dev/sda2         1026048    84912127    41943040   83  Linux
+/dev/sda3        84912128   126855167    20971520   83  Linux
+/dev/sda4       126855168   251658239    62401536    5  Extended
+/dev/sda5       126859264   131055615     2098176   82  Linux swap / Solaris
+# fdisk -l|grep "/dev/[sh]d[a-z]\&gt;"
+Disk /dev/sda: 128.8 GB, 128849018880 bytes, 251658240 sectors
+</code></pre>
+</div>
+<h6 id="或b词尾锚定用于单词模式的右侧格式为pattern-patternb">&gt;或\b：词尾锚定，用于单词模式的右侧，格式为PATTERN&gt;, PATTERN\b</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep "\&lt;root" /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+operator:x:11:0:operator:/root:/sbin/nologin
+</code></pre>
+</div>
+<h6 id="pattern单词锚定">&lt;PATTERN&gt;：单词锚定</h6>
+<div class="highlighter-rouge"><pre class="highlight"><code>单词：由非特殊字符组成的连续字符（字符串）都称为单词；
+# cat /tmp/ifconfig.test 
+/usr/sbin/ifconfig
+/usr/sbin/ifconfig2
+/usr/sbin/ifconfig3
+# grep "ifconfig" /tmp/ifconfig.test 
+/usr/sbin/ifconfig
+/usr/sbin/ifconfig2
+/usr/sbin/ifconfig3
+# grep "\&lt;ifconfig\&gt;" /tmp/ifconfig.test 
+/usr/sbin/ifconfig
+</code></pre>
+</div>
+<h5 id="4分组与引用">（4）分组与引用</h5>
+<p>(PATTERN):将次PATTERN匹配到的字符当做一个整体处理；分组括号中的模式匹配到的字符会被正则表达式引擎自动纪录于变量中，这些变量分别是\1，\2，\3
+    \1：第一组括号中的pattern匹配到的字符串；
+    \2：第二组括号中的pattern匹配到的字符串；</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># grep "^\([[:alnum:]]\+\)\&gt;.*\1$" /etc/passwd
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+nologin:x:5010:5010::/home/nologin:/sbin/nologin
+</code></pre>
+</div>
+<h5 id="b扩展正则表达式meta字符">b、扩展正则表达式meta字符</h5>
+<p>注意：与基本正则表达式不同，扩展表达式在一些参数上可以不使用转意符（\），但是在使用上没有什么区别，这里我举几个例子，其他基本与基本正则表达式使用相同！</p>
+
+<h5 id="此处表示过滤1-255的所有整数">此处表示过滤1-255的所有整数</h5>
+<p><img src="http://zantony.top/uploads/grep.png" alt="enter image description here" /></p>
+<h5 id="此处表示取出绝对路径中的基名">此处表示取出绝对路径中的基名</h5>
+<div class="highlighter-rouge"><pre class="highlight"><code># echo `which pwd`|egrep "[^/]+/?$" 
+/usr/bin/pwd
+# echo `which pwd`|egrep "[^/]+/?$" -o
+pwd
+</code></pre>
+</div>
+<h5 id="此处表示查看rootmageeducentos用户的详细信息">此处表示查看root、mageedu、centos用户的详细信息</h5>
+<div class="highlighter-rouge"><pre class="highlight"><code># egrep "^(root|mageedu|centos)\&gt;" /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+mageedu:x:1000:1000:mageedu:/home/mageedu:/bin/bash
+centos:x:5008:5008::/home/centos:/bin/bash
+</code></pre>
+</div>
+<h4 id="总结">总结</h4>
+<p>（1）字符匹配
+.:匹配任意单个字符；
+<code class="highlighter-rouge">[ ]</code>:匹配方位内的任意单个数字；
+<code class="highlighter-rouge">[^]</code>匹配范围外的任意单个数字；
+<code class="highlighter-rouge">[[:upper:]]</code>：所有大写字母；
+<code class="highlighter-rouge">[[:lower:]]</code>：所有小写字母；
+<code class="highlighter-rouge">[[:digit:]]</code>：所有的数字；
+<code class="highlighter-rouge">[[:alpha:]]</code>：所有字母；
+<code class="highlighter-rouge">[[:alnum:]]</code>：所有字母和数字；
+<code class="highlighter-rouge">[[:space:]]</code>：空白字符；
+<code class="highlighter-rouge">[[:punct:]]</code>：标点符号；
+（2）匹配次数
+主要用于限制字符要出现的次数，一般放在出现的次数的字符后面。
+<code class="highlighter-rouge">*</code>：匹配前面的字符任意次（0,1或多次）；
+<code class="highlighter-rouge">.*</code>：任意长度的任意字符（.为匹配单个字符，*为任意次）
+<code class="highlighter-rouge">+</code>：匹配前面的字符至少1次；
+<code class="highlighter-rouge">?</code>：匹配前面的0次或1次，即前面的字符可有可无；
+<code class="highlighter-rouge"><span class="p">{</span><span class="err">m</span><span class="p">}</span></code>：固定匹配前面的字符出现m次，m为非负数；
+<code class="highlighter-rouge"><span class="p">{</span><span class="err">m,n</span><span class="p">}</span></code>:至少出现m次，至多出现n次；
+<code class="highlighter-rouge"><span class="p">{</span><span class="err">0,n</span><span class="p">}</span></code>:至多n次；
+<code class="highlighter-rouge"><span class="p">{</span><span class="err">m,</span><span class="p">}</span></code>：至少m次；
+（3）位置锚定
+扩展正则表达式中：单词锚定符（&lt;,&gt;）不能去除转意符()
+<code class="highlighter-rouge">^</code>：行首锚定；用于模式的最左侧，^PATTERN
+<code class="highlighter-rouge">$</code>：行尾锚定；用于模式的最右侧，PATTERN$
+<code class="highlighter-rouge">^PATTERN$</code>：要让PATTERN完全匹配一整行；
+<code class="highlighter-rouge">^$</code>：空行；
+<code class="highlighter-rouge">^[[:space:]]*$</code>: 用来在^$匹配不到的时候使用；
+<code class="highlighter-rouge">\&lt;或\b</code>：词首锚定，用于单词模式的左侧，格式为&lt;PATTERN, \bPATTERN
+<code class="highlighter-rouge">\&gt;或\b</code>：词尾锚定，用于单词模式的右侧，格式为PATTERN&gt;, PATTERN\b
+<code class="highlighter-rouge">\&lt;PATTERN\&gt;</code>：单词锚定
+单词：由非特殊字符组成的连续字符（字符串）都称为单词；
+（4）分组与引用
+(PATTERN):将次PATTERN匹配到的字符当做一个整体处理；分组括号中的模式匹配到的字符会被正则表达式引擎自动纪录于变量中，这些变量分别是\1，\2，\3
+<code class="highlighter-rouge">\1</code>：第一组括号中的pattern匹配到的字符串；
+` \2<code class="highlighter-rouge">：第二组括号中的pattern匹配到的字符串
+这里的\1 \2不能省略转意符；
+（5）或者
+   </code> a|b<code class="highlighter-rouge">：a或者b
+    </code>C|cat<code class="highlighter-rouge">：表示C或cat
+   </code>(C|c)at`：表示Cat或cat</p>
+<div class="highlighter-rouge"><pre class="highlight"><code># fdisk -l|grep -E "/dev/(s|h)d[a-z]\&gt;"
+Disk /dev/sda: 128.8 GB, 128849018880 bytes, 251658240 sectors
+</code></pre>
+</div>
+<blockquote>
+  <p>作者：Antony WX&amp;QQ：1257465991
+Q/A：如有问题请慷慨提出</p>
+</blockquote>
+
+
+                <hr style="visibility: hidden;">
+
+                
+                <!-- 多说 Share start -->
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/2017/01/07/Linux三剑客之grep"
+                    data-title="Linux三剑客之grep"
+                    data-url="http://localhost:4000/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/"
+                    data-images="http://localhost:4000/img/post-bg-js-module.jpg"
+                    data-content="一、Linux文本处理三剑客
+
+  Linux上有三种常用的文本处理工具，分别为：grep（egrep、fgrep）、sed、awk。今天主要给大家介绍一... | Antony 的博客 | Antony Blog " >
+                    <div class="ds-share-inline">
+                      <style>
+                        .ds-share-icons-16 {display:none;}
+                      </style>
+                      <ul class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2017/01/07/FastDFS-unti-for-systemd/" data-toggle="tooltip" data-placement="top" title="FastDFS unti for systemd">
+                        Previous<br>
+                        <span>FastDFS unti for systemd</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2017/01/07/Linux%E7%94%A8%E6%88%B7-%E7%94%A8%E6%88%B7%E7%BB%84%E5%8F%8A%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" data-toggle="tooltip" data-placement="top" title="Linux用户、用户组及权限管理">
+                        Next<br>
+                        <span>Linux用户、用户组及权限管理</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/2017/01/07/Linux三剑客之grep"
+                        data-title="Linux三剑客之grep"
+                        data-url="http://localhost:4000/2017/01/07/Linux%E4%B8%89%E5%89%91%E5%AE%A2%E4%B9%8Bgrep/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>
+
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#FastDFS" title="FastDFS" rel="3">
+                                    FastDFS
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#分布式存储" title="分布式存储" rel="2">
+                                    分布式存储
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#ansible" title="ansible" rel="2">
+                                    ansible
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#自动化工具" title="自动化工具" rel="2">
+                                    自动化工具
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#aws" title="aws" rel="2">
+                                    aws
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://xinzong.blog.51cto.com/">51cto</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'zantony';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/zhao-liang-86-49">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/5040142622">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/ZAntony">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Antony Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
