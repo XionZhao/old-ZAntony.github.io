@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         less: {
             expanded: {
                 options: {
-                    paths: ["css"]
+                    paths: ["/css"]
                 },
                 files: {
                     "css/<%= pkg.name %>.css": "less/<%= pkg.name %>.less"
