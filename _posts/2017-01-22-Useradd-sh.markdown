@@ -8,8 +8,7 @@ header-img: "img/useradd.jpg"
 tags:
     - shell
 ---
-#### $1为用户名
-#### $2为用户公钥
+#### `$1`为用户名 `$2`为用户公钥
 
 
 ```
