@@ -219,6 +219,7 @@ tracker_server=10.1.14.197:22122
 ### 七、测试FastDFS
 
 #### 1、上传文件
+
 fdfs_upload_file <config_file> <local_filename> [storage_ip:port] [store_path_index]
 
 ```
@@ -227,9 +228,10 @@ group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930
 ```
 
 #### 2、查看文件
-fdfs_file_info <config_file> <file_id>
-```
 
+fdfs_file_info <config_file> <file_id>
+
+```
 # fdfs_file_info /etc/fdfs/client.conf group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930
 
 source storage id: 0
