@@ -1,0 +1,363 @@
+---
+layout:     post
+title:      "Ruby 环境那些坑"
+subtitle:   "Ruby env keng"
+date:       2017-01-23
+author:     "Antony"
+header-img: "img/ruby.jpg"
+tags:
+    - ruby
+---
+**最近接触了很多ruby程序，除了java之外，让我感觉第二耗时、不是很舒服的语言。但是ruby不让人舒服主要还是网络方面的问题，不过只要稍微配置就能让装ruby程序变得飞快，不用一安装一天。本文做个总结和梳理**
+
+### 先介绍下Ruby相关的各种概念（rvm, gem, bundle, rake, rails等）
+
+#### Ruby
+
+这个就不用多说了
+
+#### RVM
+
+用于帮你安装Ruby环境，帮你管理多个Ruby环境，帮你管理你开发的每个Ruby应用使用机器上哪个Ruby环境。Ruby环境不仅仅是Ruby本身，还包括依赖的第三方Ruby插件。都由RVM管理。
+
+#### Rails
+
+这个也不用多说，著名开发框架。详细看 http://zh.wikipedia.org/wiki/Ruby_on_Rails
+
+#### RubyGems
+
+RubyGems是一个方便而强大的Ruby程序包管理器（ package manager），类似RedHat的RPM.它将一个Ruby应用程序打包到一个gem里，作为一个安装单元。无需安装，最新的Ruby版本已经包含RubyGems了。
+
+#### Gem
+
+Gem是封装起来的Ruby应用程序或代码库。
+
+注：在终端使用的gem命令，是指通过RubyGems管理Gem包。
+
+#### Gemfile
+
+定义你的应用依赖哪些第三方包，bundle根据该配置去寻找这些包。
+
+#### Rake
+
+Rake是一门构建语言，和make类似。Rake是用Ruby写的，它支持自己的DSL用来处理和维护Ruby程序。 Rails用rake扩展来完成多种不容任务，如数据库初始化、更新等。
+
+
+
+Rake is a build language, similar in purpose to make and ant. Like make and ant it’s a Domain Specific Language, unlike those two it’s an internal DSL programmed in the Ruby language.
+
+PS：个人感觉有点类似Symfony2中的app/console
+
+
+#### Rakefile
+
+Rakefile是由Ruby编写，Rake的命令执行就是由Rakefile文件定义。 > In a gem’s context, the Rakefile is extremely useful. It can hold various tasks to help building, testing and debugging your gem, among all other things that you might find useful.
+
+详细：http://rake.rubyforge.org/files/doc/rakefile_rdoc.html
+
+#### Bundle
+
+相当于多个RubyGems批处理运行。在配置文件gemfilel里说明你的应用依赖哪些第三方包，他自动帮你下载安装多个包，并且会下载这些包依赖的包。 > Bundler maintains a consistent environment for ruby applications. It tracks an application’s code and the rubygems it needs to run, so that an application will always have the exact gems (and versions) that it needs to run.
+
+
+
+
+`参考`: 
+
+- https://henter.me/post/ruby-rvm-gem-rake-bundle-rails.html(内容来自这里)
+
+- http://rake.rubyforge.org/
+
+- http://rake.rubyforge.org/files/doc/rakefile_rdoc.html
+
+- http://yinghuayuan8866.blog.163.com/blog/static/2245702720122909571/
+
+- http://www.iteye.com/topic/300375
+
+- http://martinfowler.com/articles/rake.html
+
+- http://ruby-china.org/topics/2223
+
+- http://www.pcw8510.com/?p=1086
+
+
+
+
+
+###  一、Ruby
+
+在安装ruby的时候，有两个问题
+
+- **安装方式**
+
+- **程序包查找**
+
+
+
+对于第一个问题，分为包安装和源码方式编译安装，因为可以选择版本，一般yum或者apt-get源提供的版本不能打倒我们的要求的时候，我们会选择这个。还有一种就是通过ruby的虚拟环境管理程序RVM(跟python的pyenv一样)，可以控制每个目录使用不同版本的ruby，并且安装很简单，本文主要介绍rvm安装。
+
+##### `RVM`安装
+
+```
+
+$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+
+$ \curl -sSL https://get.rvm.io | bash -s stable
+
+$ source ~/.bashrc
+
+$ source ~/.bash_profile
+
+```
+
+修改 RVM 的 Ruby 安装源到 [Ruby China 的 Ruby](https://cache.ruby-china.org/) 镜像服务器，这样能提高安装速度
+
+```
+
+$ echo "ruby_url=https://cache.ruby-china.org/pub/ruby" > ~/.rvm/user/db
+
+```
+
+##### `Ruby`的安装与切换
+
+列出已知的Ruby版本
+
+```
+
+rvm list know
+
+```
+
+安装一个ruby版本
+
+```
+
+
+rvm install 2.2.0 --disable-binary
+
+```
+
+切换ruby版本
+
+```
+
+rvm use 2.2.0
+
+```
+
+如果想设置为默认版本，这样一来以后新打开的控制台默认的 Ruby 就是这个版本
+
+```
+
+rvm use 2.2.0 --default
+
+```
+
+查看已经安装的Ruby
+
+```
+
+rvm list
+
+```
+
+卸载一个已经安装的版本
+
+```
+
+rvm remove 1.8.7
+
+```
+
+### 二、RubyGems
+
+**第二个坑应该就是gem了，经常通过gem安装程序很慢，或者版本出现问题等等问题，我们接下来先介绍下Gems，然后在展开**
+
+>Note: RubyGems是Ruby的一个包管理器，提供了分发Ruby程序和函式库的标准格式“gem”，旨在方便地管理gem安装的工具，以及用于分发gem的服务器。这类似于Python的pip。RubyGems大约创建于2003年11月，从Ruby 1.9版起成为Ruby标准库的一部分
+
+#### 为了方便读者和自己查阅，在前面介绍下gem source
+
+如何使用？(主要用于解决安装的时候慢，将sources改为国内的，速度有明显提升)
+```
+
+$ gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
+
+$ gem sources -l
+
+*** CURRENT SOURCES ***
+
+https://gems.ruby-china.org
+
+# 请确保只有 gems.ruby-china.org
+
+$ gem install rails
+
+如果你使用 Gemfile 和 Bundle (例如：Rails 项目)
+
+```
+
+
+
+#### gemset的使用
+
+`RVM` 不仅可以提供一个多 `Ruby` 版本共存的环境，还可以根据项目管理不同的 `gemset`
+
+` `
+
+`gemset` 可以理解为是一个独立的虚拟 `Gem` 环境，每一个 `gemset` 都是相互独立的。
+
+` `
+
+比如你有两个项目，一个是 `Rails 2.3` 一个是 `rails3. gemset` 可以帮你便捷的建立两套 `Gem` 开发环境，并且方便的切换。
+
+` `
+
+`gemset` 是附加在 `Ruby` 语言版本下面的，例如你用了 `1.9.2`, 建立了一个叫 `rails3` 的 `gemset`,当切换到 `1.8.7` 的时候，`rails3` 这个 `gemset `并不存在。
+
+#### 建立gemset
+
+```
+
+rvm use 1.8.7
+
+rvm gemset create rails23
+
+```
+
+然后可以设定已经建立的gemset作为当前环境
+
+#### use 可以用来切换语言或者gemset
+
+前提是它们已经被安装(或者建立)，并可以在`list`命令中看到
+
+```
+
+rvm use 1.8.7
+
+rvm use 1.8.7@rails23
+
+```
+
+然后所有安装的Gem都是安装在这个gemset之下
+
+#### 列出当前的Ruby的gemset
+
+```
+
+rvm gemset list
+
+```
+
+#### 清空gemset中的Gem
+
+如果你想清空一个 gemset 的所有 Gem, 想重新安装所有 Gem，可以这样
+
+```
+
+rvm gemset empty 1.8.7@rails23
+
+```
+
+#### 删除一个gemset
+
+```
+
+rvm gemset delete rails2-3
+
+```
+
+#### 项目自动加载gemset
+
+RVM 还可以自动加载 gemset。 例如我们有一个 Rails 3.1.3 项目，需要 1.9.3 版本 Ruby，整个流程可以这样。
+
+```
+
+rvm install 1.9.3
+
+rvm use 1.9.3
+
+rvm gemset create rails313
+
+rvm use 1.9.3@rails313
+
+```
+
+下面进入到项目目录，建立一个 .rvmrc 文件。
+
+
+
+在这个文件里可以很简单的加一个命令：
+
+```
+
+rvm use 1.9.3@rails313
+
+```
+
+然后无论你当前 Ruby 设置是什么，cd 到这个项目的时候，RVM 会帮你加载 Ruby 1.9.3 和 rails313 gemset.
+
+#### 使用 RVM 快速部署 `Nginx` + `Passenger`
+
+` passenger是支持ruby的web服务器`
+
+首先安装 Passenger
+
+```
+
+gem install passenger
+
+```
+
+然后使用 `passenger-install-nginx-module` 来安装 Nginx 和部署。
+
+` `
+
+因为这一步需要 root 权限（因为要编译 Nginx）可以用 rvmsudo 这个东西（这个东西真是个好东西）。
+
+```
+
+rvmsudo passenger-install-nginx-module
+
+```
+
+然后会让你选择是下载 Nginx 源码自动编译安装，还是自己选择 Nginx 源码位置。
+
+` `
+
+选择 Nginx 手动安装的可以添加别的编译参数，方便自定义编译 Nginx。
+
+` `
+
+然后一路下载安装。默认的安装位置为 /opt/nginx.
+
+` `
+
+然后看看 nginx.conf，都给你配置好了，只需要加上 root 位置（yourapp/public）就可以了。
+
+#### 其他选择
+
+如果你不太喜欢RVM，可以选择[rbenv](https://github.com/rbenv/rbenv) 在rubychaina有一篇文章(rbenv实用指南)[https://ruby-china.org/wiki/rbenv-guide]
+
+### 三、bundler
+
+**相当于多个`RubyGems`批处理运行。在配置文件`gemfilel`里说明你的应用依赖哪些第三方包，他自动帮你下载安装多个包，并且会下载这些包依赖的包**
+
+如何使用？
+
+你可以用 Bundler 的 [Gem 源代码镜像命令](http://bundler.io/v1.5/bundle_config.html#gem-source-mirrors)。
+
+```
+
+$ bundle config mirror.https://rubygems.org https://gems.ruby-china.org
+
+```
+
+这样你不用改你的 Gemfile 的 source
+
+```
+
+source 'https://rubygems.org/'
+
+gem 'rails', '4.1.0'
+
+```
