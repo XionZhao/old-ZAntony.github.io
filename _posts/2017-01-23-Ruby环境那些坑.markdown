@@ -178,8 +178,8 @@ rvm remove 1.8.7
 #### 为了方便读者和自己查阅，在前面介绍下gem source
 
 如何使用？(主要用于解决安装的时候慢，将sources改为国内的，速度有明显提升)
-```
 
+```
 $ gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/
 
 $ gem sources -l
