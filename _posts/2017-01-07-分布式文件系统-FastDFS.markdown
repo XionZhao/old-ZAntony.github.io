@@ -17,10 +17,13 @@ tags:
 >FastDFS适合中大型网站使用，用来存储资源文件(如：图片、文档、视频等)
 
 ### 二、FastDFS组成部分及其它名词
+
 #### 1、tracker server
 跟踪服务器：用来调度来自客户端的请求。且在内存中记录所有存储组和存储服务器的信息状态。
+
 #### 2、storage server
 存储服务器：用来存储文件(data)和文件属性(metadata)
+
 #### 3、client
 客户端：业务请求发起方，通过专用接口基于TCP协议与`tracker`以及`storage server`进行交互
 #### `group`
