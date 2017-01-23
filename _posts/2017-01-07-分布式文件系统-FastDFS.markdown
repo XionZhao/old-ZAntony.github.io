@@ -26,12 +26,16 @@ tags:
 
 #### 3、client
 客户端：业务请求发起方，通过专用接口基于TCP协议与`tracker`以及`storage server`进行交互
+
 #### `group`
 组，也可称为卷：同组内上的文件是完全相同的
+
 #### `文件标识`
 包括两部分：组名和文件名(包含路径)
+
 #### `meta data`
 文件相关属性：键值对(Key Value Pair)方式
+
 #### `fid`
 文件标识符：
 例如：
@@ -40,6 +44,7 @@ tags:
 `M##`：服务器配置的虚拟路径，与磁盘选项store_path#对应
 两级以两位16进制数字命名的目录
 `文件名`：与原文件名并不相同；由storage server根据特定信息生成。文件名包含：源存储服务器的IP地址、文件创建时间戳、文件大小、随机数和文件扩展名等
+
 ### 三、FastDFS同步机制
 >1、同一组内的storage server之间是对等的，文件上传、删除等操作可以在任意一台storage server上进行；
 >2、文件同步只在同组内的storage server之间进行，采用push方式，即源服务器同步给目标服务器；
@@ -48,14 +53,17 @@ tags:
 
 ### 四、FastDFS与集中存储方式对比
 ![enter image description here](http://obbogqhb1.bkt.clouddn.com/fastdfs2.png)
+
 ### 五、FastDFS和mogileFS对比
 ![enter image description here](http://obbogqhb1.bkt.clouddn.com/fastdfs1.png)
 
 ### 六、FastDFS安装配置
+
 #### 1、安装开发环境
 ```
 # yum groupinstall "Development Tools" "Server platform Development"
 ```
+
 #### 2、安装libfastcommon
 ```
 # git clone https://github.com/happyfish100/libfastcommon.git
@@ -63,6 +71,7 @@ tags:
 # ./make.sh 
 # ./make.sh install
 ```
+
 #### 3、安装fastdfs
 ```
 # cd /root/
@@ -71,6 +80,7 @@ tags:
 # ./make.sh 
 # ./make.sh install
 ```
+
 #### tracker 配置
 配置文件修改：根据需求修改
 ```
@@ -117,6 +127,7 @@ systemctl start fdfs_trackerd.service
 LISTEN     0      128          *:22122                    *:*  
 ```
 #### storage 配置
+
 根据需求修改
 ```
 # cd /etc/fdfs
@@ -169,18 +180,21 @@ systemctl start fdfs_storaged.service
 LISTEN     0      128          *:23000                    *:*   
 ```
 #### client配置
+
 修改客户端配置文件
 ```
 base_path=/data/fdfs/client
 tracker_server=10.1.14.197:22122
 ```
 ### 七、测试FastDFS
+
 #### 1、上传文件
 fdfs_upload_file <config_file> <local_filename> [storage_ip:port] [store_path_index]
 ```
 # fdfs_upload_file /etc/fdfs/client.conf /etc/issue
 group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930
 ```
+
 #### 2、查看文件
 fdfs_file_info <config_file> <file_id>
 ```
@@ -192,11 +206,13 @@ file create timestamp: 2016-07-18 20:04:59
 file size: 23
 file crc32: 2097312431 (0x7D0272AF)
 ```
+
 #### 3、下载文件
 fdfs_download_file <config_file> <file_id> [local_filename] [<download_offset> <download_bytes>]
 ```
 # fdfs_download_file /etc/fdfs/client.conf group1/M00/00/00/CgEOxVeMxeuABKiEAAAAF30Ccq85795930 /tmp/issue
 ```
+
 #### 4、查看存储节点状态
 ```
 # fdfs_monitor /etc/fdfs/client.conf
@@ -349,10 +365,12 @@ current trunk file id = 0
 
 ```
 ### 八、配置nginx为storage server提供http访问接口
+
 #### 1、下载fastdfs-nginx-module
 ```
 # git clone https://github.com/happyfish100/fastdfs-nginx-module.git
 ```
+
 #### 2、下载nginx源码，并编译支持fastdfs
 ```
 # 安装依赖程序
@@ -369,12 +387,14 @@ current trunk file id = 0
 # make
 # make install
 ```
+
 #### 3、复制配置文件
 ```
 # cp /root/fastdfs-nginx-module/src/mod_fastdfs.conf  /etc/fdfs/
 # cp /root/fastdfs-5.0.8/conf/{http.conf,mime.types}  /etc/fdfs/
 ```
 注意：`fastdfs-5.0.8`为`fastdfs`源码目录，如为更改，应叫`fastdfs`
+
 #### 4、配置fastdfs-nginx-module配置文件
 ```
 # vim /etc/fdfs/mod_fastdfs.conf
@@ -392,6 +412,7 @@ storage_server_port=23000
 store_path_count=1
 store_path0=/data/fdfs/storage/m0
 ```
+
 #### 5、配置nginx
 ```
 # vim /etc/nginx/nginx.conf
@@ -406,10 +427,12 @@ EOF
 # source /etc/profile.d/nginx.sh
 
 ```
+
 #### 6、为存储文件路径穿件链接至M00
 ```
 # ln -sv /data/fdfs/storage/m0/data  /data/fdfs/storage/m0/data/M00 
 ```
+
 #### 7、启动nginx和重启storage并上传文件测试
 ```
 启动nginx
