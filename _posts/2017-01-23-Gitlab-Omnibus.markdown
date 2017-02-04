@@ -12,7 +12,7 @@ tags:
 
 ![Gitlab1.png](http://obbogqhb1.bkt.clouddn.com/Gitlab1.png)
 
-#### 组件说明
+###### 组件说明
 
 - **前端**：Nginx，用于页面及Git tool走http或https协议
 
@@ -26,7 +26,7 @@ tags:
 
 - **Sidekiq**：Rails框架自带的，订阅redis中的任务并执行
 
-#### 版本说明
+###### 版本说明
 
 - **CE(GitLab Community Edition)**：社区版(源码安装方式) https://docs.gitlab.com/ce/README.html
 
@@ -36,32 +36,31 @@ tags:
 
 ### 二、Gitlab Omnibus 安装和配置
 
-#### 1. 安装和配置依赖环境
-
+##### 1. 安装和配置依赖环境
+```
 sudo apt-get install curl openssh-server ca-certificates postfix
-
-#### 2. 添加gitlab 包并安装
-
-curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
-
-sudo apt-get install gitlab-ce
-
-如果安装很慢，可以选择下载程序包后安装
-
-https://packages.gitlab.com/gitlab/gitlab-ce/install
-
-#### 3. 配置gitlab
-
-sudo gitlab-ctl reconfigure
-
-#### 4.配置Nginx
-
-https://docs.gitlab.com/omnibus/settings/nginx.html
-
-##### `配置https`
-
 ```
 
+##### 2. 添加gitlab 包并安装
+```
+curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+sudo apt-get install gitlab-ce
+```
+
+如果安装很慢，可以选择下载程序包后安装
+```
+https://packages.gitlab.com/gitlab/gitlab-ce/install
+```
+
+##### 3. 配置gitlab
+```
+sudo gitlab-ctl reconfigure
+```
+##### 4.配置Nginx
+https://docs.gitlab.com/omnibus/settings/nginx.html
+###### `配置https`
+
+```
 $ mkdir -p /etc/gitlab/ssl
 
 $ chmod 700 /etc/gitlab/ssl
@@ -88,7 +87,7 @@ nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/meiqia.com.key"
 
 ```
 
-#### 5.配置LDAP
+##### 5.配置LDAP
 
 参考配置：https://docs.gitlab.com/ce/administration/auth/ldap.html
 
@@ -126,7 +125,7 @@ EOS
 
 ```
 
-#### 6.配置EMAIL
+##### 6.配置EMAIL
 
 参考配置：https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/smtp.md
 
@@ -150,7 +149,7 @@ gitlab_rails['gitlab_email_from'] = 'xxx@xx.com'
 
 ```
 
-#### 7.重新加载配置
+##### 7.重新加载配置
 
 ```
 
@@ -158,7 +157,7 @@ $ sudo gitlab-ctl reconfigure
 
 ```
 
-#### Testing the SMTP configuration
+##### Testing the SMTP configuration
 
 ```
 
@@ -170,7 +169,7 @@ irb(main):003:0> Notify.test_email('destination_email@address.com', 'Message Sub
 
 ### 三、Gitlab 备份及恢复
 
-#### `backup`
+##### `backup`
 
 ```
 
@@ -180,9 +179,9 @@ sudo gitlab-rake gitlab:backup:create
 
 ```
 
-#### `resotre`
+##### `resotre`
 
-##### a. 停止服务
+**a. 停止服务**
 
 ```
 
@@ -194,7 +193,7 @@ sudo gitlab-ctl stop sidekiq
 
 ```
 
-##### b.查看其状态
+**b.查看其状态**
 
 ```
 
@@ -202,7 +201,7 @@ sudo gitlab-ctl status
 
 ```
 
-##### c.还原
+**c.还原**
 
 ```
 
@@ -214,7 +213,7 @@ $ sudo gitlab-rake gitlab:backup:restore BACKUP=1393513186_2014_02_27
 
 ```
 
-##### d. 重启并检查
+**d. 重启并检查**
 
 ```
 
@@ -226,7 +225,7 @@ sudo gitlab-rake gitlab:check SANITIZE=true
 
 ### 四、禁用Gitlab nginx使用production-nginx
 
-#### 禁用gitlab nginx
+**禁用gitlab nginx**
 
 ```
 
@@ -236,7 +235,7 @@ nginx['enable'] = false
 
 ```
 
-#### 重新配置gitlab
+**重新配置gitlab**
 
 ```
 
@@ -244,15 +243,13 @@ gitlab-ctl reconfigure
 
 ```
 
-#### 使用production配置 `建议：将/var/opt/gitlab/nginx/conf下面的配置文件直接复制过来，稍作修改即可`
-
+**使用production配置** 
+`建议：将/var/opt/gitlab/nginx/conf下面的配置文件直接复制过来，稍作修改即可`
 参考配置：http://docs.gitlab.com/omnibus/settings/nginx.html
+
 ```
-
-# 注意：拷贝前备份
-
+#注意：拷贝前备份
 cp /var/opt/gitlab/ngin/conf/* /usr/local/nginx/conf/
-
 ```
 
 ### 五、禁用Gitlab postgresql使用production-pgsql
@@ -290,11 +287,7 @@ psql -U PSQL_USER -h PSQL_HOST -p 5432 -d DATABASE < SQL_FILE
 #### 3.修改gitlab配置，添加production
 
 ```
-
 $ vim /etc/gitlab/gitlab.rb
-
-
-
 gitlab_rails['db_adapter'] = "postgresql"
 
 gitlab_rails['db_encoding'] = 'utf8'
