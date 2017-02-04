@@ -37,27 +37,33 @@ tags:
 ### 二、Gitlab Omnibus 安装和配置
 
 **1. 安装和配置依赖环境**
+
 ```
 sudo apt-get install curl openssh-server ca-certificates postfix
 ```
 
 **2. 添加gitlab 包并安装**
+
 ```
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
 sudo apt-get install gitlab-ce
 ```
 
 如果安装很慢，可以选择下载程序包后安装
+
 ```
 https://packages.gitlab.com/gitlab/gitlab-ce/install
 ```
 
 **3. 配置gitlab**
+
 ```
 sudo gitlab-ctl reconfigure
 ```
 **4.配置Nginx**
+
 https://docs.gitlab.com/omnibus/settings/nginx.html
+
 `配置https`
 
 ```
