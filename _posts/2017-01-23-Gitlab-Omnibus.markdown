@@ -254,7 +254,7 @@ cp /var/opt/gitlab/ngin/conf/* /usr/local/nginx/conf/
 
 ### 五、禁用Gitlab postgresql使用production-pgsql
 
-#### 1.禁用Gitlab postgresql
+**1.禁用Gitlab postgresql**
 
 ```
 
@@ -264,7 +264,7 @@ postgresql['enable'] = false
 
 ```
 
-#### 2.导入Gitlab 备份sql到production postgresql
+**2.导入Gitlab 备份sql到production postgresql**
 
 连接数据库并创建(注意，在最后创建数据库的时候，如果出现报错，请使用gitlab用户登录并创建)
 
@@ -284,7 +284,7 @@ psql -U PSQL_USER -h PSQL_HOST -p 5432 -d DATABASE < SQL_FILE
 
 ```
 
-#### 3.修改gitlab配置，添加production
+**3.修改gitlab配置，添加production**
 
 ```
 $ vim /etc/gitlab/gitlab.rb
@@ -302,7 +302,7 @@ gitlab_rails['db_password'] = 'Password'
 
 ```
 
-#### 4.重新配置Gitlab
+**4.重新配置Gitlab**
 
 ```
 
@@ -312,31 +312,32 @@ gitlab-ct reconfigure
 
 ### 六、禁用Gitlab Redis使用production Redis
 
-#### 配置gitlab
+**配置gitlab**
+
+```
+$ vim /etc/gitlab/gitlab.rb
 
 redis['enable'] = false
 
 gitlab_rails['redis_host'] = 'REDIS_HOST'
 
 gitlab_rails['redis_port'] = 6379
-
-#### 备份本地redis
-
 ```
 
+**备份本地redis**
+
+```
 redis-cli -h localhost -p 6379
 
 redis 127.0.0.1:6379 > SAVE
 
 OK
 
-```
-
 该命令将在 redis 安装目录中创建dump.rdb文件。
 
 ```
 
-#### 恢复数据到production
+**恢复数据到production**
 
 只需将备份文件 (dump.rdb) 移动到 redis 安装目录并启动服务即可,获取 redis 目录可以使用 CONFIG 命令，如下
 
@@ -351,7 +352,7 @@ redis 127.0.0.1:6379> CONFIG GET dir
 
 ```
 
-#### 如果还原的redis在Aws的ElastiCache
+**如果还原的redis在Aws的ElastiCache**
 
 在ElastiCache控制面板配置redis(https://console.amazonaws.cn/elasticache)
 
