@@ -12,7 +12,7 @@ tags:
 
 ![Gitlab1.png](http://obbogqhb1.bkt.clouddn.com/Gitlab1.png)
 
-###### 组件说明
+**组件说明**
 
 - **前端**：Nginx，用于页面及Git tool走http或https协议
 
@@ -26,7 +26,7 @@ tags:
 
 - **Sidekiq**：Rails框架自带的，订阅redis中的任务并执行
 
-###### 版本说明
+**版本说明**
 
 - **CE(GitLab Community Edition)**：社区版(源码安装方式) https://docs.gitlab.com/ce/README.html
 
@@ -36,12 +36,12 @@ tags:
 
 ### 二、Gitlab Omnibus 安装和配置
 
-##### 1. 安装和配置依赖环境
+**1. 安装和配置依赖环境**
 ```
 sudo apt-get install curl openssh-server ca-certificates postfix
 ```
 
-##### 2. 添加gitlab 包并安装
+**2. 添加gitlab 包并安装**
 ```
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
 sudo apt-get install gitlab-ce
@@ -52,13 +52,13 @@ sudo apt-get install gitlab-ce
 https://packages.gitlab.com/gitlab/gitlab-ce/install
 ```
 
-##### 3. 配置gitlab
+**3. 配置gitlab**
 ```
 sudo gitlab-ctl reconfigure
 ```
-##### 4.配置Nginx
+**4.配置Nginx**
 https://docs.gitlab.com/omnibus/settings/nginx.html
-###### `配置https`
+`配置https`
 
 ```
 $ mkdir -p /etc/gitlab/ssl
@@ -87,7 +87,7 @@ nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/meiqia.com.key"
 
 ```
 
-##### 5.配置LDAP
+**5.配置LDAP**
 
 参考配置：https://docs.gitlab.com/ce/administration/auth/ldap.html
 
@@ -125,7 +125,7 @@ EOS
 
 ```
 
-##### 6.配置EMAIL
+**6.配置EMAIL**
 
 参考配置：https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/smtp.md
 
@@ -149,7 +149,7 @@ gitlab_rails['gitlab_email_from'] = 'xxx@xx.com'
 
 ```
 
-##### 7.重新加载配置
+**7.重新加载配置**
 
 ```
 
@@ -157,7 +157,7 @@ $ sudo gitlab-ctl reconfigure
 
 ```
 
-##### Testing the SMTP configuration
+**Testing the SMTP configuration**
 
 ```
 
@@ -169,7 +169,7 @@ irb(main):003:0> Notify.test_email('destination_email@address.com', 'Message Sub
 
 ### 三、Gitlab 备份及恢复
 
-##### `backup`
+`backup`
 
 ```
 
@@ -179,7 +179,7 @@ sudo gitlab-rake gitlab:backup:create
 
 ```
 
-##### `resotre`
+`resotre`
 
 **a. 停止服务**
 
