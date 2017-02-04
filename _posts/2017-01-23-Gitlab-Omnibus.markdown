@@ -337,7 +337,7 @@ redis 127.0.0.1:6379 > SAVE
 
 OK
 
-
+```
 
 该命令将在 redis 安装目录中创建dump.rdb文件。
 
@@ -348,9 +348,6 @@ OK
 只需将备份文件 (dump.rdb) 移动到 redis 安装目录并启动服务即可,获取 redis 目录可以使用 CONFIG 命令，如下
 
 ```
-
-
-
 redis 127.0.0.1:6379> CONFIG GET dir
 
 1) "dir"
@@ -366,13 +363,13 @@ redis 127.0.0.1:6379> CONFIG GET dir
 在ElastiCache控制面板配置redis(https://console.amazonaws.cn/elasticache)
 
 ##### 1.创建redis集群
-![gitlab2.png](http://obbogqhb1.bkt.clouddn.com/gitlab2.png)
-##### 2.配置基本配置
 
+![gitlab2.png](http://obbogqhb1.bkt.clouddn.com/gitlab2.png)
+
+##### 2.配置基本配置
 ![gitlab3.png](http://obbogqhb1.bkt.clouddn.com/gitlab3.png)
 
 ##### 3.配置高级配置
-
 ![gitlab4.png](http://obbogqhb1.bkt.clouddn.com/gitlab4.png)
 
 ##### 4. 等待创建完成后重新配置Gitlab
