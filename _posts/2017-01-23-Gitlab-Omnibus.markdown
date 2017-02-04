@@ -4,7 +4,7 @@ title:      "Gitlab-Omnibus"
 subtitle:   "Gitlab-Omnibus 包安装方式"
 date:       2017-02-04
 author:     "Antony"
-header-img: "img/ruby.jpg"
+header-img: "img/gitlab.jpg"
 tags:
     - Gitlab
 ---
