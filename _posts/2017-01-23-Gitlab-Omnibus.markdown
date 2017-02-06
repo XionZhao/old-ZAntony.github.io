@@ -371,7 +371,6 @@ redis 127.0.0.1:6379> CONFIG GET dir
 
 ##### 3.配置高级配置
 ![gitlab4.png](http://obbogqhb1.bkt.clouddn.com/gitlab4.png)
-![Video](http://v.youku.com/v_show/id_XNTIzNzE2NzQ4.html)
 ##### 4. 等待创建完成后重新配置Gitlab
 
 ```
@@ -379,3 +378,5 @@ redis 127.0.0.1:6379> CONFIG GET dir
 gitlab-ctl reconfigure 
 
 ```
+
+<iframe height=498 width=510 src='http://player.youku.com/embed/XNTIzNzE2NzQ4' frameborder=0 'allowfullscreen'></iframe>
