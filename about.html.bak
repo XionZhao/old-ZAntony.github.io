@@ -16,17 +16,20 @@ header-img: "img/about-bg.jpg"
     <blockquote>
         站在巨人肩膀上还有另外一个风险,就是可能会摔死!
     </blockquote>
-    <h1>关于我</h1>
+    <p>
+    关于我
+    </p>
     <p>
     邮箱：Gmail:zantony.top@gmail.com 163:go80800@163.com
     </p>
-    行业：运维工程师
+    行业：业务运维工程师
     <p>
+    技能：精通八大菜系，精通各种姿势使用挖掘机，曾就职于新东方高级卫生管理工程师、蓝翔高级土堆清理师。
     </p>
     梦想：在吃的道路上，越走越远！
-    <h2>编程心路历程<h2>
-    <p> 1.确定目标及动力 <\br > </p>
-	<iframe height=498 width=510 src='http://player.youku.com/embed/XNTIzNzE2NzQ4' frameborder=0 'allowfullscreen'></iframe>
+    <p>
+    有点仓促，后续会继续补充
+    </p>
 
 </div>
 
@@ -63,6 +66,7 @@ header-img: "img/about-bg.jpg"
     onLanChange(0);
 </script>
 
+<iframe height=498 width=510 src='http://player.youku.com/embed/XNTIzNzE2NzQ4' frameborder=0 'allowfullscreen'></iframe>
 
 {% if site.duoshuo_username %}
 <!-- 多说评论框 start -->
