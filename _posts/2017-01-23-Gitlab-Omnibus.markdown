@@ -378,5 +378,3 @@ redis 127.0.0.1:6379> CONFIG GET dir
 gitlab-ctl reconfigure 
 
 ```
-
-<iframe height=498 width=510 src='http://player.youku.com/embed/XNTIzNzE2NzQ4' frameborder=0 'allowfullscreen'></iframe>
