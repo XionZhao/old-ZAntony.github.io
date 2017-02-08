@@ -16,17 +16,12 @@ tags:
 **这应该是目前最完整拥有CI(持续集成Continuous integration)和CD(持续交付Continuous delivery)的专案.**
 
 - **官网**: http://screwdriver.cd/
-
 - **Doc**: http://docs.screwdriver.cd/user-guide/quickstart/
-
 - **Github**: https://github.com/screwdriver-cd
-
 - **Docker**: https://hub.docker.com/u/screwdrivercd/
-
 #### 特色
 
 - 1.使部署通道更容易 (Making deployment pipelines easy)
-
 
 - 2.优化主干开发(Optimizing for trunk development)
 
@@ -37,7 +32,6 @@ tags:
 ### Screwdrive 架构和开发流程
 
 详情请查看：http://docs.screwdriver.cd/cluster-management/
-
 #### 组件:
 
 - 1.**REST API**(与流水线协同工作的接口)
