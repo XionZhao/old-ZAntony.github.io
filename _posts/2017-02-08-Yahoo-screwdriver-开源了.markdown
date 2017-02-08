@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "Gitlab-Omnibus"
-subtitle:   "Yahoo-screwdriver开源了!"
+title:      "Yahoo-screwdriver开源了"
+subtitle:   "Continuous integration and Continuous delivery"
 date:       2017-02-08
 author:     "Antony"
 header-img: "img/yahoo.jpg"
