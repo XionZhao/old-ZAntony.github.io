@@ -4,7 +4,7 @@ title:      "Cow-rc-样例配置文件"
 subtitle:   "example"
 date:       2017-02-20
 author:     "Antony"
-header-img: "img/yahoo.jpg"
+header-img: "img/cows.jpg"
 tags:
     - ss
     - cow
