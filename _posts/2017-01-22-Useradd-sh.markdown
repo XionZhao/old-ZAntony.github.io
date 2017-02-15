@@ -13,7 +13,7 @@ tags:
 
 ```
 #!/bin/bash
-#添加证书账户，并且将对应用户加入sudo
+#添加证书账户,并且将对应用户加入sudo
 # $1 为用户名 $2 为用户公钥
 [[ -z $3 ]] && useradd $1 || useradd -d $3 $1
 mkdir /home/$1/.ssh
