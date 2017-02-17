@@ -1,0 +1,95 @@
+---
+layout:     post
+title:      "AWS EBS 在线扩容"
+subtitle:   "Amazon EBS Enables Live Volume Modifications with Elastic Volumes"
+date:       2017-02-17
+author:     "Antony"
+header-img: "img/ebs.jpg"
+tags:
+    - aws
+    - aws ebs
+---
+
+### AWS Management Console 扩容ebs容量
+原文连接：[https://aws.amazon.com/blogs/aws/amazon-ebs-update-new-elastic-volumes-change-everything/](https://aws.amazon.com/blogs/aws/amazon-ebs-update-new-elastic-volumes-change-everything/)
+#### 1.选择扩容设备
+![ebs1](http://obbogqhb1.bkt.clouddn.com/ebs1.png)
+
+#### 2.修改扩容容量
+![ebs2](http://obbogqhb1.bkt.clouddn.com/ebs2.png)
+
+#### 4.等待其状态达到100%
+![ebs3](http://obbogqhb1.bkt.clouddn.com/ebs3.png)
+
+#### 扩容磁盘分区
+
+`growpart`
+
+```
+
+growpart /dev/xvdf 1
+
+```
+
+`parted`
+
+```
+
+GNU Parted 2.3
+
+Using /dev/xvdf1
+
+Welcome to GNU Parted! Type 'help' to view a list of commands.
+
+(parted) print
+
+Model: Unknown (unknown)
+
+Disk /dev/xvdf1: 80.7GB
+
+Sector size (logical/physical): 512B/512B
+
+Partition Table: loop
+
+
+
+Number  Start  End     Size    File system  Flags
+
+ 1      0.00B  53.7GB  53.7GB  ext4
+
+(parted) resizepart 1 80.7GB  # resizepart NUMBER END
+
+
+Warning: Partition /dev/xvdf1 is being used. Are you sure you want to continue?
+
+parted: invalid token: 53.7GB
+
+Yes/No? yes
+
+End?  [53.7GB]? 80.7GB
+
+(parted) quit
+
+```
+
+#### 扩容文件系统
+
+##### 1.ext系列
+
+```
+
+fdisk -l /dev/xvdf # 查看扩容分区容量是否成功
+
+resize2fs /dev/xvdf1 
+
+```
+
+##### 2.xfs系列
+
+```
+
+ xfs_growfs /dev/xvdf1
+
+```
+>作者：Antony WX&QQ：1257465991
+Q/A：如有问题请慷慨提出
