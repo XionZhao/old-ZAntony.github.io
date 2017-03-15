@@ -33,28 +33,28 @@ docker社区将在2017年4月17号开始使用，现在可以去注册了。
 
 参照：https://www.docker.com/pricing
 
-| ----|  社区版 | 企业版基本 | 企业版标准 | 企业版高级 |		
+|-----|  社区版 | 企业版基本 | 企业版标准 | 企业版高级 |		
 
 |------|---------|-------|------|---------|
 
 |容器引擎,built in orchestration, 网络, 安全| `yes`   | `yes`  | `yes` | `yes` |
 
-|Docker认证的基础架构，插件和ISV容器| ---- | `yes`  | `yes` | `yes` |
+|Docker认证的基础架构，插件和ISV容器|------| `yes`  | `yes` | `yes` |
 
 |image管理(私有docker registry, caching)| Cloud hosted repos | ----  | `yes` | `yes` |
 
-|Docker数据中心(集成容器应用程序管理)| ---- | ---- | `yes` | `yes` |
+|Docker数据中心(集成容器应用程序管理)|----- |------| `yes` | `yes` |
 
-|Docker数据中心(RBAC, LDAP/AD support)| ---- | ---- | `yes` | `yes` |
+|Docker数据中心(RBAC, LDAP/AD support)|------|------| `yes` | `yes` |
 
 
-|集成加密管理，镜像签名策略(Integrated secrets mgmt, image signing policy)| ---- | ---- | `yes` | `yes` |
+|集成加密管理，镜像签名策略(Integrated secrets mgmt, image signing policy)|------|------| `yes` | `yes` |
 
-|镜像安全扫描(Image security scanning)| Preview | ---- | --- | `yes` |
+|镜像安全扫描(Image security scanning)| Preview |------|-----| `yes` |
 
 |Support| Community Support | Business Day or Business Critical | Business Day or Business Critical | Business Day or Business Critical |
 
-|------|免费|750$/年|1500$/年|2000$/年|
+|-----|免费|750$/年|1500$/年|2000$/年|
 
 ### Docker EE（企业版）详细介绍
 
