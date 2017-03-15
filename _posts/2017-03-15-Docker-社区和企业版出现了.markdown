@@ -33,29 +33,7 @@ docker社区将在2017年4月17号开始使用，现在可以去注册了。
 
 参照：https://www.docker.com/pricing
 
-|-----|  社区版 | 企业版基本 | 企业版标准 | 企业版高级 |		
-
-|------|---------|-------|------|---------|
-
-|容器引擎,built in orchestration, 网络, 安全| `yes`   | `yes`  | `yes` | `yes` |
-
-|Docker认证的基础架构，插件和ISV容器|------| `yes`  | `yes` | `yes` |
-
-|image管理(私有docker registry, caching)| Cloud hosted repos | ----  | `yes` | `yes` |
-
-|Docker数据中心(集成容器应用程序管理)|----- |------| `yes` | `yes` |
-
-|Docker数据中心(RBAC, LDAP/AD support)|------|------| `yes` | `yes` |
-
-
-|集成加密管理，镜像签名策略(Integrated secrets mgmt, image signing policy)|------|------| `yes` | `yes` |
-
-|镜像安全扫描(Image security scanning)| Preview |------|-----| `yes` |
-
-|Support| Community Support | Business Day or Business Critical | Business Day or Business Critical | Business Day or Business Critical |
-
-|-----|免费|750$/年|1500$/年|2000$/年|
-
+![docker](http://obbogqhb1.bkt.clouddn.com/docker-table.png)
 ### Docker EE（企业版）详细介绍
 
 > Docker企业版（EE）专为企业开发和IT团队设计，可在大规模生产中构建，运送和运行关键业务应用程序。Docker EE集成，认证和支持，为企业提供业界最安全的容器平台，实现所有应用程序的现代化。作为一个以应用为中心的平台，Docker EE旨在加速和保护整个软件供应链，从开发到在任何基础设施上运行的生产。
