@@ -1,0 +1,111 @@
+---
+layout:     post
+title:      "Docker 社区和企业版出现了"
+subtitle:   "join us at Dockercon, April 17,2017"
+date:       2017-03-15
+author:     "Antony"
+header-img: "img/docker.jpg"
+tags:
+    - docker
+    - docker-ee
+---
+### Docker 社区和企业版出现了
+
+今天早上去官网看文档，一进去发现主页变了，映入眼帘的便是：join us at Dockercon, April 17,2017。一脸蒙蔽的我往下翻了翻，发现做了这么久的解决方案，docker企业版都支持，但是收费！！！！而且，Dockercon是什么鬼？
+
+![docker](http://obbogqhb1.bkt.clouddn.com/docker1.png)
+
+当然，docker也被分为两个版本：
+
+- community-edition
+
+- enterprise-edition
+
+### dockercon社区
+
+docker 官网公布了一个社区，目前还没有开放，其域名是:[2017.dockercon.com](http://2017.dockercon.com/)
+
+docker社区将在2017年4月17号开始使用，现在可以去注册了。
+
+![docker](http://obbogqhb1.bkt.clouddn.com/docker2.png)
+
+### Docker CE和EE的区别及定价
+
+参照：https://www.docker.com/pricing
+
+| ----|  社区版 | 企业版基本 | 企业版标准 | 企业版高级 |		
+
+|------|---------|-------|------|---------|
+
+|容器引擎,built in orchestration, 网络, 安全| `yes`   | `yes`  | `yes` | `yes` |
+
+|Docker认证的基础架构，插件和ISV容器| ---- | `yes`  | `yes` | `yes` |
+
+|image管理(私有docker registry, caching)| Cloud hosted repos | ----  | `yes` | `yes` |
+
+|Docker数据中心(集成容器应用程序管理)| ---- | ---- | `yes` | `yes` |
+
+|Docker数据中心(RBAC, LDAP/AD support)| ---- | ---- | `yes` | `yes` |
+
+
+|集成加密管理，镜像签名策略(Integrated secrets mgmt, image signing policy)| ---- | ---- | `yes` | `yes` |
+
+|镜像安全扫描(Image security scanning)| Preview | ---- | --- | `yes` |
+
+|Support| Community Support | Business Day or Business Critical | Business Day or Business Critical | Business Day or Business Critical |
+
+|------|免费|750$/年|1500$/年|2000$/年|
+
+### Docker EE（企业版）详细介绍
+
+> Docker企业版（EE）专为企业开发和IT团队设计，可在大规模生产中构建，运送和运行关键业务应用程序。Docker EE集成，认证和支持，为企业提供业界最安全的容器平台，实现所有应用程序的现代化。作为一个以应用为中心的平台，Docker EE旨在加速和保护整个软件供应链，从开发到在任何基础设施上运行的生产。
+
+#### 平台
+
+![docker](http://obbogqhb1.bkt.clouddn.com/docker3.png)
+
+#### 信任和认证
+
+> Docker EE为在企业Linux或Windows操作系统和云提供商上运行的应用程序提供集成，测试和认证的平台。Docker EE紧密集成到底层基础架构，以提供本机，易于安装的体验和优化的Docker环境。Docker认证的基础架构，容器和插件专用于Docker EE，由Docker和认证技术合作伙伴提供合作支持。
+
+
+
+
+
+- **认证基础**设施为企业Linux（CentOS，Oracle Linux，RHEL，SLES，Ubuntu）提供集成环境Windows Server 2016和云提供商如AWS和Azure
+
+- **认证容器**提供可信的ISV产品打包和分发为Docker容器，提供最佳实践和最安全的构建
+
+- **认证插件**提供网络和volume插件，并且易于下载和安装容器到Docker EE环境。
+
+#### 使用Docker数据中心的集成容器管理
+
+>Docker Datacenter现在是Docker EE的一部分，提供集成容器管理和安全从开发到生产。企业版准备了诸多功能，例如multi-tenancy,security和full support for Docker API给IT团队。开放接口允许轻松集成到现有系统中，并且灵活地支持任何一系列业务流程。
+
+
+
+
+- 从单个Web管理UI集成管理所有应用程序资源
+
+- 通过几次点击，将应用程序和撰写文件无缝部署到生产环境中
+
+- 具有基于角色的访问控制（RBAC）和LDAP / AD集成的多租户系统
+
+- 自我修复应用程序部署，能够应用滚动应用程序更新
+
+- 端到端的安全模型与秘密管理，图像签名和图像安全扫描
+
+- 打开和可扩展到现有的企业系统和过程
+
+
+#### 更安全的应用程序与Docker EE
+
+>安全不是静态的。现代应用程序是动态的，需要为应用程序定义的安全模型，而不是基础结构。Docker EE提供了一个集成的安全框架，提供更强的默认安全性，可以灵活地更改配置和标准化接口，以便开发人员和IT轻松协作。从安全的环境，通信和应用程序本身，Docker EE为企业提供更安全的应用程序。
+
+
+
+![docker](http://obbogqhb1.bkt.clouddn.com/docker4.png)
+
+#### 最后
+
+docker EE功能确实强大，不过开始不太稳定。开源软件一样可以实现，只是需要花点时间罢了！ 当然，如果有强烈需求，建议与docker一起做上docker的大轮船。
