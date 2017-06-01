@@ -23,7 +23,9 @@ Gixy是一个分析Nginx配置的工具。Gixy的主要目的是防止安全的�
 - 验证请求的主机头是否伪造。
 - 验证valid_referers是否为空。
 - 验证是否存在多行主机头。
+
 Github地址：[https://github.com/yandex/gixy](https://github.com/yandex/gixy)
+
 #### Gixy安装
 安装步骤很简单，直接使用pip安装即可
 ```
@@ -32,10 +34,13 @@ $ sudo pip install gixy
 ```
 #### Gixy使用
 Gixy默认检查/etc/nginx/nginx.conf文件
+
 ```
 $ gixy
 ```
+
 可以指定nginx配置文件所在位置
+
 ```
 $ gixy /usr/local//nginx/nginx.conf
 
@@ -63,9 +68,11 @@ Total issues:
     Medium: 0
     High: 1
 ```
+
 从结果查看出问题为`http_splitting`。原因是 $action 变量中可以含有换行符。这就是HTTP响应头拆分漏洞，通过CRLFZ注入实现攻击。
 
 如果你要暂时忽略某类错误，可以使用--skip参数：
+
 ```
 $ gixy --skips http_splitting /usr/local/nginx/nginx.conf
 
